@@ -1,0 +1,24 @@
+@import "compass_twitter_bootstrap";
+
+line.axis {
+    stroke: black;
+    stroke-width: 2;
+}
+
+.data-path {
+    fill: transparent;
+    stroke: #ccc;
+    stroke-width: 1;
+    &.highlighted {
+        stroke: red;
+    }
+}
+
+.axis-label {
+    fill: #666;
+    font-size: 10px;
+    &.highlighted {
+        fill: red;
+    }
+}
+

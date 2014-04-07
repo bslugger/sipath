@@ -1,0 +1,9 @@
+<svg height="{{(svg.height)+30}}" width="{{(svg.width)+30}}">
+  <line class="axis" ng-repeat="axis in axes" x1="{{axis.x}}" y1="0" x2="{{axis.x}}" y2="{{svg.height}}" transform="translate(30)"></line>
+  
+  <path class="data-path" id="{{ path.id }}" ng-repeat="path in paths" d="{{path.d}}"></path>
+
+  <g ng-repeat="axis in axes">
+    <text class="axis-label" ng-repeat="label in axis.labels" id="{{label.id}}"  x="{{axis.x}}" y="{{label.y+1}}" transform="translate(35)" ng-click="showPathByLabel({axis: $parent.$index, label: $index})">{{label.name}}</text>
+  </g>
+</svg>
