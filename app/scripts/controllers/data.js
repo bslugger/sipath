@@ -83,18 +83,6 @@ angular.module('a3App')
         var label = $scope.axes[index.axis].labels[index.label];
         var paths = label.paths;
 
-        function svgRemoveHighlightClass () {
-                var oldClass = $(this).attr('class');
-                if (oldClass.indexOf(' highlighted') != -1) {
-                    $(this).attr('class', oldClass.replace(' highlighted', ''));
-                }
-        }
-        function svgAddHighlightClass () {
-            var oldClass = $(this).attr('class');
-            $(this).attr('class', oldClass + ' highlighted');
-            $('svg')[0].appendChild(this);
-        }
-
         jQuery('.highlighted').each(svgRemoveHighlightClass);
         
         jQuery('#' + label.id).each(svgAddHighlightClass);
