@@ -1,0 +1,17 @@
+<div class="container row-fluid">
+<div class="list-container span3">
+    <ul>
+        <li ng-repeat="alumnus in alumniData" id="{{alumnus.id}}" class="alumni-path-label" ng-mouseenter="highlightPath(alumnus)" ng-mouseleave="unhighlightPath(alumnus)" ng-class="{'highlighted': alumnus.selected}">{{alumnus.position + ', ' + alumnus.name}}</li>
+    </ul>
+</div>
+
+<div class="chart-container span9">
+    <svg height="{{(svg.height)}}" width="{{(svg.width)}}">
+      <path class="alumni-path" ng-repeat="alumnus in alumniData" id="{{alumnus.id}}" d="{{alumnus.d}}" transform="translate(100, 100)" ng-mouseenter="highlightPath(alumnus)" ng-mouseleave="unhighlightPath(alumnus)" pv-svg-class='{"highlighted": "alumnus.selected"}'></path>
+      <g ng-repeat="course in courseData">
+          <circle class="course-bubble" cx="{{course.coord.x}}" cy="{{course.coord.y}}" r="{{course.popularity*50}}" transform="translate(100, 100)"></circle>
+          <text class="axis-label" x="{{course.coord.x}}" y="{{course.coord.y}}" transform="translate(90, 105)">{{course.number}}</text>
+      </g>
+    </svg>
+</div>
+</div>

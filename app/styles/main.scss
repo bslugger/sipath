@@ -22,3 +22,24 @@ line.axis {
     }
 }
 
+.course-bubble {
+    fill: #ccc;
+    stroke: #ccc;
+    stroke-width: 1;
+}
+
+.alumni-path-label {
+    color: #333;
+    &.highlighted {
+        color: red;
+    }
+}
+
+.alumni-path {
+    fill: transparent;
+    stroke-width: 1;
+    stroke: rgba(100, 100, 100, 0.3);
+    &.highlighted {
+        stroke: red;
+    }
+}
