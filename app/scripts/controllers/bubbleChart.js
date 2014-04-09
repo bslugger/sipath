@@ -33,6 +33,7 @@ angular.module('a3App')
                 return;
             $scope.alumniData.push({
                 id: row[0],
+                coord: {x: -100, y: ((20)*row[0]-90)},
                 position: row[1],
                 name: row[2],
                 courses: [ row[3],row[4],row[5] ],
@@ -40,13 +41,14 @@ angular.module('a3App')
             });
         });
         angular.forEach($scope.alumniData, function (alumnus, index) {
-            alumnus.coords = [];
-            alumnus.coords.push('-100 '+((20)*index-90));
+            alumnus.pathCoords = [];
+            alumnus.pathCoords.push(alumnus.coord.x + ' ' + alumnus.coord.y);
             angular.forEach(alumnus.courses, function (courseId, index) {
                 var c = $scope.courseData[courseId].coord;
-                alumnus.coords.push(c.x + ' ' + c.y);
+                alumnus.pathCoords.push(c.x + ' ' + c.y);
             });
-            alumnus.d = 'M ' + alumnus.coords.join(' L ');
+            alumnus.d = 'M ' + alumnus.pathCoords.join(' L ');
+            alumnus.d2 = alumnus.pathCoords.slice(1).join(' L ');
         });
 
         console.log($scope.alumniData);
@@ -65,5 +67,21 @@ angular.module('a3App')
         alumnus.selected = false;
     }
 
+    $scope.moveAlumniCoords = function () {
+        // console.log('coord scroll');
+        var top = jQuery('.list-container').scrollTop();
+        angular.forEach($scope.alumniData, function (alumnus, index) {
+            alumnus.coords.y -= top;
+        });
+        jQuery('svg').children.each(function(child) {
+            jQuery('svg')[0].appendChild(this);
+        });
+    }
+
+    // jQuery(function (){
+    //     jQuery('div.list-container').scroll(function () {
+    //         console.log('test');
+    //     });
+    // });
 
   });
