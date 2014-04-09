@@ -1,7 +1,6 @@
 TODO
 
-* Bubble chart:
-    * Scrollable alumni list with visibility toggle
+* Bubble chart
     * Bubble stroke highlight
     * Bubble fish eye
     * Connector algorithm
@@ -9,3 +8,8 @@ TODO
     * Animation
 * Course sidebar
 * Alumni view
+
+
+DONE
+* Bubble chart
+    * Scrollable alumni list with visibility toggle

@@ -38,9 +38,13 @@ line.axis {
 .alumni-path {
     fill: transparent;
     stroke-width: 1;
+    visibility: visible;
     stroke: rgba(100, 100, 100, 0.3);
     &.highlighted {
         stroke: red;
+    }
+    &.hidden {
+        visibility: hidden;
     }
 }
 
