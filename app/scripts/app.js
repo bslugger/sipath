@@ -15,6 +15,10 @@ angular.module('a3App', [])
         templateUrl: 'views/bubble.html',
         controller: 'BubbleChartCtrl'
       })
+      .when('/sankey', {
+        templateUrl: 'views/sankey.html',
+        controller: 'SankeyCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
