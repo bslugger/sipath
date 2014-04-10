@@ -8,8 +8,13 @@ TODO
     * Animation
 * Course sidebar
 * Alumni view
+* Sankey Diagram
+    * Connection
 
 
 DONE
 * Bubble chart
     * Scrollable alumni list with visibility toggle
+* Sankey Diagram
+    * Background Column
+    * Career Column
