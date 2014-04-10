@@ -52,3 +52,10 @@ div.list-container {
     height: 200px;
     overflow: scroll;
 }
+
+.dataTile, .dataLink {
+    opacity: 0.5;
+    &.highlighted {
+        opacity: 1.0;
+    }
+}
