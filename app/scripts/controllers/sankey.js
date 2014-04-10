@@ -8,7 +8,7 @@ angular.module('a3App')
     };
     $scope.anchors = {
         leftX: 0,
-        rightX: 500,
+        rightX: 700,
         leftColWidth: 100,
         rightColWidth: 100,
         scale: 800,
@@ -105,7 +105,6 @@ angular.module('a3App')
             });
         });
         
-
         var cumulatePercentage = 0;
         for (var i = 0; i < $scope.backgrounds.length; i++) {
             var background = $scope.backgrounds[i];
@@ -114,9 +113,9 @@ angular.module('a3App')
             background.color = getRandomColor();
             for (var j = 0; j < background.outcome.length; j++) {
                 var outcome = background.outcome[j];
-                outcome.percentage = outcome.value/totalNumber;
-                outcome.cumPercentage = cumulatePercentage;
-                cumulatePercentage += outcome.percentage;
+                //outcome.percentage = outcome.value/totalNumber;
+                //outcome.cumPercentage = cumulatePercentage;
+                //cumulatePercentage += outcome.percentage;
                 // find outcome index
                 for (var k = 0; k < $scope.positionTitles.length; k++) {
                     var posTitle = $scope.positionTitles[k];
@@ -124,6 +123,22 @@ angular.module('a3App')
                         outcome["pos-index"] = posTitle["pos-index"];
                     }
                 }
+            }
+
+            background.outcome = background.outcome.sort(function(a,b){
+                var i1 = parseInt(a["pos-index"].substr(3));
+                var i2 = parseInt(b["pos-index"].substr(3));
+
+                if (i1 < i2) return -1;
+                if (i1 > i2) return 1;
+                return 0;
+            });
+
+            for (var j = 0; j < background.outcome.length; j++) {
+                var outcome = background.outcome[j];
+                outcome.percentage = outcome.value/totalNumber;
+                outcome.cumPercentage = cumulatePercentage;
+                cumulatePercentage += outcome.percentage;
             }
             
         }
@@ -136,16 +151,31 @@ angular.module('a3App')
             posTitle.color = getRandomColor();
             for (var j = 0; j < posTitle.background.length; j++) {
                 var background = posTitle.background[j];
-                background.percentage = background.value/totalNumber;
-                background.cumPercentage = cumulatePercentage;
-                cumulatePercentage += background.percentage;
+                //background.percentage = background.value/totalNumber;
+                //background.cumPercentage = cumulatePercentage;
+                //cumulatePercentage += background.percentage;
                 for (var k = 0; k < $scope.backgrounds.length; k++) {
                     var sBackground = $scope.backgrounds[k];
                     if (background[backgroundTag] === sBackground[backgroundTag]) {
                         background["bg-index"] = sBackground["bg-index"];
                     }
                 }
-            }   
+            }
+
+            posTitle.background = posTitle.background.sort(function(a,b){
+                var i1 = parseInt(a["bg-index"].substr(2));
+                var i2 = parseInt(b["bg-index"].substr(2));
+
+                if (i1 < i2) return -1;
+                if (i1 > i2) return 1;
+                return 0;
+            });
+            for (var j = 0; j < posTitle.background.length; j++) {
+                var background = posTitle.background[j];
+                background.percentage = background.value/totalNumber;
+                background.cumPercentage = cumulatePercentage;
+                cumulatePercentage += background.percentage;
+            }
         }
 
 
