@@ -8,22 +8,36 @@ angular.module('a3App')
     };
     $scope.courseData = pathVizService.courseData;
     $scope.alumniData = pathVizService.alumniData;
-    $scope.selectedAlumni = [];
+    $scope.highlightedAlumni = [];
+    $scope.selectedCourses = [];
 
     $scope.highlightPath = function (alumnus) {
-        $scope.selectedAlumni.push(alumnus.id);
-        alumnus.selected = true;
+        $scope.highlightedAlumni.push(alumnus.id);
+        alumnus.highlighted = true;
+        angular.forEach(alumnus.courses, function (courseIndex, index) {
+            $scope.courseData[courseIndex].isHighlighted = true;
+        });
     }
 
     $scope.unhighlightPath = function (alumnus) {
-        if ($scope.selectedAlumni.indexOf(alumnus) >= 0) {
-            $scope.selectedAlumni.splice(alumnus.id, 1);
+        if ($scope.highlightedAlumni.indexOf(alumnus) >= 0) {
+            $scope.highlightedAlumni.splice(alumnus.id, 1);
         }
-        alumnus.selected = false;
+        alumnus.highlighted = false;
+        angular.forEach(alumnus.courses, function (courseIndex, index) {
+            $scope.courseData[courseIndex].isHighlighted = false;
+        });
+    }
+
+    $scope.selectCourse = function (course) {
+        angular.forEach($scope.selectedCourses, function (selectedCourse, index) {
+            selectedCourse.isSelected = false;
+        });
+        course.isSelected = true;
+        $scope.selectedCourses.push(course);
     }
 
     $scope.moveAlumniCoords = function () {
-        // console.log('coord scroll');
         var top = jQuery('.list-container').scrollTop();
         angular.forEach($scope.alumniData, function (alumnus, index) {
             alumnus.coord.y = alumnus.coord.originalY - top;
@@ -32,9 +46,6 @@ angular.module('a3App')
             }
             else
                 alumnus.hidden = false;
-        });
-        jQuery('svg').children.each(function(child) {
-            jQuery('svg')[0].appendChild(this);
         });
     }
 

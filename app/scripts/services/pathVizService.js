@@ -25,10 +25,11 @@ angular.module('a3App')
                 number: row[1],
                 name: row[2],
                 coord: {x: row[0]/3 * 100, y: index%3 * 100},
-                popularity: row[3]
+                popularity: row[3],
+                isSelected: false,
+                isHighlighted: false
             });
         });
-        console.log(self.courseData);
     }
     self.loadCourseData(self.onCourseDataLoaded);
 
@@ -44,7 +45,7 @@ angular.module('a3App')
                 name: row[2],
                 courses: [ row[3],row[4],row[5] ],
                 hidden: false,
-                selected: false
+                highlighted: false
             });
         });
         angular.forEach(self.alumniData, function (alumnus, index) {
@@ -57,12 +58,6 @@ angular.module('a3App')
             alumnus.d = 'M ' + alumnus.pathCoords.join(' L ');
             alumnus.d2 = alumnus.pathCoords.slice(1).join(' L ');
         });
-
-        console.log(self.alumniData);
     }
     self.loadAlumniData(self.onAlumniDataLoaded);
-
-
-
-
   });

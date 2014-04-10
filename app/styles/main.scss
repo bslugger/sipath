@@ -26,25 +26,33 @@ line.axis {
     fill: #ccc;
     stroke: #ccc;
     stroke-width: 1;
+    &.highlighted {
+        stroke-width: 2;
+        stroke: #789add;
+    }
+    &.selected {
+        fill: #789add;
+    }
 }
 
 .alumni-path-label {
     color: #333;
     &.highlighted {
-        color: red;
+        color: #789add;
     }
 }
 
 .alumni-path {
     fill: transparent;
     stroke-width: 1;
-    visibility: visible;
+    display: block;
     stroke: rgba(100, 100, 100, 0.3);
     &.highlighted {
-        stroke: red;
+        stroke-width: 2;
+        stroke: #789add;
     }
     &.hidden {
-        visibility: hidden;
+        display: none;
     }
 }
 
