@@ -221,8 +221,7 @@ angular.module('a3App')
                 var cmds = [];
                 // Move to P0
                 cmds.push("M" + ($scope.anchors.leftX + $scope.anchors.leftColWidth) + "," + (obj.startCumPercentage * $scope.anchors.scale + 30));
-                cmds.push("l" + (turnX1 * $scope.anchors.xDis) + "," + 0); // Turn X1
-                if (ydiff !== 0 ) {
+                /*if (ydiff !== 0 ) {
                     var x1 = (0.1 * $scope.anchors.xDis);
                     var y1 = ydrop;
                     var x2 = (-y1 + slope * x1 ) / slope;
@@ -235,10 +234,18 @@ angular.module('a3App')
                     cmds.push("q" + x2 + "," + ydrop + " " + (0.1 * $scope.anchors.xDis) + "," + ydrop);
                 } else {
                     cmds.push("L" + ($scope.anchors.rightX - turnX1 * $scope.anchors.xDis) + "," + (obj.endCumPercentage * $scope.anchors.scale + 30));
+                }*/
+                if (ydiff !== 0 ) {
+                    cmds.push("l" + (turnX1 * $scope.anchors.xDis) + "," + 0); // Turn X1
+                    cmds.push("c" + "100,0 " + ((1 - 2 * turnX1)*$scope.anchors.xDis - 100) + "," + (ydiff*$scope.anchors.scale) + " " + ((1 - 2 * turnX1) * $scope.anchors.xDis) + "," + (ydiff*$scope.anchors.scale));
+                    cmds.push("l" + (turnX1 * $scope.anchors.xDis) + "," + 0); // Turn X2
+                } else {
+                    cmds.push("L" + ($scope.anchors.rightX) + "," + (obj.endCumPercentage * $scope.anchors.scale + 30));
                 }
-                cmds.push("l" + (turnX1 * $scope.anchors.xDis) + "," + 0); // Turn X2
+
+                //cmds.push("l" + (turnX1 * $scope.anchors.xDis) + "," + 0); // Turn X2
                 cmds.push("l" + 0 + "," + obj.endPercentage * $scope.anchors.scale);
-                cmds.push("l" + (-(turnX1) * $scope.anchors.xDis) + "," + 0);
+                /*cmds.push("l" + (-(turnX1) * $scope.anchors.xDis) + "," + 0);
                 if (ydiff !== 0 ) {
                     var x1 = -(0.1 * $scope.anchors.xDis);
                     var y1 = -ydrop;
@@ -254,7 +261,14 @@ angular.module('a3App')
                     cmds.push("L" + ($scope.anchors.leftX + $scope.anchors.leftColWidth + turnX1 * $scope.anchors.xDis) + "," + ((obj.startCumPercentage + obj.startPercentage) * $scope.anchors.scale + 30));
                 }
                 //cmds.push("L" + ($scope.anchors.leftX + $scope.anchors.leftColWidth + turnX1 * $scope.anchors.xDis) + "," + ((obj.startCumPercentage + obj.startPercentage) * $scope.anchors.scale + 30));
-                cmds.push("l" + (-turnX1 * $scope.anchors.xDis) + "," + 0); 
+                cmds.push("l" + (-turnX1 * $scope.anchors.xDis) + "," + 0); */
+                if (ydiff !== 0 ) {
+                    cmds.push("l" + (-turnX1 * $scope.anchors.xDis) + "," + 0); // Turn X2
+                    cmds.push("c" + "-100,0 " + (100 - (1 - 2 * turnX1) * $scope.anchors.xDis) + "," + (-ydiff*$scope.anchors.scale) + " " + -((1 - 2 * turnX1) * $scope.anchors.xDis) + "," + (-ydiff*$scope.anchors.scale) );
+                    cmds.push("l" + (-turnX1 * $scope.anchors.xDis) + "," + 0); // Turn X1
+                } else {
+                    cmds.push("L" + ($scope.anchors.leftX + $scope.anchors.leftColWidth) + "," + ((obj.endCumPercentage + obj.endPercentage) * $scope.anchors.scale + 30));
+                }
                 cmds.push("z");
 
                 obj.path = cmds.join(" ");
