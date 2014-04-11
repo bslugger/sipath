@@ -12,7 +12,7 @@ angular.module('a3App')
         xDis: 600,
         leftColWidth: 100,
         rightColWidth: 100,
-        scale: 800,
+        scale: 700,
     };
 
     $scope.data = [1, 2, 3];
