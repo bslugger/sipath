@@ -20,7 +20,7 @@ function svgRemoveClass (element, keyword) {
     }
 }
 
-// definition of position is not integrated right now
+// definition of position
 function svgSankeyPath(startX, startY, endX, endY, startWidth, endWidth, xScale, yScale, turnWeight, curveWeight, xOffset, yOffset) {
     var ydiff = endY - startY;
     var absYdiff = Math.abs(ydiff);
