@@ -288,8 +288,17 @@ angular.module('a3App')
     // Load data, this part should be alined with Kevin's
     pathVizService.loadData2($scope.onDataLoaded);
 
-    $scope.hoverBackground = function(class1, class2) {
+    // options: 1 multiple class1
+    //          2 multiple class2
+    //          3 single
+    $scope.hoverBackground = function(class1, class2, options) {
         jQuery('.highlighted').each(svgRemoveHighlightClass);
+
+        if (options === 1) {
+            jQuery('.'+class1).not('.'+class2).each(svgAddHighlightClass);
+        } else if (options === 2) {
+            jQuery('.'+class2).not('.'+class1).each(svgAddHighlightClass);
+        }
         jQuery('.'+class1+'.'+class2).each(svgAddHighlightClass);
     }
   });
