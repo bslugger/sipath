@@ -109,7 +109,7 @@ angular.module('a3App')
         var cumulatePercentage = 0;
         for (var i = 0; i < $scope.backgrounds.length; i++) {
             var background = $scope.backgrounds[i];
-            background.percentage = background.value/totalNumber;
+            background.percentage = roundTo(background.value/totalNumber,2);
             background.cumPercentage = cumulatePercentage;
             background.color = getRandomColor();
             for (var j = 0; j < background.outcome.length; j++) {
@@ -137,7 +137,7 @@ angular.module('a3App')
 
             for (var j = 0; j < background.outcome.length; j++) {
                 var outcome = background.outcome[j];
-                outcome.percentage = outcome.value/totalNumber;
+                outcome.percentage = roundTo(outcome.value/totalNumber,2);
                 outcome.cumPercentage = cumulatePercentage;
                 cumulatePercentage += outcome.percentage;
             }
@@ -147,7 +147,7 @@ angular.module('a3App')
         cumulatePercentage = 0;
         for (var i = 0; i < $scope.positionTitles.length; i++) {
             var posTitle = $scope.positionTitles[i];
-            posTitle.percentage = posTitle.value/totalNumber;
+            posTitle.percentage = roundTo(posTitle.value/totalNumber,2);
             posTitle.cumPercentage = cumulatePercentage;
             posTitle.color = getRandomColor();
             for (var j = 0; j < posTitle.background.length; j++) {
@@ -173,7 +173,7 @@ angular.module('a3App')
             });
             for (var j = 0; j < posTitle.background.length; j++) {
                 var background = posTitle.background[j];
-                background.percentage = background.value/totalNumber;
+                background.percentage = roundTo(background.value/totalNumber,2);
                 background.cumPercentage = cumulatePercentage;
                 cumulatePercentage += background.percentage;
             }

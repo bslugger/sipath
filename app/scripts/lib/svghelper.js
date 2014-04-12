@@ -19,3 +19,12 @@ function svgRemoveClass (element, keyword) {
         $(element).attr('class', oldClass.replace(target, ''));
     }
 }
+
+// not correct but usable right now
+function roundTo (input, point) {
+    if (typeof point === 'undefined') {
+        point = 0;
+    }
+    var roundMul = Math.pow(10, point);
+    return Math.round(input * roundMul) / roundMul;
+}
