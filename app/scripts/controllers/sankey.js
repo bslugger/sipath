@@ -207,78 +207,27 @@ angular.module('a3App')
                 }
 
                 // path
-                // function-ize this part!!!!!
-                var ydiff = obj.endCumPercentage - obj.startCumPercentage;
-                var turnX1 = 0;
-                var turnX2 = 0
+                var startX = $scope.anchors.leftX + $scope.anchors.leftColWidth;
+                var startY = obj.startCumPercentage;
+                var endX = $scope.anchors.rightX;
+                var endY = obj.endCumPercentage;
+                var startWidth = obj.startPercentage;
+                var endWidth = obj.endPercentage;
+                var xScale = $scope.anchors.xDis;
+                var yScale = $scope.anchors.scale;
+                var turnWeight = 0.3;
+                var curveWeight = 100;
+                var xOffset = 0;
+                var yOffset = 30;
 
-                var absYdiff = Math.abs(ydiff);
-                var turnX1 = 0.3 - 0.3 * absYdiff;
-                var turnX2 = 1 - turnX1;
-                var ydrop = 0.1 * ydiff * $scope.anchors.scale;
-                var slope = ydiff * $scope.anchors.scale / ((1-2*turnX1) * $scope.anchors.xDis);
-                
-                var cmds = [];
-                // Move to P0
-                cmds.push("M" + ($scope.anchors.leftX + $scope.anchors.leftColWidth) + "," + (obj.startCumPercentage * $scope.anchors.scale + 30));
-                /*if (ydiff !== 0 ) {
-                    var x1 = (0.1 * $scope.anchors.xDis);
-                    var y1 = ydrop;
-                    var x2 = (-y1 + slope * x1 ) / slope;
-                    cmds.push("q" + x2 + "," + 0 + " " + (0.1 * $scope.anchors.xDis) + "," + ydrop);
-                }
-                
-                if (ydiff !== 0 ) {
-                    cmds.push("L" + ($scope.anchors.rightX - (turnX1+0.1) * $scope.anchors.xDis) + "," + (obj.endCumPercentage * $scope.anchors.scale - ydrop + 30));
-                    var x2 = (ydrop) / slope;
-                    cmds.push("q" + x2 + "," + ydrop + " " + (0.1 * $scope.anchors.xDis) + "," + ydrop);
-                } else {
-                    cmds.push("L" + ($scope.anchors.rightX - turnX1 * $scope.anchors.xDis) + "," + (obj.endCumPercentage * $scope.anchors.scale + 30));
-                }*/
-                if (ydiff !== 0 ) {
-                    cmds.push("l" + (turnX1 * $scope.anchors.xDis) + "," + 0); // Turn X1
-                    cmds.push("c" + "100,0 " + ((1 - 2 * turnX1)*$scope.anchors.xDis - 100) + "," + (ydiff*$scope.anchors.scale) + " " + ((1 - 2 * turnX1) * $scope.anchors.xDis) + "," + (ydiff*$scope.anchors.scale));
-                    cmds.push("l" + (turnX1 * $scope.anchors.xDis) + "," + 0); // Turn X2
-                } else {
-                    cmds.push("L" + ($scope.anchors.rightX) + "," + (obj.endCumPercentage * $scope.anchors.scale + 30));
-                }
-
-                //cmds.push("l" + (turnX1 * $scope.anchors.xDis) + "," + 0); // Turn X2
-                cmds.push("l" + 0 + "," + obj.endPercentage * $scope.anchors.scale);
-                /*cmds.push("l" + (-(turnX1) * $scope.anchors.xDis) + "," + 0);
-                if (ydiff !== 0 ) {
-                    var x1 = -(0.1 * $scope.anchors.xDis);
-                    var y1 = -ydrop;
-                    var x2 = (-y1 + slope * x1 ) / slope;
-                    cmds.push("q" + x2 + "," + 0 + " " + (-0.1 * $scope.anchors.xDis) + "," + -ydrop);
-                }
-
-                if (ydiff !== 0 ) {
-                    cmds.push("L" + ($scope.anchors.leftX + $scope.anchors.leftColWidth + (turnX1+0.1) * $scope.anchors.xDis) + "," + ((obj.startCumPercentage + obj.startPercentage) * $scope.anchors.scale + ydrop + 30));
-                    var x2 = (-ydrop) / slope;
-                    cmds.push("q" + x2 + "," + -ydrop + " " + -(0.1 * $scope.anchors.xDis) + "," + -ydrop);
-                } else {
-                    cmds.push("L" + ($scope.anchors.leftX + $scope.anchors.leftColWidth + turnX1 * $scope.anchors.xDis) + "," + ((obj.startCumPercentage + obj.startPercentage) * $scope.anchors.scale + 30));
-                }
-                //cmds.push("L" + ($scope.anchors.leftX + $scope.anchors.leftColWidth + turnX1 * $scope.anchors.xDis) + "," + ((obj.startCumPercentage + obj.startPercentage) * $scope.anchors.scale + 30));
-                cmds.push("l" + (-turnX1 * $scope.anchors.xDis) + "," + 0); */
-                if (ydiff !== 0 ) {
-                    cmds.push("l" + (-turnX1 * $scope.anchors.xDis) + "," + 0); // Turn X2
-                    cmds.push("c" + "-100,0 " + (100 - (1 - 2 * turnX1) * $scope.anchors.xDis) + "," + (-ydiff*$scope.anchors.scale) + " " + -((1 - 2 * turnX1) * $scope.anchors.xDis) + "," + (-ydiff*$scope.anchors.scale) );
-                    cmds.push("l" + (-turnX1 * $scope.anchors.xDis) + "," + 0); // Turn X1
-                } else {
-                    cmds.push("L" + ($scope.anchors.leftX + $scope.anchors.leftColWidth) + "," + ((obj.endCumPercentage + obj.endPercentage) * $scope.anchors.scale + 30));
-                }
-                cmds.push("z");
-
-                obj.path = cmds.join(" ");
+                obj.path = svgSankeyPath(startX, startY, endX, endY, startWidth, endWidth, xScale, yScale, turnWeight, curveWeight, xOffset, yOffset);
                 $scope.backToCareerLinks.push(obj);
             }
         }
 
-        console.log($scope.backgrounds);
-        console.log($scope.positionTitles);
-        console.log($scope.backToCareerLinks);
+        // console.log($scope.backgrounds);
+        // console.log($scope.positionTitles);
+        // console.log($scope.backToCareerLinks);
     }
 
     // This is for static id, could be done in the data base
