@@ -9,6 +9,9 @@ angular.module('a3App')
     self.loadData = function (callback) {
       CsvReaderService.read('/images/anon689_2.csv', callback);  
     }
+    self.loadData2 = function (callback) {
+      CsvReaderService.read2Json('/images/anon689_2.csv', callback);  
+    }
     self.loadCourseData = function (callback) {
       CsvReaderService.read('/images/course.csv', callback);
     }

@@ -2,8 +2,9 @@ function svgRemoveHighlightClass () {
     svgRemoveClass(this, 'highlighted');
 }
 function svgAddHighlightClass () {
-    svgAddClass(this, 'highlighted');
-    $('svg')[0].appendChild(this);
+    //if (!this.hasClass('highlighted')) {
+        svgAddClass(this, 'highlighted');
+    //}
 }
 
 function svgAddClass (element, keyword) {

@@ -9,4 +9,11 @@ angular.module('a3App')
           callback(d);
         });
     };
+    this.read2Json = function (path, callback) {
+      $http.get(path).then(function(result)
+        {
+          var e = csvJSON(result.data);
+          callback(e);
+        });
+    };
   });
