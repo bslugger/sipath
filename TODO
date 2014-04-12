@@ -14,7 +14,10 @@ TODO
 DONE
 * Bubble chart
     * Scrollable alumni list with visibility toggle
+<<<<<<< HEAD
     * Bubble stroke highlight
+=======
+>>>>>>> FETCH_HEAD
 * Sankey Diagram
     * Background Column
     * Career Column
