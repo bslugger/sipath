@@ -20,6 +20,7 @@ angular.module('a3App')
             $scope.layout = (options.layout)? options.layout: $scope.layout;
             $scope.data = (options.data)? options.data: $scope.data;
         }
+        updateRenderData();
     }
     $scope.showValue = function(bar) {
         bar.isValueShown = true;
@@ -27,7 +28,8 @@ angular.module('a3App')
     $scope.hideValue = function(bar) {
         bar.isValueShown = false;
     }
-    function initialize() {
+    function updateRenderData() {
+        $scope.bars.length = 0;
         var l = $scope.layout;
         var barWidth = ( $scope.svg.width - ( $scope.data.length - 1 ) * l.gapWidth ) / $scope.data.length;
         var innerHeight = $scope.svg.height - l.labelHeight;
@@ -50,5 +52,5 @@ angular.module('a3App')
             $scope.bars.push(bar);
         }
     }
-    initialize();
+    updateRenderData();
   });

@@ -19,7 +19,7 @@
     <div class="span3">
         <div ng-show="isCourseSelected()">
             <h1>SI {{selectedCourses[0].number}}: {{selectedCourses[0].name}}</h1>
-
+            <div ng-include="'views/barChart.html'" ng-controller="BarChartCtrl" ng-init="init({svg: {width: 250, height: 150}})"></div>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mauris ligula, porta sed erat sed, semper molestie lacus. Cras a justo purus. Nulla quis lectus lacinia leo varius tempor eget eu dui. Aenean in eleifend ipsum. Nunc faucibus, neque eu lacinia interdum, erat metus ultricies augue, id ultricies lectus erat sit amet enim. Curabitur mi tellus, pellentesque vel urna sed, pharetra ultrices nisl. Donec imperdiet purus id pharetra elementum. Maecenas at nisl quis lectus eleifend pharetra. Sed fringilla congue nisl eget pellentesque.</p>
         </div>
     </div>
