@@ -9,7 +9,6 @@ angular.module('a3App')
     $scope.courseData = pathVizService.courseData;
     $scope.alumniData = pathVizService.alumniData;
     $scope.highlightedAlumni = [];
-    $scope.selectedCourses = [];
 
     $scope.highlightPath = function (alumnus) {
         $scope.highlightedAlumni.push(alumnus.id);
@@ -30,11 +29,8 @@ angular.module('a3App')
     }
 
     $scope.selectCourse = function (course) {
-        angular.forEach($scope.selectedCourses, function (selectedCourse, index) {
-            selectedCourse.isSelected = false;
-        });
-        course.isSelected = true;
-        $scope.selectedCourses.push(course);
+        pathVizService.clearSelectedCourses();
+        pathVizService.selectCourse(course);
     }
 
     $scope.moveAlumniCoords = function () {

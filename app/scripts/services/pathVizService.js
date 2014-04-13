@@ -63,4 +63,19 @@ angular.module('a3App')
         });
     }
     self.loadAlumniData(self.onAlumniDataLoaded);
+
+    self.selectedCourses = [];
+    self.clearSelectedCourses = function () {
+      angular.forEach(self.selectedCourses, function (course, index) {
+        course.isSelected = false;
+      });
+      self.selectedCourses.length = 0;
+    }
+    self.selectCourse = function (course) {
+      course.isSelected = true;
+      self.selectedCourses.push(course);
+    }
+    self.isCourseSelected = function () {
+      return self.selectedCourses.length > 0;
+    }
   });
