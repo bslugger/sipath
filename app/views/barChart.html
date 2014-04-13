@@ -1,0 +1,8 @@
+<svg height="{{(svg.height)}}" width="{{(svg.width)}}">
+  <line class="bar-axis" x1="0" y1="{{svg.height - layout.labelHeight}}" x2="{{svg.width}}" y2="{{svg.height - layout.labelHeight}}"></line>
+  <text class="bar-label" ng-repeat="bar in bars" x="{{bar.x + bar.width/2}}" y="{{svg.height - layout.labelHeight + layout.labelPadding}}">{{bar.label}}</text>
+  <g class="bar-group" ng-repeat="bar in bars" ng-click="selectCourse(course)" ng-mouseenter="showValue(bar)" ng-mouseleave="hideValue(bar)">
+      <rect x="{{bar.x}}" y="{{bar.y}}" width="{{bar.width}}" height="{{bar.height}}"></rect>
+      <text x="{{bar.x + bar.width/2}}" y="{{bar.y - layout.labelPadding}}" ng-show="bar.isValueShown">{{bar.value}}</text>
+  </g>
+</svg>

@@ -72,3 +72,21 @@ div.list-container {
         opacity: 1.0;
     }
 }
+
+.bar-group rect {
+    fill: green;
+}
+
+.bar-group text {
+    fill: green;
+    text-anchor: middle;
+}
+
+text.bar-label {
+    text-anchor: middle;    
+}
+
+.bar-axis {
+    stroke-width: 1;
+    stroke: black;
+}
