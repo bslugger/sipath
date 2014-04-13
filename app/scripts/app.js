@@ -19,6 +19,10 @@ angular.module('a3App', [])
         templateUrl: 'views/sankey.html',
         controller: 'SankeyCtrl'
       })
+      .when('/course', {
+        templateUrl: 'views/course.html',
+        controller: 'CourseInfoCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
