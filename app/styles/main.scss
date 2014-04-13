@@ -35,11 +35,16 @@ line.axis {
     }
 }
 
+.course-bubble-group {
+    cursor: pointer;
+}
+
 .alumni-path-label {
     color: #333;
     &.highlighted {
         color: #789add;
     }
+    font-size: 10px;
 }
 
 .alumni-path {
