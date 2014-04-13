@@ -8,16 +8,19 @@ TODO
 * Course sidebar
 * Alumni view
 * Sankey Diagram
-    * Connection
+    * add label
+    * add selection
+    * mouse move out interaction (?)
+* DATA
+    * background/position title - id/index (computer friendly)
+
 
 
 DONE
 * Bubble chart
     * Scrollable alumni list with visibility toggle
-<<<<<<< HEAD
     * Bubble stroke highlight
-=======
->>>>>>> FETCH_HEAD
 * Sankey Diagram
     * Background Column
     * Career Column
+    * Connection
