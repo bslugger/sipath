@@ -20,6 +20,14 @@ function svgRemoveClass (element, keyword) {
     }
 }
 
+function svgCoords2path(coords) {
+    var pathCoords = [];
+    for (var i = 0; i < coords.length; i++) {
+      pathCoords.push(coords[i].x + ' ' + coords[i].y);
+    }
+    return 'M ' + pathCoords.join(' L ');
+}
+
 // definition of position
 function svgSankeyPath(startX, startY, endX, endY, startWidth, endWidth, xScale, yScale, turnWeight, curveWeight, xOffset, yOffset) {
     var ydiff = endY - startY;

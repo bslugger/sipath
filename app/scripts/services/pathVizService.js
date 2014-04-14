@@ -53,13 +53,13 @@ angular.module('a3App')
         });
         angular.forEach(self.alumniData, function (alumnus, index) {
             alumnus.pathCoords = [];
-            alumnus.pathCoords.push(alumnus.coord.x + ' ' + alumnus.coord.y);
+            alumnus.pathCoords.push(alumnus.coord);
             angular.forEach(alumnus.courses, function (courseId, index) {
                 var c = self.courseData[courseId].coord;
-                alumnus.pathCoords.push(c.x + ' ' + c.y);
+                alumnus.pathCoords.push(c);
             });
-            alumnus.d = 'M ' + alumnus.pathCoords.join(' L ');
-            alumnus.d2 = alumnus.pathCoords.slice(1).join(' L ');
+            alumnus.d = svgCoords2path(alumnus.pathCoords);
+            alumnus.d2 = svgCoords2path(alumnus.pathCoords.slice(1)).slice(2);
         });
     }
     self.loadAlumniData(self.onAlumniDataLoaded);
