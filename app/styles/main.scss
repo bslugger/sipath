@@ -41,10 +41,11 @@ line.axis {
 
 .alumni-path-label {
     color: #333;
+    font-size: 10px;
+    cursor: pointer;
     &.highlighted {
         color: #789add;
     }
-    font-size: 10px;
 }
 
 .alumni-path {
