@@ -20,8 +20,7 @@ angular.module('a3App', [])
         controller: 'SankeyCtrl'
       })
       .when('/course', {
-        templateUrl: 'views/course.html',
-        controller: 'CourseInfoCtrl'
+        templateUrl: 'views/coursePath.html'
       })
       .when('/bar', {
         templateUrl: 'views/barChart.html',
