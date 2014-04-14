@@ -1,17 +1,31 @@
+<div ng-hide="shouldShowOverview">
+  <div class="span2">
+    <button ng-click="onOverviewClicked()">Back</button>
+  </div>
+  <div class="span8">
+    <h2>{{selectedAlumni[0].name}}</h2>
+    <h4>{{selectedAlumni[0].position}}</h4>
+  </div>
+  <div class="span2">
+    <button>Contact</button>
+  </div>
+</div>
 <div class="container row-fluid">
-<div class="list-container span3" pv-scroll="moveAlumniCoords">
+<div class="list-container span3" pv-scroll="moveAlumniCoords" ng-show="shouldShowOverview">
     <ul>
-        <li ng-repeat="alumnus in alumniData" id="{{alumnus.id}}" class="alumni-path-label" ng-mouseenter="highlightPath(alumnus)" ng-mouseleave="unhighlightPath(alumnus)" ng-class="{'highlighted': alumnus.highlighted}">{{alumnus.position + ', ' + alumnus.name}}</li>
+        <li ng-repeat="alumnus in alumniData" id="{{alumnus.id}}" class="alumni-path-label" ng-mouseenter="highlightPath(alumnus)" ng-mouseleave="unhighlightPath(alumnus)" ng-click="onAlumnusClicked(alumnus)" ng-class="{'highlighted': alumnus.highlighted}">{{alumnus.position + ', ' + alumnus.name}}</li>
     </ul>
 </div>
 
 <div class="chart-container span9">
     <svg height="{{(svg.height)}}" width="{{(svg.width)}}">
-      <path class="alumni-path" ng-repeat="alumnus in alumniData" id="{{alumnus.id}}" d="M {{alumnus.coord.x}} {{alumnus.coord.y}} L {{alumnus.d2}}" transform="translate(100, 100)" ng-mouseenter="highlightPath(alumnus)" ng-mouseleave="unhighlightPath(alumnus)" pv-svg-class='{"highlighted": "alumnus.highlighted", "hidden":"alumnus.hidden"}'></path>
-      <g ng-repeat="course in courseData" ng-click="selectCourse(course)">
+      <path class="alumni-path" ng-repeat="alumnus in alumniData" id="{{alumnus.id}}" d="M {{alumnus.coord.x}} {{alumnus.coord.y}} L {{alumnus.d2}}" transform="translate(100, 100)" ng-mouseenter="highlightPath(alumnus)" ng-mouseleave="unhighlightPath(alumnus)" ng-show="shouldShowOverview" pv-svg-class='{"highlighted": "alumnus.highlighted", "hidden":"alumnus.hidden"}'></path>
+      <path class="alumni-path" d="{{selectedAlumniCoursesData.d}}" ng-hide="shouldShowOverview" transform="translate(100, 100)" ></path>
+      <g ng-repeat="course in courseData" ng-click="selectCourse(course)" ng-hide="course.isHidden">
           <circle class="course-bubble" cx="{{course.coord.x}}" cy="{{course.coord.y}}" r="{{course.popularity*50}}" transform="translate(100, 100)" pv-svg-class='{"highlighted": "course.isHighlighted", "selected": "course.isSelected"}'></circle>
           <text class="axis-label" x="{{course.coord.x}}" y="{{course.coord.y}}" transform="translate(90, 105)">{{course.number}}</text>
       </g>
     </svg>
 </div>
+
 </div>

@@ -29,6 +29,7 @@ angular.module('a3App')
                 name: row[2],
                 coord: {x: row[0]/3 * 100, y: index%3 * 100},
                 popularity: row[3],
+                isHidden: false,
                 isSelected: false,
                 isHighlighted: false
             });
