@@ -65,6 +65,10 @@ angular.module('a3App')
     }
     self.loadAlumniData(self.onAlumniDataLoaded);
 
+    // Selection state methods
+    // TODO: Where is a better place for this?
+    // This is not strictly data related, but it's good to keep the state between views.
+    // Do we need another service as Interface to manage these?
     self.selectedCourses = [];
     self.clearSelectedCourses = function () {
       angular.forEach(self.selectedCourses, function (course, index) {
