@@ -5,14 +5,14 @@ TODO
     * Connector algorithm
     * Bubble force field algorithm
     * Animation
-* Course sidebar
-* Alumni view
 * Sankey Diagram
     * add label
     * add selection
     * mouse move out interaction (?)
 * DATA
     * background/position title - id/index (computer friendly)
+* Polish UI
+* Upgrade Angular to 1.2+
 
 
 
@@ -25,3 +25,5 @@ DONE
     * Career Column
     * Connection
 * Bar chart
+* Course sidebar
+* Alumni view
