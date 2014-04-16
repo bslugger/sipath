@@ -7,9 +7,15 @@
     </g>
     <g>
         <g class="dataLink" id="dataLink">
-            <path ng-repeat="link in backToCareerLinks" class="dataLink {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "link.selected"}' d="{{link.path}}" fill="grey" ng-mouseover="hoverBackground(link.bgIndex, link.posIndex, 0)" ng-mouseleave="leaveHighlightedArea()"></path>
+            <path ng-repeat="link in backToCareerLinks" ng-show="!link.selected && !link.highlighted" class="dataLink {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "link.selected"}' d="{{link.path}}" fill="grey" ng-mouseover="hoverBackground(link.bgIndex, link.posIndex, 0)" ng-mouseleave="leaveHighlightedArea()"></path>
         </g>
-        <g class="dataLink" id="dataLink-top"></g>
+        <g class="dataLink" id="dataLink-mid">
+            <path ng-repeat="link in backToCareerLinks" ng-show="link.highlighted && !link.selected" class="dataLink {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "link.selected"}' d="{{link.path}}" fill="grey" ng-mouseover="hoverBackground(link.bgIndex, link.posIndex, 0)" ng-mouseleave="leaveHighlightedArea()"></path>
+        </g>
+        <g class="dataLink" id="dataLink-top">
+            <path ng-repeat="link in backToCareerLinks" ng-show="link.selected" class="dataLink {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "link.selected"}' d="{{link.path}}" fill="grey" ng-mouseover="hoverBackground(link.bgIndex, link.posIndex, 0)" ng-mouseleave="leaveHighlightedArea()"></path>
+        </g>
+        
     </g>
     <g>
         <g class="positionTitle {{position.posIndex}}" ng-repeat="position in positionTitles" ng-mouseover="hoverBackground('', position.posIndex, 2)" ng-mouseleave="leaveHighlightedArea()" ng-click="clickBackground('', position.posIndex, 2)">

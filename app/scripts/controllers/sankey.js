@@ -369,9 +369,5 @@ angular.module('a3App')
 
         $scope.selectedBg = selectedBg;
         $scope.selectedPos = selectedPos;
-
-        var nodes = document.getElementsByClassName('dataLink selected');
-        console.log(nodes);
-        //moveNodeToGroup(nodes, 'dataLink-top');
     }
   });
