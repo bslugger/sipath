@@ -316,7 +316,7 @@ angular.module('a3App')
                 if (obj.posIndex === class2) {
                     obj.highlighted = true;
                 }
-            } else if (options === 3) {
+            } else if (options === 0) {
                 if (obj.bgIndex === class1 && obj.posIndex === class2) {
                         obj.highlighted = true;
                 }
@@ -369,5 +369,9 @@ angular.module('a3App')
 
         $scope.selectedBg = selectedBg;
         $scope.selectedPos = selectedPos;
+
+        var nodes = document.getElementsByClassName('dataLink selected');
+        console.log(nodes);
+        //moveNodeToGroup(nodes, 'dataLink-top');
     }
   });
