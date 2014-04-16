@@ -36,7 +36,7 @@ function svgSankeyPath(startX, startY, endX, endY, startWidth, endWidth, xScale,
 
     var cmds = [];
     // Move to start point 
-    cmds.push("M" + startX + "," + (startY * yScale + 30));
+    cmds.push("M" + startX + "," + (startY * yScale + yOffset));
     // Upper Curve
     if (ydiff !== 0) {
         // short stright line

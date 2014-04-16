@@ -1,7 +1,8 @@
 <svg height="{{(svg.height)}}" width="{{(svg.width)}}">
     <g>
-        <g class="background {{background.bgIndex}}" ng-repeat="background in backgrounds">
-            <rect ng-repeat="link in backToCareerLinks.filterWithClass(background.bgIndex, '', 0)" class="dataTile {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "isSelected(link.bgIndex, 0)"}' x="{{anchors.leftX}}" y="{{(link.startCumPercentage)*(anchors.scale) + 30}}" width="{{anchors.leftColWidth}}" height="{{(link.startPercentage)*anchors.scale}}" fill="{{link.startColor}}" ng-mouseover="hoverBackground(link.bgIndex, link.posIndex, 1)" ng-mouseleave="leaveHighlightedArea()" ng-click="clickBackground(link.bgIndex, link.posIndex, 1)"></rect>
+        <g class="background {{background.bgIndex}}" ng-repeat="background in backgrounds" ng-mouseover="hoverBackground(background.bgIndex, '', 1)" ng-mouseleave="leaveHighlightedArea()" ng-click="clickBackground(background.bgIndex, '', 1)">
+            <rect ng-repeat="link in backToCareerLinks.filterWithClass(background.bgIndex, '', 0)" class="dataTile {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "isSelected(link.bgIndex, 0)"}' x="{{anchors.leftX}}" y="{{(link.startCumPercentage)*(anchors.scale) + svg.yOffset}}" width="{{anchors.leftColWidth}}" height="{{(link.startPercentage)*anchors.scale}}" fill="{{link.startColor}}"></rect>
+            <text class="sankey-label" x="{{anchors.leftX + anchors.leftColWidth/2}}" y="{{(background.cumPercentage + background.percentage/2) * anchors.scale + svg.yOffset}}" style="text-anchor: middle; font-size:{{anchors.leftColWidth * 0.1}}px; alignment-baseline:middle">{{background.name}}</text>
         </g>
     </g>
     <g>
@@ -10,8 +11,9 @@
         </g> 
     </g>
     <g>
-        <g class="positionTitle {{position.posIndex}}" ng-repeat="position in positionTitles">
-            <rect ng-repeat="link in backToCareerLinks.filterWithClass('', position.posIndex, 1)" class="dataTile {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "isSelected(link.posIndex, 1)"}' x="{{anchors.rightX}}" y="{{(link.endCumPercentage)*(anchors.scale) + 30}}" width="{{anchors.leftColWidth}}" height="{{(link.endPercentage)*anchors.scale}}" fill="{{link.endColor}}" ng-mouseover="hoverBackground(link.bgIndex, link.posIndex, 2)" ng-mouseleave="leaveHighlightedArea()" ng-click="clickBackground(link.bgIndex, link.posIndex, 2)"></rect>
+        <g class="positionTitle {{position.posIndex}}" ng-repeat="position in positionTitles" ng-mouseover="hoverBackground('', position.posIndex, 2)" ng-mouseleave="leaveHighlightedArea()" ng-click="clickBackground('', position.posIndex, 2)">
+            <rect ng-repeat="link in backToCareerLinks.filterWithClass('', position.posIndex, 1)" class="dataTile {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "isSelected(link.posIndex, 1)"}' x="{{anchors.rightX}}" y="{{(link.endCumPercentage)*(anchors.scale) + svg.yOffset}}" width="{{anchors.rightColWidth}}" height="{{(link.endPercentage)*anchors.scale}}" fill="{{link.endColor}}"></rect>
+            <text class="sankey-label" x="{{anchors.rightX + anchors.rightColWidth/2}}" y="{{(position.cumPercentage + position.percentage/2) * anchors.scale + svg.yOffset}}" style="text-anchor: middle; font-size:{{position.percentage * anchors.scale * 0.5}}px; alignment-baseline:middle">{{position.name}} </text>
         </g>
     </g>
 </svg>

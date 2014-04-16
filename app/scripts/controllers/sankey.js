@@ -4,16 +4,20 @@ angular.module('a3App')
   .controller('SankeyCtrl', function ($scope, pathVizService) {
     $scope.svg = {
         width: 800,
-        height: 1200
+        height: 1200,
+        yOffset: 100
     };
     $scope.anchors = {
         leftX: 0,
         rightX: 700,
-        xDis: 600,
-        leftColWidth: 100,
-        rightColWidth: 100,
-        scale: 500,
+        xDis: 550,
+        leftColWidth: 150,
+        rightColWidth: 150,
+        scale: 400,
     };
+
+    $scope.anchors.xDis = $scope.svg.width - $scope.anchors.leftColWidth - $scope.anchors.rightColWidth;
+    $scope.anchors.rightX = $scope.svg.width - $scope.anchors.rightColWidth;
 
     $scope.data = [1, 2, 3];
     $scope.backgrounds = [];
@@ -81,7 +85,7 @@ angular.module('a3App')
         var insertIndex = -1;
         angular.forEach(targetArr, function(entry, index) {
             if (insertIndex === -1) {
-                if (entry[inputTag] === input) {
+                if (entry.name === input) {
                     insertIndex = index;
                     return;
                 }
@@ -90,7 +94,7 @@ angular.module('a3App')
 
         if (insertIndex === -1) {
             var object = {};
-            object[inputTag] = input;
+            object.name = input;
             object["value"] = 1;
             if (typeof prefix !== 'undefined') {
                 object[prefix+"Index"] = prefix+insertUniqueEntry.uniqID;
@@ -141,7 +145,7 @@ angular.module('a3App')
                 if (typeof background.outcome === 'undefined') {
                     background.outcome = [];
                 }
-                if (background[backgroundTag] === mBackground) {
+                if (background.name === mBackground) {
                     insertUniqueEntry(background.outcome, mPosTitle, posTitleTag);
                 }
             });
@@ -152,7 +156,7 @@ angular.module('a3App')
                 if (typeof position.background === 'undefined') {
                     position.background = [];
                 }
-                if (position[posTitleTag] === mPosTitle) {
+                if (position.name === mPosTitle) {
                     insertUniqueEntry(position.background, mBackground, backgroundTag);
                 }
             });
@@ -161,7 +165,7 @@ angular.module('a3App')
         var cumulatePercentage = 0;
         for (var i = 0; i < $scope.backgrounds.length; i++) {
             var background = $scope.backgrounds[i];
-            background.percentage = roundTo(background.value/totalNumber,2);
+            background.percentage = 0;//roundTo(background.value/totalNumber,2);
             background.cumPercentage = cumulatePercentage;
             background.color = getRandomColor();
             for (var j = 0; j < background.outcome.length; j++) {
@@ -172,7 +176,7 @@ angular.module('a3App')
                 // find outcome index
                 for (var k = 0; k < $scope.positionTitles.length; k++) {
                     var posTitle = $scope.positionTitles[k];
-                    if (outcome[posTitleTag] === posTitle[posTitleTag]) {
+                    if (outcome.name === posTitle.name) {
                         outcome["posIndex"] = posTitle["posIndex"];
                     }
                 }
@@ -190,6 +194,7 @@ angular.module('a3App')
             for (var j = 0; j < background.outcome.length; j++) {
                 var outcome = background.outcome[j];
                 outcome.percentage = roundTo(outcome.value/totalNumber,2);
+                background.percentage += outcome.percentage;
                 outcome.cumPercentage = cumulatePercentage;
                 cumulatePercentage += outcome.percentage;
             }
@@ -199,7 +204,7 @@ angular.module('a3App')
         cumulatePercentage = 0;
         for (var i = 0; i < $scope.positionTitles.length; i++) {
             var posTitle = $scope.positionTitles[i];
-            posTitle.percentage = roundTo(posTitle.value/totalNumber,2);
+            posTitle.percentage = 0;// = roundTo(posTitle.value/totalNumber,2);
             posTitle.cumPercentage = cumulatePercentage;
             posTitle.color = getRandomColor();
             for (var j = 0; j < posTitle.background.length; j++) {
@@ -209,7 +214,7 @@ angular.module('a3App')
                 //cumulatePercentage += background.percentage;
                 for (var k = 0; k < $scope.backgrounds.length; k++) {
                     var sBackground = $scope.backgrounds[k];
-                    if (background[backgroundTag] === sBackground[backgroundTag]) {
+                    if (background.name === sBackground.name) {
                         background["bgIndex"] = sBackground["bgIndex"];
                     }
                 }
@@ -226,9 +231,12 @@ angular.module('a3App')
             for (var j = 0; j < posTitle.background.length; j++) {
                 var background = posTitle.background[j];
                 background.percentage = roundTo(background.value/totalNumber,2);
+                posTitle.percentage += background.percentage;
                 background.cumPercentage = cumulatePercentage;
                 cumulatePercentage += background.percentage;
             }
+            //cumulatePercentage = roundTo(cumulatePercentage, 2);
+            //posTitle.percentage = roundTo(posTitle.percentage, 2);
         }
 
 
@@ -238,19 +246,19 @@ angular.module('a3App')
                 var outcome = background.outcome[j];
 
                 var obj = {};
-                obj.background = background[backgroundTag];
+                obj.background = background.name;
                 obj.startColor = background.color;
-                obj.position = outcome[posTitleTag];
+                obj.position = outcome.name;
                 obj.bgIndex = background['bgIndex'];
                 obj.posIndex = outcome['posIndex'];
                 obj.startCumPercentage = outcome.cumPercentage;
                 obj.startPercentage = outcome.percentage;
                 for (var q = 0; q < $scope.positionTitles.length; q++) {
                     var position = $scope.positionTitles[q];
-                    if (position[posTitleTag] === obj.position) {
+                    if (position.name === obj.position) {
                         for (var r = 0; r < position.background.length; r++) {
                             var posBackground = position.background[r];
-                            if (posBackground[backgroundTag] === obj.background) {
+                            if (posBackground.name === obj.background) {
                                 obj.endColor = position.color;
                                 obj.endCumPercentage = posBackground.cumPercentage;
                                 obj.endPercentage = posBackground.percentage;
@@ -271,7 +279,7 @@ angular.module('a3App')
                 var turnWeight = 0.3;
                 var curveWeight = 100;
                 var xOffset = 0;
-                var yOffset = 30;
+                var yOffset = $scope.svg.yOffset;
 
                 obj.path = svgSankeyPath(startX, startY, endX, endY, startWidth, endWidth, xScale, yScale, turnWeight, curveWeight, xOffset, yOffset);
                 obj.highlighted = false;
@@ -280,9 +288,9 @@ angular.module('a3App')
             }
         }
 
-        //console.log($scope.backgrounds);
-        //console.log($scope.positionTitles);
-        //console.log($scope.backToCareerLinks);
+        console.log($scope.backgrounds);
+        console.log($scope.positionTitles);
+        console.log($scope.backToCareerLinks);
         //$scope.backToCareerLinks.filterWithClass();
     }
 
@@ -301,16 +309,17 @@ angular.module('a3App')
             var obj = $scope.backToCareerLinks[i];
             obj.highlighted = false;
             if (options === 1) {
-                if (obj.bgIndex === class1 && obj.posIndex !== class2) {
+                if (obj.bgIndex === class1) {
                     obj.highlighted = true;
                 }
             } else if (options === 2) {
-                if (obj.bgIndex !== class1 && obj.posIndex === class2) {
+                if (obj.posIndex === class2) {
                     obj.highlighted = true;
                 }
-            }
-            if (obj.bgIndex === class1 && obj.posIndex === class2) {
-                    obj.highlighted = true;
+            } else if (options === 3) {
+                if (obj.bgIndex === class1 && obj.posIndex === class2) {
+                        obj.highlighted = true;
+                }
             }
 
         }
