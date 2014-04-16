@@ -1,17 +1,17 @@
 <svg height="{{(svg.height)}}" width="{{(svg.width)}}">
     <g>
-        <g class="background" ng-repeat="(bgIndex, background) in backgrounds">
-            <rect class="dataTile bg {{background['bg-index']}} {{outcome['pos-index']}}" ng-repeat="outcome in background.outcome" x="{{anchors.leftX}}" y="{{(outcome.cumPercentage)*(anchors.scale) + 30}}" width="{{anchors.leftColWidth}}" height="{{(outcome.percentage)*anchors.scale}}" stroke="none" fill="{{background.color}}" ng-mouseover="hoverBackground(background['bg-index'], outcome['pos-index'], 1)"></rect>
+        <g class="background {{background.bgIndex}}" ng-repeat="background in backgrounds">
+            <rect ng-repeat="link in backToCareerLinks.filterWithClass(background.bgIndex, '', 0)" class="dataTile {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "isSelected(link.bgIndex, 0)"}' x="{{anchors.leftX}}" y="{{(link.startCumPercentage)*(anchors.scale) + 30}}" width="{{anchors.leftColWidth}}" height="{{(link.startPercentage)*anchors.scale}}" fill="{{link.startColor}}" ng-mouseover="hoverBackground(link.bgIndex, link.posIndex, 1)" ng-mouseleave="leaveHighlightedArea()" ng-click="clickBackground(link.bgIndex, link.posIndex, 1)"></rect>
         </g>
     </g>
     <g>
         <g class="link" ng-repeat="link in backToCareerLinks">
-            <path class="dataLink {{link.bgIndex}} {{link.posIndex}}" d="{{link.path}}" fill="grey" ng-mouseover="hoverBackground(link.bgIndex, link.posIndex, 0)"></path>
+            <path class="dataLink {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "link.selected"}' d="{{link.path}}" fill="grey" ng-mouseover="hoverBackground(link.bgIndex, link.posIndex, 0)" ng-mouseleave="leaveHighlightedArea()"></path>
         </g> 
     </g>
     <g>
-        <g class="positionTitle" ng-repeat="(psIndex, position) in positionTitles">
-            <rect class="dataTile pos {{background['bg-index']}} {{position['pos-index']}}" ng-repeat="background in position.background" x="{{anchors.rightX}}" y="{{(background.cumPercentage) * anchors.scale + 30}}" width="{{anchors.rightColWidth}}" height="{{(background.percentage) * anchors.scale}}" stroke="none" fill="{{position.color}}" ng-mouseover="hoverBackground(position['pos-index'], background['bg-index'], 1)"></rect>
+        <g class="positionTitle {{position.posIndex}}" ng-repeat="position in positionTitles">
+            <rect ng-repeat="link in backToCareerLinks.filterWithClass('', position.posIndex, 1)" class="dataTile {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "isSelected(link.posIndex, 1)"}' x="{{anchors.rightX}}" y="{{(link.endCumPercentage)*(anchors.scale) + 30}}" width="{{anchors.leftColWidth}}" height="{{(link.endPercentage)*anchors.scale}}" fill="{{link.endColor}}" ng-mouseover="hoverBackground(link.bgIndex, link.posIndex, 2)" ng-mouseleave="leaveHighlightedArea()" ng-click="clickBackground(link.bgIndex, link.posIndex, 2)"></rect>
         </g>
     </g>
 </svg>

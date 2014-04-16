@@ -12,7 +12,7 @@ angular.module('a3App')
         xDis: 600,
         leftColWidth: 100,
         rightColWidth: 100,
-        scale: 700,
+        scale: 500,
     };
 
     $scope.data = [1, 2, 3];
@@ -20,10 +20,62 @@ angular.module('a3App')
     $scope.positionTitles = [];
     $scope.backToCareerLinks = [];
     $scope.predicate = "-value";
+    $scope.selectedBg = "";
+    $scope.selectedPos = "";
+    $scope.backToCareerLinks.filterWithClass = filterWithClass;
+    $scope.isSelected = isSelected;
 
 
     var backgroundTag;
     var posTitleTag;
+
+    // option 0: only bg
+    // option 1: only pos
+    // option 2: both
+    function filterWithClass(bgIndex, posIndex, option) {
+        var resultArr = [];
+        var inputArr = this;
+        if (typeof option === 'undefined') {
+            option = 0;
+        }
+        for (var i = 0; i < inputArr.length; i++) {
+            var input = inputArr[i];
+            if (option === 0) {
+                // background
+                if (input.bgIndex === bgIndex) {
+                    resultArr.push(input);
+                }
+            } else if (option === 1) {
+                if (input.posIndex === posIndex) {
+                    resultArr.push(input);
+                }
+            } else if (option === 2) {
+                if (input.bgIndex === bgIndex && input.position === posIndex) {
+                    resultArr.push(input);
+                }
+            }
+        }
+        return resultArr;
+    }
+
+    // option 0: bg
+    // option 1: pos
+    function isSelected(index, option) {
+        if (typeof option === 'undefined') {
+            option = 0;
+        }
+        if (option === 0) {
+            if ($scope.selectedBg === index) {
+                return true;
+            }
+        } else if (option === 1) {
+            if ($scope.selectedPos === index) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     function insertUniqueEntry(targetArr, input, inputTag, prefix) {
         var insertIndex = -1;
@@ -41,7 +93,7 @@ angular.module('a3App')
             object[inputTag] = input;
             object["value"] = 1;
             if (typeof prefix !== 'undefined') {
-                object[prefix+"-index"] = prefix+insertUniqueEntry.uniqID;
+                object[prefix+"Index"] = prefix+insertUniqueEntry.uniqID;
                 insertUniqueEntry.uniqID++;
             }
             targetArr.push (object);
@@ -67,16 +119,16 @@ angular.module('a3App')
 
         console.log("====onDataLoaded====");
         // console.log(data.contents);
-        // console.log(data.headers);
+        console.log(data.headers);
         var contents = data.contents;
         var headers = data.headers;
 
         // Debug use
-        backgroundTag = headers[18];
+        backgroundTag = headers[22];
         posTitleTag = headers[5];
         var totalNumber = contents.length;
-        // console.log (backgroundTag);
-        // console.log (posTitleTag);
+        console.log (backgroundTag);
+        console.log (posTitleTag);
 
         angular.forEach(contents, function(content) {
             var mBackground = content[backgroundTag];
@@ -121,14 +173,14 @@ angular.module('a3App')
                 for (var k = 0; k < $scope.positionTitles.length; k++) {
                     var posTitle = $scope.positionTitles[k];
                     if (outcome[posTitleTag] === posTitle[posTitleTag]) {
-                        outcome["pos-index"] = posTitle["pos-index"];
+                        outcome["posIndex"] = posTitle["posIndex"];
                     }
                 }
             }
 
             background.outcome = background.outcome.sort(function(a,b){
-                var i1 = parseInt(a["pos-index"].substr(3));
-                var i2 = parseInt(b["pos-index"].substr(3));
+                var i1 = parseInt(a["posIndex"].substr(3));
+                var i2 = parseInt(b["posIndex"].substr(3));
 
                 if (i1 < i2) return -1;
                 if (i1 > i2) return 1;
@@ -158,14 +210,14 @@ angular.module('a3App')
                 for (var k = 0; k < $scope.backgrounds.length; k++) {
                     var sBackground = $scope.backgrounds[k];
                     if (background[backgroundTag] === sBackground[backgroundTag]) {
-                        background["bg-index"] = sBackground["bg-index"];
+                        background["bgIndex"] = sBackground["bgIndex"];
                     }
                 }
             }
 
             posTitle.background = posTitle.background.sort(function(a,b){
-                var i1 = parseInt(a["bg-index"].substr(2));
-                var i2 = parseInt(b["bg-index"].substr(2));
+                var i1 = parseInt(a["bgIndex"].substr(2));
+                var i2 = parseInt(b["bgIndex"].substr(2));
 
                 if (i1 < i2) return -1;
                 if (i1 > i2) return 1;
@@ -187,10 +239,10 @@ angular.module('a3App')
 
                 var obj = {};
                 obj.background = background[backgroundTag];
-                obj.color = background.color;
+                obj.startColor = background.color;
                 obj.position = outcome[posTitleTag];
-                obj.bgIndex = background['bg-index'];
-                obj.posIndex = outcome['pos-index'];
+                obj.bgIndex = background['bgIndex'];
+                obj.posIndex = outcome['posIndex'];
                 obj.startCumPercentage = outcome.cumPercentage;
                 obj.startPercentage = outcome.percentage;
                 for (var q = 0; q < $scope.positionTitles.length; q++) {
@@ -199,6 +251,7 @@ angular.module('a3App')
                         for (var r = 0; r < position.background.length; r++) {
                             var posBackground = position.background[r];
                             if (posBackground[backgroundTag] === obj.background) {
+                                obj.endColor = position.color;
                                 obj.endCumPercentage = posBackground.cumPercentage;
                                 obj.endPercentage = posBackground.percentage;
                             }
@@ -221,13 +274,16 @@ angular.module('a3App')
                 var yOffset = 30;
 
                 obj.path = svgSankeyPath(startX, startY, endX, endY, startWidth, endWidth, xScale, yScale, turnWeight, curveWeight, xOffset, yOffset);
+                obj.highlighted = false;
+                obj.selected = false;
                 $scope.backToCareerLinks.push(obj);
             }
         }
 
-        // console.log($scope.backgrounds);
-        // console.log($scope.positionTitles);
-        // console.log($scope.backToCareerLinks);
+        //console.log($scope.backgrounds);
+        //console.log($scope.positionTitles);
+        //console.log($scope.backToCareerLinks);
+        //$scope.backToCareerLinks.filterWithClass();
     }
 
     // This is for static id, could be done in the data base
@@ -241,13 +297,68 @@ angular.module('a3App')
     //          2 multiple class2
     //          3 single
     $scope.hoverBackground = function(class1, class2, options) {
-        jQuery('.highlighted').each(svgRemoveHighlightClass);
+        for (var i = 0; i < $scope.backToCareerLinks.length; i++) {
+            var obj = $scope.backToCareerLinks[i];
+            obj.highlighted = false;
+            if (options === 1) {
+                if (obj.bgIndex === class1 && obj.posIndex !== class2) {
+                    obj.highlighted = true;
+                }
+            } else if (options === 2) {
+                if (obj.bgIndex !== class1 && obj.posIndex === class2) {
+                    obj.highlighted = true;
+                }
+            }
+            if (obj.bgIndex === class1 && obj.posIndex === class2) {
+                    obj.highlighted = true;
+            }
 
-        if (options === 1) {
-            jQuery('.'+class1).not('.'+class2).each(svgAddHighlightClass);
-        } else if (options === 2) {
-            jQuery('.'+class2).not('.'+class1).each(svgAddHighlightClass);
         }
-        jQuery('.'+class1+'.'+class2).each(svgAddHighlightClass);
+    }
+
+    $scope.leaveHighlightedArea = function() {
+        for (var i = 0; i < $scope.backToCareerLinks.length; i++) {
+            var obj = $scope.backToCareerLinks[i];
+            obj.highlighted = false;
+        }
+    }
+
+    $scope.clickBackground = function(class1, class2, options) {
+        var selectedBg = $scope.selectedBg;
+        var selectedPos = $scope.selectedPos;
+        if (options === 0) {
+            selectedBg = class1;
+            selectedPos = class2;
+
+        } else if (options === 1) {
+            if (selectedBg === class1) {
+                selectedBg = "";
+            } else {
+                selectedBg = class1;
+            }
+
+        } else if (options === 2) {
+            if (selectedPos === class2) {
+                selectedPos = "";
+            } else {
+                selectedPos = class2;
+            }
+        }
+
+        
+        for (var i = 0; i < $scope.backToCareerLinks.length; i++) {
+            var obj = $scope.backToCareerLinks[i];
+            obj.selected = false;
+            if (selectedBg === "" && selectedPos === "") {
+                continue;
+            }
+            if ((selectedBg === "" || obj.bgIndex === selectedBg) && (selectedPos === "" || obj.posIndex === selectedPos)) {
+                obj.selected = true;
+            }
+
+        }
+
+        $scope.selectedBg = selectedBg;
+        $scope.selectedPos = selectedPos;
     }
   });
