@@ -4,8 +4,8 @@ angular.module('a3App')
   .controller('SankeyCtrl', function ($scope, pathVizService) {
     $scope.svg = {
         width: 800,
-        height: 1200,
-        yOffset: 10
+        height: 450,
+        yOffset: 0
     };
     $scope.anchors = {
         leftX: 0,
