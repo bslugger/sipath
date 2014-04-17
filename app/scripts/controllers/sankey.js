@@ -27,8 +27,8 @@ angular.module('a3App')
     $scope.predicate = "-value";
     $scope.selectedBg = "";
     $scope.selectedPos = "";
-    $scope.selectedBgName = "";
-    $scope.selectedPosName = "";
+    $scope.selectedBgName = pathVizService.selectedBgName;
+    $scope.selectedPosName = pathVizService.selectedPosName;
     $scope.backToCareerLinks.filterWithClass = filterWithClass;
     $scope.isSelected = isSelected;
     $scope.labelSize = labelSize;
@@ -397,7 +397,7 @@ angular.module('a3App')
 
         $scope.selectedBg = selectedBg;
         $scope.selectedPos = selectedPos;
-        $scope.selectedBgName = indexToName($scope.selectedBg, "bgIndex", $scope.backgrounds);
-        $scope.selectedPosName = indexToName($scope.selectedPos, "posIndex", $scope.positionTitles);
+        $scope.selectedBgName.value = indexToName($scope.selectedBg, "bgIndex", $scope.backgrounds);
+        $scope.selectedPosName.value = indexToName($scope.selectedPos, "posIndex", $scope.positionTitles);
     }
   });

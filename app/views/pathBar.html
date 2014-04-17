@@ -1,9 +1,10 @@
 <div class="path-bar-wrapper">
     <div class="text-wrapper" ng-click="toggle()">
-        <span>I am a <span class="background">{{selectedBgName}}</span></span><span ng-if="selectedPosition !== ''">, I want to be a <span class="position">{{selectedPosName}}</span></span>
+        <span ng-hide="selectedBgName.value.length > 0">Select your background / dream career</span>
+        <span ng-show="selectedBgName.value.length > 0">I am a <span class="background">{{selectedBgName.value}}</span></span>
+        <span ng-show="selectedPosName.value.length > 0">, I want to be a <span class="position">{{selectedPosName.value}}</span></span>
     </div>
     <div class="sankey-wrapper" ng-class="{'expanded': expanded}">
-        <!-- <iframe src="/#/sankey" allowTransparency="true"></iframe> -->
         <div ng-include="'views/sankey.html'" ng-controller="SankeyCtrl"></div>
         <a class="btn btn-success toggle-button" ng-click="toggle()">Done</a>
     </div>

@@ -2,11 +2,10 @@
 
 angular.module('a3App')
   .controller('PathBarCtrl', function ($scope, pathVizService) {
-    $scope.selectedBgName = "Art & Design";
-    $scope.selectedPosName = "Designer";
+    $scope.selectedBgName = pathVizService.selectedBgName;
+    $scope.selectedPosName = pathVizService.selectedPosName;
     $scope.expanded = false;
     $scope.toggle = function () {
-        console.log('toggle');
         $scope.expanded = !$scope.expanded;
     }
   });

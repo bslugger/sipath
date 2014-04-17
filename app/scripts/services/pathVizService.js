@@ -37,6 +37,8 @@ angular.module('a3App')
     }
     self.loadCourseData(self.onCourseDataLoaded);
 
+    self.selectedBgName = {};
+    self.selectedPosName = {};
 
     self.updateAlumniPath = function () {
         angular.forEach(self.alumniData, function (alumnus, index) {
