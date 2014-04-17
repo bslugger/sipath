@@ -1,13 +1,17 @@
-<div ng-hide="shouldShowOverview">
-  <div class="span2">
-    <button ng-click="onOverviewClicked()">Back</button>
+<div class="alumni-info row-fluid" ng-hide="shouldShowOverview">
+  <div class="span1">
+    <a class="back-button" ng-click="onOverviewClicked()"><span class="caret"></span></a>
   </div>
-  <div class="span8">
-    <h2>{{selectedAlumni[0].name}}</h2>
-    <h4>{{selectedAlumni[0].position}}</h4>
-  </div>
-  <div class="span2">
-    <button>Contact</button>
+  <div class="span11">
+    <div class="pull-left">
+      <div class="alumni-image-wrapper">
+        <img src="images/mortarboard.png" alt="alumni icon"/>
+      </div>
+    </div>
+    <div class="pull-left">
+      <h2>UMSI 2012</h2>
+      <h4>{{selectedAlumni[0].position}}, {{selectedAlumni[0].name}}</h4>
+    </div>
   </div>
 </div>
 <div class="container row-fluid">

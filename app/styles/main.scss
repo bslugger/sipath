@@ -181,8 +181,48 @@ text.bar-label {
 .main-frame {
     background-color: #fff;
     .info-frame {
+        margin-left: 0;
         border-left: 4px solid $backgroundColor;
         height: $height;
         padding: 20px;
+    }
+    .bubble-frame {
+        overflow: hidden;
+        height: $height;
+    }
+}
+
+.alumni-image-wrapper {
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    background-color: #e6e6e6;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.alumni-info {
+    position: relative;
+    padding: 20px;
+    border-bottom: 1px solid #e6e6e6;
+    .back-button {
+        position: absolute;
+        left: 0px;
+        padding: 10px;
+        padding-left: 2px;
+        margin-top: 23px;
+        background-color: #ccc;
+        cursor: pointer;
+        &:hover {
+            background-color: #ddd;
+        }
+        .caret {
+            width: 0px;
+            height: 0px;
+            vertical-align: middle;
+            content: "";
+            border: 8px solid transparent;
+            border-right: 7px solid #666;
+        }
     }
 }
