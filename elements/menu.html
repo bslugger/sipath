@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title>Invenire</title>
+  
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0 user-scalable=no">
+
+<!--   Attributions
+HTML, CSS, JS for Custom Drop-Down from: http://tympanus.net/codrops/2012/10/04/custom-drop-down-list-styling/ -->
+
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+
+  <!--[if lt IE 7 ]><body class="ie ie6"> <![endif]-->
+<!--[if IE 7 ]><body class="ie ie7"> <![endif]-->
+<!--[if IE 8 ]><body class="ie ie8"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <body><!--<![endif]-->
+<div id="header">
+  <div class="logo_wrap">
+    <img src="images/Invenire-logo.png">
+  </div>
+</div>
+<div id="header">
+  <div class="header_content">
+    <form>
+    <p class="menuText">My background is
+      <select id="backgroundChoice">
+        <option value="computerScience">Computer Science</option>
+        <option value="humanities">Humanities</option>
+        <option value="arts">Arts &amp; Design</option>
+        <option value="socialScience">Social Science</option>
+      </select>
+    and I want to be a
+      <select id="careerChoice">
+        <option value="uxDesigner">UX Designer</option>
+        <option value="uxResearcher">UX Researcher</option>
+        <option value="uxDeveloper">UX Developer</option>
+        <option value="librarian">Librarian</option>
+      </select>
+  </p>
+  </div>
+</div>
+
+<div id="header">
+  <div class="header_content">
+    <form>
+    <p class="menuText">My background is
+      <select id="backgroundChoice">
+        <option selected><em>--make selection--</em></option>
+        <optgroup label="Science">
+          <option value="electricalEng">Electrical Engineering</option>
+          <option value="mechanicalEng">Mechanical Engineering</option>
+        </optgroup>
+        <optgroup label="Humanities">
+          <option value="english">English</option>
+          <option value="journalism">Journalism</option>
+        </optgroup>
+        <optgroup label="Arts &amp; Design">
+          <option value="graphicDesign">Graphic Design</option>
+          <option value="architecture">Architecture</option>
+        </optgroup>
+        <optgroup label="Social Science">
+          <option value="politicalSci">Political Science</option>
+          <option value="economics">Economics</option>
+        </optgroup>
+      </select>
+    and I want to be a
+      <select id="careerChoice">
+        <option value="uxDesigner">UX Designer</option>
+        <option value="uxResearcher">UX Researcher</option>
+        <option value="uxDeveloper">UX Developer</option>
+        <option value="librarian">Librarian</option>
+      </select>
+  </p>
+  </div>
+</div>
+
+<div id="header">
+  <div class="header_content">
+    <span class="wrap">
+    <span class="menuText2">My background is </span>
+      <div id="dd" class="wrapper-dropdown-3" tabindex="1">
+            <span><em>select background</em></span>
+            <ul class="dropdown">
+              <li><a href="#">Computer Science</a></li>
+              <li><a href="#">Humanities</a></li>
+              <li><a href="#">Arts &amp; Design</a></li>
+              <li><a href="#">Social Science</a></li>
+            </ul>
+      </div>
+    <span class="menuText2"> &nbsp;&nbsp; and I want to be a </span>
+    <div id="dd2" class="wrapper-dropdown-3" tabindex="2">
+            <span><em>select career</em></span>
+            <ul class="dropdown">
+              <li><a href="#">UX Designer</a></li>
+              <li><a href="#">UX Researcher</a></li>
+              <li><a href="#">UX Developer</a></li>
+              <li><a href="#">Librarian</a></li>
+            </ul>
+      </div>
+    </span>
+  </div>
+</div>
+
+
+<!-- End Document: CSS & JS
+================================================== -->
+<link href="css/menuStyle.css" rel="stylesheet" type="text/css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css' />
+<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
+<noscript><link rel="stylesheet" type="text/css" href="css/noJS.css" /></noscript> 
+<script src='js/menuAction.js'></script>
+
+
+</body>
+</html>
