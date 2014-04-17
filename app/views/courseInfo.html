@@ -1,7 +1,10 @@
 <div ng-show="isCourseSelected()">
-    <h1>SI {{selectedCourses[0].number}}: {{selectedCourses[0].name}}</h1>
+    <h1>SI {{selectedCourses[0].number}}</h1>
+    <h4>{{selectedCourses[0].name}}</h4>
+    <h5>Popular terms</h5>
     <div ng-include="'views/barChart.html'" ng-controller="BarChartCtrl" ng-init="init({svg: {width: 250, height: 150}})"></div>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mauris ligula, porta sed erat sed, semper molestie lacus. Cras a justo purus. Nulla quis lectus lacinia leo varius tempor eget eu dui. Aenean in eleifend ipsum. Nunc faucibus, neque eu lacinia interdum, erat metus ultricies augue, id ultricies lectus erat sit amet enim. Curabitur mi tellus, pellentesque vel urna sed, pharetra ultrices nisl. Donec imperdiet purus id pharetra elementum. Maecenas at nisl quis lectus eleifend pharetra. Sed fringilla congue nisl eget pellentesque.</p>
+    <h5>Description</h5>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mauris ligula, porta sed erat sed, semper molestie lacus. Cras a justo purus. Nulla quis lectus lacinia leo varius tempor eget eu dui. Aenean in eleifend ipsum. Nunc faucibus, neque eu lacinia interdum, erat metus ultricies augue, id ultricies lectus erat sit amet enim. Curabitur mi tellus, pellentesque vel urna sed, pharetra ultrices nisl.</p>
 </div>
 
 
