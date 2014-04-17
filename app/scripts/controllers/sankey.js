@@ -5,7 +5,7 @@ angular.module('a3App')
     $scope.svg = {
         width: 800,
         height: 1200,
-        yOffset: 100
+        yOffset: 10
     };
     $scope.anchors = {
         leftX: 0,
@@ -13,7 +13,8 @@ angular.module('a3App')
         xDis: 550,
         leftColWidth: 150,
         rightColWidth: 150,
-        scale: 400,
+        scale: 600,
+        baseHeight: 0
     };
 
     $scope.anchors.xDis = $scope.svg.width - $scope.anchors.leftColWidth - $scope.anchors.rightColWidth;
@@ -28,10 +29,17 @@ angular.module('a3App')
     $scope.selectedPos = "";
     $scope.backToCareerLinks.filterWithClass = filterWithClass;
     $scope.isSelected = isSelected;
+    $scope.labelSize = labelSize;
 
 
     var backgroundTag;
     var posTitleTag;
+
+    function labelSize(width, height, scaleWidth, scaleHeight) {
+        var wSize = width * scaleWidth;
+        var hSize = height * scaleHeight;
+        return (hSize > wSize)? wSize : hSize;
+    }
 
     // option 0: only bg
     // option 1: only pos
