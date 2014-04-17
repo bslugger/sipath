@@ -1,31 +1,9 @@
-<div class="path-bar">
-    <span class="background">I am a {{selectedBgName}}</span><span ng-if="selectedPosition !== ''"> I want to be a {{selectedPosName}}</span>
-    <div class="sankey-wrapper">
-        <svg height="{{(svg.height)}}" width="{{(svg.width)}}">
-            <g>
-                <g class="background {{background.bgIndex}}" ng-repeat="background in backgrounds" ng-mouseover="hoverBackground(background.bgIndex, '', 1)" ng-mouseleave="leaveHighlightedArea()" ng-click="clickBackground(background.bgIndex, '', 1)">
-                    <rect ng-repeat="link in backToCareerLinks.filterWithClass(background.bgIndex, '', 0)" class="dataTile {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "isSelected(link.bgIndex, 0)"}' x="{{anchors.leftX}}" y="{{(link.startCumPercentage)*(anchors.scale) + svg.yOffset}}" width="{{anchors.leftColWidth}}" height="{{(link.startPercentage)*anchors.scale}}" fill="{{link.startColor}}"></rect>
-                    <text class="sankey-label" x="{{anchors.leftX + anchors.leftColWidth/2}}" y="{{(background.cumPercentage + background.percentage/2) * anchors.scale + svg.yOffset}}" style="text-anchor: middle; font-size:{{anchors.leftColWidth * 0.1}}px; alignment-baseline:middle">{{background.name}}</text>
-                </g>
-            </g>
-            <g>
-                <g class="dataLink" id="dataLink">
-                    <path ng-repeat="link in backToCareerLinks" ng-show="!link.selected && !link.highlighted" class="dataLink {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "link.selected"}' d="{{link.path}}" fill="grey" ng-mouseover="hoverBackground(link.bgIndex, link.posIndex, 0)" ng-mouseleave="leaveHighlightedArea()" ng-click="clickBackground(link.bgIndex, link.posIndex, 0)"></path>
-                </g>
-                <g class="dataLink" id="dataLink-mid">
-                    <path ng-repeat="link in backToCareerLinks" ng-show="link.highlighted && !link.selected" class="dataLink {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "link.selected"}' d="{{link.path}}" fill="grey" ng-mouseover="hoverBackground(link.bgIndex, link.posIndex, 0)" ng-mouseleave="leaveHighlightedArea()" ng-click="clickBackground(link.bgIndex, link.posIndex, 0)"></path>
-                </g>
-                <g class="dataLink" id="dataLink-top">
-                    <path ng-repeat="link in backToCareerLinks" ng-show="link.selected" class="dataLink {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "link.selected"}' d="{{link.path}}" fill="grey" ng-mouseover="hoverBackground(link.bgIndex, link.posIndex, 0)" ng-mouseleave="leaveHighlightedArea()" ng-click="clickBackground(link.bgIndex, link.posIndex, 0)"></path>
-                </g>
-                
-            </g>
-            <g>
-                <g class="positionTitle {{position.posIndex}}" ng-repeat="position in positionTitles" ng-mouseover="hoverBackground('', position.posIndex, 2)" ng-mouseleave="leaveHighlightedArea()" ng-click="clickBackground('', position.posIndex, 2)">
-                    <rect ng-repeat="link in backToCareerLinks.filterWithClass('', position.posIndex, 1)" class="dataTile {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "isSelected(link.posIndex, 1)"}' x="{{anchors.rightX}}" y="{{(link.endCumPercentage)*(anchors.scale) + svg.yOffset}}" width="{{anchors.rightColWidth}}" height="{{(link.endPercentage)*anchors.scale}}" fill="{{link.endColor}}"></rect>
-                    <text class="sankey-label" x="{{anchors.rightX + anchors.rightColWidth/2}}" y="{{(position.cumPercentage + position.percentage/2) * anchors.scale + svg.yOffset}}" style="text-anchor: middle; font-size:{{position.percentage * anchors.scale * 0.5}}px; alignment-baseline:middle">{{position.name}} </text>
-                </g>
-            </g>
-        </svg>
+<div class="path-bar-wrapper">
+    <div class="text-wrapper" ng-click="toggle()">
+        <span>I am a <span class="background">{{selectedBgName}}</span></span><span ng-if="selectedPosition !== ''">, I want to be a <span class="position">{{selectedPosName}}</span></span>
+    </div>
+    <div class="sankey-wrapper" ng-class="{'expanded': expanded}">
+        <iframe src="/#/sankey" allowTransparency="true"></iframe>
+        <a class="btn btn-success toggle-button" ng-click="toggle()">Done</a>
     </div>
 </div>
