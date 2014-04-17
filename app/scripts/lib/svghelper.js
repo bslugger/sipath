@@ -52,7 +52,7 @@ function moveNodeToGroup(objArr, groupID) {
 }
 
 // definition of position
-function svgSankeyPath(startX, startY, endX, endY, startWidth, endWidth, xScale, yScale, turnWeight, curveWeight, xOffset, yOffset) {
+function svgSankeyPath(startX, startY, endX, endY, startWidth, endWidth, xScale, yScale, turnWeight, curveWeight, xOffset, yOffset, baseHeight) {
     var ydiff = endY - startY;
     var absYdiff = Math.abs(ydiff);
     var turnPer = turnWeight * ( 1 - absYdiff);

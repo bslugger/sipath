@@ -3,7 +3,7 @@
 angular.module('a3App')
   .controller('SankeyCtrl', function ($scope, pathVizService) {
     $scope.svg = {
-        width: 800,
+        width: 900,
         height: 450,
         yOffset: 0
     };
@@ -14,6 +14,7 @@ angular.module('a3App')
         leftColWidth: 150,
         rightColWidth: 150,
         scale: 400,
+        baseHeight: 0
     };
 
     $scope.anchors.xDis = $scope.svg.width - $scope.anchors.leftColWidth - $scope.anchors.rightColWidth;
@@ -26,12 +27,34 @@ angular.module('a3App')
     $scope.predicate = "-value";
     $scope.selectedBg = "";
     $scope.selectedPos = "";
+    $scope.selectedBgName = "";
+    $scope.selectedPosName = "";
     $scope.backToCareerLinks.filterWithClass = filterWithClass;
     $scope.isSelected = isSelected;
+    $scope.labelSize = labelSize;
 
 
     var backgroundTag;
     var posTitleTag;
+
+    function labelSize(width, height, scaleWidth, scaleHeight) {
+        var wSize = width * scaleWidth;
+        var hSize = height * scaleHeight;
+        return (hSize > wSize)? wSize : hSize;
+    }
+
+    function indexToName(index, key, arr) {
+        if (index === "") {
+            return "";
+        }
+        for (var i = 0; i < arr.length; i++) {
+            var entry = arr[i];
+            if (entry[key] === index) {
+                return entry.name;
+            }
+        }
+        return "";
+    }
 
     // option 0: only bg
     // option 1: only pos
@@ -374,5 +397,7 @@ angular.module('a3App')
 
         $scope.selectedBg = selectedBg;
         $scope.selectedPos = selectedPos;
+        $scope.selectedBgName = indexToName($scope.selectedBg, "bgIndex", $scope.backgrounds);
+        $scope.selectedPosName = indexToName($scope.selectedPos, "posIndex", $scope.positionTitles);
     }
   });
