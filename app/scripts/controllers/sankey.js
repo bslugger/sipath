@@ -336,8 +336,13 @@ angular.module('a3App')
         var selectedBg = $scope.selectedBg;
         var selectedPos = $scope.selectedPos;
         if (options === 0) {
-            selectedBg = class1;
-            selectedPos = class2;
+            if (selectedBg === class1 && selectedPos === class2) {
+                selectedBg = "";
+                selectedPos = "";
+            } else {
+                selectedBg = class1;
+                selectedPos = class2;
+            }
 
         } else if (options === 1) {
             if (selectedBg === class1) {
