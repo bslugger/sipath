@@ -9,7 +9,7 @@ angular.module('a3App')
     $scope.layout = {
         labelPadding: 20,
         labelHeight: 30,
-        gapWidth: 30,
+        gapWidth: 15,
         maxValue: 100
     }
     $scope.data = [{'1st': 25}, {'2nd': 50}, {'3rd': 10}, {'4th': 40}];

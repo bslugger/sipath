@@ -41,7 +41,7 @@ angular.module('a3App')
         var top = jQuery('.list-container').scrollTop();
         angular.forEach($scope.alumniData, function (alumnus, index) {
             alumnus.coord.y = alumnus.coord.originalY - top;
-            if ((alumnus.coord.y > 100) || (alumnus.coord.y < -100)) {
+            if ((alumnus.coord.y > 560) || (alumnus.coord.y < -100)) {
                 alumnus.hidden = true;
             }
             else
