@@ -27,6 +27,21 @@ function svgCoords2path(coords) {
     }
     return 'M ' + pathCoords.join(' L ');
 }
+
+function svgCoords2SimpleCubicBezierXPath(coords) {
+    var pathCoords = [];
+    for (var i = 0; i < coords.length; i++) {
+      if (i > 0) {
+        var controlOffset = (coords[i].x > coords[i-1].x)? 70: -70;
+        pathCoords.push('C');
+        pathCoords.push((coords[i-1].x + controlOffset) + ',' + coords[i-1].y);
+        pathCoords.push((coords[i].x - controlOffset) + ',' + coords[i].y);
+      }
+      pathCoords.push(coords[i].x + ',' + coords[i].y);
+    }
+    return 'M ' + pathCoords.join(' ');
+}
+
 function moveNodeToGroup(objArr, groupID) {
     var newParent = document.getElementById(groupID);
     for (var i = 0; i < objArr.length; i++) {

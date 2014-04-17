@@ -37,6 +37,20 @@ angular.module('a3App')
     }
     self.loadCourseData(self.onCourseDataLoaded);
 
+
+    self.updateAlumniPath = function () {
+        angular.forEach(self.alumniData, function (alumnus, index) {
+            alumnus.pathCoords = [];
+            alumnus.pathCoords.push(alumnus.coord);
+            angular.forEach(alumnus.courses, function (courseId, index) {
+                var c = self.courseData[courseId].coord;
+                alumnus.pathCoords.push(c);
+            });
+            alumnus.d = svgCoords2SimpleCubicBezierXPath(alumnus.pathCoords);
+            alumnus.d2 = svgCoords2SimpleCubicBezierXPath(alumnus.pathCoords.slice(1)).slice(2);
+        });
+    }
+
     self.onAlumniDataLoaded = function (data) {
         angular.forEach(data, function (row, index) {
             // Skip header
@@ -52,18 +66,11 @@ angular.module('a3App')
                 highlighted: false
             });
         });
-        angular.forEach(self.alumniData, function (alumnus, index) {
-            alumnus.pathCoords = [];
-            alumnus.pathCoords.push(alumnus.coord);
-            angular.forEach(alumnus.courses, function (courseId, index) {
-                var c = self.courseData[courseId].coord;
-                alumnus.pathCoords.push(c);
-            });
-            alumnus.d = svgCoords2path(alumnus.pathCoords);
-            alumnus.d2 = svgCoords2path(alumnus.pathCoords.slice(1)).slice(2);
-        });
+        self.updateAlumniPath();
     }
     self.loadAlumniData(self.onAlumniDataLoaded);
+
+
 
     // Selection state methods
     // TODO: Where is a better place for this?

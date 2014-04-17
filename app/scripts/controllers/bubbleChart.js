@@ -47,6 +47,7 @@ angular.module('a3App')
             else
                 alumnus.hidden = false;
         });
+        pathVizService.updateAlumniPath();
     }
 
     /* Toggle courses display */
