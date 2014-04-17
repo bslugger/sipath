@@ -30,6 +30,8 @@ function svgCoords2path(coords) {
 
 function svgCoords2SimpleCubicBezierXPath(coords) {
     var pathCoords = [];
+    // coords.splice(1, 0, {x: -20, y:-90});
+    // coords.splice(2, 0, {x: 50, y:-90});
     for (var i = 0; i < coords.length; i++) {
       if (i > 0) {
         var controlOffset = (coords[i].x > coords[i-1].x)? 70: -70;

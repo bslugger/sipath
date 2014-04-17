@@ -27,7 +27,7 @@ angular.module('a3App')
                 id: row[0],
                 number: row[1],
                 name: row[2],
-                coord: {x: row[0]/3 * 100, y: index%3 * 100},
+                coord: {x: index%3 * 130, y: row[0]/3 * 120},
                 popularity: row[3],
                 isHidden: false,
                 isSelected: false,
@@ -43,7 +43,7 @@ angular.module('a3App')
     self.updateAlumniPath = function () {
         angular.forEach(self.alumniData, function (alumnus, index) {
             alumnus.pathCoords = [];
-            alumnus.pathCoords.push(alumnus.coord);
+            // alumnus.pathCoords.push(alumnus.coord);
             angular.forEach(alumnus.courses, function (courseId, index) {
                 var c = self.courseData[courseId].coord;
                 alumnus.pathCoords.push(c);
@@ -56,6 +56,8 @@ angular.module('a3App')
     self.onAlumniDataLoaded = function (data) {
         angular.forEach(data, function (row, index) {
             // Skip header
+            var courses = [ row[3], row[4], row[5], Math.floor(Math.random()*20), Math.floor(Math.random()*20), Math.floor(Math.random()*20) ];
+            courses.sort(function(a, b) { return parseInt(a) > parseInt(b); });
             if (index === 0)
                 return;
             self.alumniData.push({
@@ -63,7 +65,7 @@ angular.module('a3App')
                 coord: {x: -100, y: ((20)*row[0]-90), originalY: ((20)*row[0]-90)},
                 position: row[1],
                 name: row[2],
-                courses: [ row[3],row[4],row[5] ],
+                courses: courses,
                 hidden: false,
                 highlighted: false
             });
