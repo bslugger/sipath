@@ -27,6 +27,14 @@ function svgCoords2path(coords) {
     }
     return 'M ' + pathCoords.join(' L ');
 }
+function moveNodeToGroup(objArr, groupID) {
+    var newParent = document.getElementById(groupID);
+    for (var i = 0; i < objArr.length; i++) {
+        var obj = objArr[i];
+        newParent.appendChild(obj);
+        obj.parentElement.removeChils(obj);
+    }
+}
 
 // definition of position
 function svgSankeyPath(startX, startY, endX, endY, startWidth, endWidth, xScale, yScale, turnWeight, curveWeight, xOffset, yOffset) {
@@ -36,7 +44,7 @@ function svgSankeyPath(startX, startY, endX, endY, startWidth, endWidth, xScale,
 
     var cmds = [];
     // Move to start point 
-    cmds.push("M" + startX + "," + (startY * yScale + 30));
+    cmds.push("M" + startX + "," + (startY * yScale + yOffset));
     // Upper Curve
     if (ydiff !== 0) {
         // short stright line

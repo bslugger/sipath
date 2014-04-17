@@ -1,17 +1,26 @@
 <svg height="{{(svg.height)}}" width="{{(svg.width)}}">
     <g>
-        <g class="background" ng-repeat="(bgIndex, background) in backgrounds">
-            <rect class="dataTile bg {{background['bg-index']}} {{outcome['pos-index']}}" ng-repeat="outcome in background.outcome" x="{{anchors.leftX}}" y="{{(outcome.cumPercentage)*(anchors.scale) + 30}}" width="{{anchors.leftColWidth}}" height="{{(outcome.percentage)*anchors.scale}}" stroke="none" fill="{{background.color}}" ng-mouseover="hoverBackground(background['bg-index'], outcome['pos-index'], 1)"></rect>
+        <g class="background {{background.bgIndex}}" ng-repeat="background in backgrounds" ng-mouseover="hoverBackground(background.bgIndex, '', 1)" ng-mouseleave="leaveHighlightedArea()" ng-click="clickBackground(background.bgIndex, '', 1)">
+            <rect ng-repeat="link in backToCareerLinks.filterWithClass(background.bgIndex, '', 0)" class="dataTile {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "isSelected(link.bgIndex, 0)"}' x="{{anchors.leftX}}" y="{{(link.startCumPercentage)*(anchors.scale) + svg.yOffset}}" width="{{anchors.leftColWidth}}" height="{{(link.startPercentage)*anchors.scale}}" fill="{{link.startColor}}"></rect>
+            <text class="sankey-label" x="{{anchors.leftX + anchors.leftColWidth/2}}" y="{{(background.cumPercentage + background.percentage/2) * anchors.scale + svg.yOffset}}" style="text-anchor: middle; font-size:{{anchors.leftColWidth * 0.1}}px; alignment-baseline:middle">{{background.name}}</text>
         </g>
     </g>
     <g>
-        <g class="link" ng-repeat="link in backToCareerLinks">
-            <path class="dataLink {{link.bgIndex}} {{link.posIndex}}" d="{{link.path}}" fill="grey" ng-mouseover="hoverBackground(link.bgIndex, link.posIndex, 0)"></path>
-        </g> 
+        <g class="dataLink" id="dataLink">
+            <path ng-repeat="link in backToCareerLinks" ng-show="!link.selected && !link.highlighted" class="dataLink {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "link.selected"}' d="{{link.path}}" fill="grey" ng-mouseover="hoverBackground(link.bgIndex, link.posIndex, 0)" ng-mouseleave="leaveHighlightedArea()" ng-click="clickBackground(link.bgIndex, link.posIndex, 0)"></path>
+        </g>
+        <g class="dataLink" id="dataLink-mid">
+            <path ng-repeat="link in backToCareerLinks" ng-show="link.highlighted && !link.selected" class="dataLink {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "link.selected"}' d="{{link.path}}" fill="grey" ng-mouseover="hoverBackground(link.bgIndex, link.posIndex, 0)" ng-mouseleave="leaveHighlightedArea()" ng-click="clickBackground(link.bgIndex, link.posIndex, 0)"></path>
+        </g>
+        <g class="dataLink" id="dataLink-top">
+            <path ng-repeat="link in backToCareerLinks" ng-show="link.selected" class="dataLink {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "link.selected"}' d="{{link.path}}" fill="grey" ng-mouseover="hoverBackground(link.bgIndex, link.posIndex, 0)" ng-mouseleave="leaveHighlightedArea()" ng-click="clickBackground(link.bgIndex, link.posIndex, 0)"></path>
+        </g>
+        
     </g>
     <g>
-        <g class="positionTitle" ng-repeat="(psIndex, position) in positionTitles">
-            <rect class="dataTile pos {{background['bg-index']}} {{position['pos-index']}}" ng-repeat="background in position.background" x="{{anchors.rightX}}" y="{{(background.cumPercentage) * anchors.scale + 30}}" width="{{anchors.rightColWidth}}" height="{{(background.percentage) * anchors.scale}}" stroke="none" fill="{{position.color}}" ng-mouseover="hoverBackground(position['pos-index'], background['bg-index'], 1)"></rect>
+        <g class="positionTitle {{position.posIndex}}" ng-repeat="position in positionTitles" ng-mouseover="hoverBackground('', position.posIndex, 2)" ng-mouseleave="leaveHighlightedArea()" ng-click="clickBackground('', position.posIndex, 2)">
+            <rect ng-repeat="link in backToCareerLinks.filterWithClass('', position.posIndex, 1)" class="dataTile {{link.bgIndex}} {{link.posIndex}}" pv-svg-class='{"highlighted": "link.highlighted", "selected": "isSelected(link.posIndex, 1)"}' x="{{anchors.rightX}}" y="{{(link.endCumPercentage)*(anchors.scale) + svg.yOffset}}" width="{{anchors.rightColWidth}}" height="{{(link.endPercentage)*anchors.scale}}" fill="{{link.endColor}}"></rect>
+            <text class="sankey-label" x="{{anchors.rightX + anchors.rightColWidth/2}}" y="{{(position.cumPercentage + position.percentage/2) * anchors.scale + svg.yOffset}}" style="text-anchor: middle; font-size:{{position.percentage * anchors.scale * 0.5}}px; alignment-baseline:middle">{{position.name}} </text>
         </g>
     </g>
 </svg>
