@@ -65,7 +65,8 @@ angular.module('a3App')
                 name: row[2],
                 courses: [ row[3],row[4],row[5] ],
                 hidden: false,
-                highlighted: false
+                highlighted: false,
+                searchResult: true
             });
         });
         self.updateAlumniPath();
