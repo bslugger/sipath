@@ -1,10 +1,13 @@
 TODO
 
 * Bubble chart
+    * Connector (bracket style)
     * Bubble fish eye
-    * Connector algorithm
-    * Bubble force field algorithm
     * Animation
+* Alumni view
+    * Selectable items
+* Frames
+    * Custom scrollbars
 * Sankey Diagram
     * add label
     * add selection
@@ -20,6 +23,8 @@ DONE
 * Bubble chart
     * Scrollable alumni list with visibility toggle
     * Bubble stroke highlight
+    * Connector algorithm
+    * Bubble layout
 * Sankey Diagram
     * Background Column
     * Career Column
