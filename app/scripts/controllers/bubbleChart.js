@@ -145,4 +145,33 @@ angular.module('a3App')
         $scope.shouldShowOverview = false;
         $scope.showCoursesByIds(alumnus.courses);
     }
+
+    /* Search Function */
+    $scope.filterTextChange = function(filterText) {
+        var filterTextArr = filterText.split(" ");
+        for (var i = 0; i < $scope.alumniData.length; i++) {
+            var alumni = $scope.alumniData[i];
+            var hasCount = 0;
+            if (filterText !== "") {
+                for (var j = 0; j < filterTextArr.length; j++) {
+                    var filter = filterTextArr[j];
+                    var patt = new RegExp(filter, "i");
+                    if (patt.test(alumni.name)) {
+                        hasCount++;
+                        continue;
+                    } else if (patt.test(alumni.position)) {
+                        hasCount++;
+                        continue;
+                    }
+                }
+                if (hasCount >= filterTextArr.length) {
+                    alumni.searchResult = true;
+                } else {
+                    alumni.searchResult = false;
+                }
+            } else {
+                alumni.searchResult = true;
+            }
+        }
+    }
   });

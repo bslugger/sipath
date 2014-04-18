@@ -33,6 +33,48 @@ angular.module('a3App')
     $scope.isSelected = isSelected;
     $scope.labelSize = labelSize;
 
+    var backgroundColor = [
+        "#542735",
+        "#BD0D31",
+        "#DE3731",
+        "#CC7A53",
+        "#8c510a",
+        "#bf812d",
+        "#dfc27d",
+        "#f6e8c3",
+        "#f5f5f5",
+        "#c7eae5",
+        "#80cdc1",
+        "#35978f",
+        "#01665e"
+    ];
+
+    var posColor = [
+        "#f5f5f5",
+        "#c7eae5",
+        "#80cdc1",
+        "#35978f",
+        "#01665e",
+        "#542735",
+        "#BD0D31",
+        "#DE3731",
+        "#CC7A53",
+        "#8c510a",
+        "#bf812d",
+        "#dfc27d",
+        "#f6e8c3"
+    ];
+
+    backgroundColor.getNext = getNext;
+    posColor.getNext = getNext;
+
+    function getNext() {
+        var mArr = this;
+        var tmp = mArr.shift();
+        mArr.push(tmp);
+        return tmp;
+    }
+
 
     var backgroundTag;
     var posTitleTag;
@@ -190,7 +232,7 @@ angular.module('a3App')
             var background = $scope.backgrounds[i];
             background.percentage = 0;//roundTo(background.value/totalNumber,2);
             background.cumPercentage = cumulatePercentage;
-            background.color = getRandomColor();
+            background.color = backgroundColor.getNext();
             for (var j = 0; j < background.outcome.length; j++) {
                 var outcome = background.outcome[j];
                 //outcome.percentage = outcome.value/totalNumber;
@@ -229,7 +271,7 @@ angular.module('a3App')
             var posTitle = $scope.positionTitles[i];
             posTitle.percentage = 0;// = roundTo(posTitle.value/totalNumber,2);
             posTitle.cumPercentage = cumulatePercentage;
-            posTitle.color = getRandomColor();
+            posTitle.color = posColor.getNext();
             for (var j = 0; j < posTitle.background.length; j++) {
                 var background = posTitle.background[j];
                 //background.percentage = background.value/totalNumber;
