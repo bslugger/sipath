@@ -16,7 +16,7 @@
 </div>
 <div class="container row-fluid">
 <div class="list-container span4" pv-scroll="moveAlumniCoords" ng-show="shouldShowOverview">
-    <input type="text" ng-change="filterTextChange(filterText)" ng-model="filterText" />
+    <input type="text" ng-change="filterTextChange(filterText)" ng-model="filterText" placeholder="All alumni with this background/career"/>
     <ul>
         <li ng-repeat="alumnus in alumniData" id="{{alumnus.id}}" class="alumni-path-label" ng-mouseenter="highlightPath(alumnus)" ng-mouseleave="unhighlightPath(alumnus)" ng-show="alumnus.searchResult" ng-click="onAlumnusClicked(alumnus)" ng-class="{'highlighted': alumnus.highlighted}">{{alumnus.position + ', ' + alumnus.name}}</li>
     </ul>
