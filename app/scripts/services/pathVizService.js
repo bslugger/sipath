@@ -95,4 +95,22 @@ angular.module('a3App')
     self.isCourseSelected = function () {
       return self.selectedCourses.length > 0;
     }
+
+    self.highlightPath = function (alumnus) {
+        // self.highlightedAlumni.push(alumnus.id);
+        alumnus.highlighted = true;
+        angular.forEach(alumnus.courses, function (courseIndex, index) {
+            self.courseData[courseIndex].isHighlighted = true;
+        });
+    }
+
+    self.unhighlightPath = function (alumnus) {
+        // if (self.highlightedAlumni.indexOf(alumnus) >= 0) {
+        //     self.highlightedAlumni.splice(alumnus.id, 1);
+        // }
+        alumnus.highlighted = false;
+        angular.forEach(alumnus.courses, function (courseIndex, index) {
+            self.courseData[courseIndex].isHighlighted = false;
+        });
+    }
   });

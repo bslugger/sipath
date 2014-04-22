@@ -30,6 +30,10 @@ angular.module('a3App', [])
         templateUrl: 'views/pathBar.html',
         controller: 'PathBarCtrl'
       })
+      .when('/alumnibar', {
+        templateUrl: 'views/alumniBar.html',
+        controller: 'AlumniBarCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
