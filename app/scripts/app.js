@@ -20,7 +20,8 @@ angular.module('a3App', [])
         controller: 'SankeyCtrl'
       })
       .when('/course', {
-        templateUrl: 'views/coursePath.html'
+        templateUrl: 'views/coursePath.html',
+        controller: 'CoursePathCtrl'
       })
       .when('/bar', {
         templateUrl: 'views/barChart.html',
@@ -29,6 +30,10 @@ angular.module('a3App', [])
       .when('/pathbar', {
         templateUrl: 'views/pathBar.html',
         controller: 'PathBarCtrl'
+      })
+      .when('/alumnibar', {
+        templateUrl: 'views/alumniBar.html',
+        controller: 'AlumniBarCtrl'
       })
       .otherwise({
         redirectTo: '/'

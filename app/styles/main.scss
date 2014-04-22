@@ -79,10 +79,13 @@ line.axis {
     fill: transparent;
     stroke-width: 1;
     display: block;
+    visibility: hidden;
     stroke: rgba(100, 100, 100, 0.3);
     &.highlighted {
+        visibility: visible;
         stroke-width: 4;
         stroke: $primaryColorAlt;
+        // fill: $primaryColorAlt;
     }
     &.hidden {
         display: none;
@@ -183,10 +186,18 @@ text.bar-label {
         border-left: 4px solid $backgroundColor;
         height: $height;
         padding: 20px;
+        overflow: hidden;
     }
     .bubble-frame {
-        overflow: hidden;
+        overflow: scroll;
         height: $height;
+        margin-left: 0;
+    }
+    .alumni-frame {
+        display: block;
+        &.hidden {
+            display: none;
+        }
     }
 }
 
@@ -201,7 +212,7 @@ text.bar-label {
 
 .alumni-info {
     position: relative;
-    padding: 20px;
+    padding: 20px 0px 20px 0px;
     border-bottom: 1px solid #e6e6e6;
     .back-button {
         position: absolute;
@@ -223,4 +234,8 @@ text.bar-label {
             border-right: 7px solid #666;
         }
     }
+}
+
+.sankey-label {
+    fill: #ddd;
 }

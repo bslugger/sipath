@@ -2,9 +2,9 @@
     <h2>SI {{selectedCourses[0].number}}</h2>
     <h4>{{selectedCourses[0].name}}</h4>
     <h5>Popular terms</h5>
-    <div ng-include="'views/barChart.html'" ng-controller="BarChartCtrl" ng-init="init({svg: {width: 190, height: 150}})"></div>
+    <div ng-include="'views/barChart.html'" ng-controller="BarChartCtrl"></div>
     <h5>Description</h5>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mauris ligula, porta sed erat sed, semper molestie lacus. Cras a justo purus. Nulla quis lectus lacinia leo varius tempor eget eu dui. Aenean in eleifend ipsum. Nunc faucibus.</p>
+    <p>{{selectedCourses[0].description}}</p>
 </div>
 
 

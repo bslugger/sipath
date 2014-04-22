@@ -36,11 +36,11 @@ angular.module('a3App')
     $scope.totalPercentage = 0;
 
     var backgroundColor = [
-        "#542735",
-        "#BD0D31",
-        "#DE3731",
-        "#CC7A53",
-        "#8c510a",
+        "#1C364C",
+        "#2A5172",
+        "#386C98",
+        "#6089AD",
+        "#80A1BD",
         "#bf812d",
         "#dfc27d",
         "#f6e8c3",
@@ -52,19 +52,12 @@ angular.module('a3App')
     ];
 
     var posColor = [
-        "#f5f5f5",
-        "#c7eae5",
-        "#80cdc1",
+        "#082D1D",
+        "#115B3A",
+        "#1A8856",
+        "#22B573",
         "#35978f",
-        "#01665e",
-        "#542735",
-        "#BD0D31",
-        "#DE3731",
-        "#CC7A53",
-        "#8c510a",
-        "#bf812d",
-        "#dfc27d",
-        "#f6e8c3"
+        "#4EC48F"
     ];
 
     backgroundColor.getNext = getNext;
