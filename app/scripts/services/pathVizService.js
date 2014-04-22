@@ -58,6 +58,7 @@ angular.module('a3App')
             self.courseData.push({
                 id: row['course_id'],
                 number: row['course_number'],
+                catelog: row['course_catelog'],
                 name: row['course_title'],
                 coord: {x: index%3 * 130, y: index/3 * 120},
                 popularity: row['alumni_count']/1000,

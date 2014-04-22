@@ -21,7 +21,7 @@
       <path class="alumni-path" d="{{selectedAlumniCoursesData.d}}" ng-hide="shouldDisplayBubbleView.value" transform="translate(80, 80)" ></path>
       <g class="course-bubble-group" ng-repeat="course in courseData" ng-click="selectCourse(course)" ng-hide="course.isHidden">
           <circle class="course-bubble" cx="{{course.coord.x}}" cy="{{course.coord.y}}" r="{{course.popularity*30+20}}" transform="translate(80, 80)" pv-svg-class='{"highlighted": "course.isHighlighted", "selected": "course.isSelected"}'></circle>
-          <text class="course-bubble-label" x="{{course.coord.x}}" y="{{course.coord.y}}" transform="translate(70, 85)">{{course.number}}</text>
+          <text class="course-bubble-label" x="{{course.coord.x}}" y="{{course.coord.y}}" transform="translate(70, 85)">{{course.catelog}} {{course.number}}</text>
       </g>
     </svg>
 <!-- </div> -->
