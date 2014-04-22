@@ -186,10 +186,12 @@ text.bar-label {
         border-left: 4px solid $backgroundColor;
         height: $height;
         padding: 20px;
+        overflow: hidden;
     }
     .bubble-frame {
         overflow: scroll;
         height: $height;
+        margin-left: 0;
     }
     .alumni-frame {
         display: block;
