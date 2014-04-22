@@ -15,7 +15,6 @@ angular.module('a3App')
         updateViewAsAlumnus();
         self.shouldDisplayBubbleView.value = false;
         self.showCoursesByIds(alumnus.courses);
-        console.log(self.shouldDisplayBubbleView);
     }
 
     self.displayBubbleView = function () {
@@ -27,7 +26,6 @@ angular.module('a3App')
 
         self.shouldDisplayBubbleView.value = true;
         self.showAllCourses();
-        console.log(self.shouldDisplayBubbleView);
     }
 
     /* Toggle courses display */
