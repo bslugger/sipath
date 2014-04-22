@@ -5,6 +5,7 @@ angular.module('a3App')
     var self = this;
 
     self.courseData = [];
+    self.alumniAllData = [];
     self.alumniData = [];
     self.courseIdTable = {};
 
@@ -115,18 +116,57 @@ angular.module('a3App')
     }
     // self.loadAlumniDummyData(self.onAlumniDummyDataLoaded);
 
-
+    self.filterAlumni = function () {
+        var options = {background: self.selectedBgName.value, position: self.selectedPosName.value};
+        self.alumniData.length = 0;
+        console.log('options');
+        console.log(options);
+        function isValid(variable) {
+            if (variable !== undefined)
+                if (variable.length > 0)
+                    return true;
+            return  false;
+        }
+        angular.forEach(self.alumniAllData, function (alumnus, index) {
+            if (options === undefined) {
+                self.alumniData.push(alumnus);
+                return;
+            }
+            // options exists
+            if (!isValid(options.background)) {
+                self.alumniData.push(alumnus);
+                return;
+            }
+            // do filter
+            if (isValid(options.background) && isValid(options.position)) {
+                // filter by both
+                if ((options.background === alumnus.background) && (options.position === alumnus.position))
+                    self.alumniData.push(alumnus);
+                else
+                    return;
+            }
+            else {
+                // filter by backgound only
+                if (options.background === alumnus.background)
+                    self.alumniData.push(alumnus);
+                else
+                    return;
+            }
+            
+        });
+    }
 
     self.onAlumniDataLoaded = function (data) {
         angular.forEach(data, function (row, index) {
             // var courses = [ Math.floor(Math.random()*20), Math.floor(Math.random()*20), Math.floor(Math.random()*20) ];
             var courses = row['courses'];
             courses.sort(function(a, b) { return parseInt(a) > parseInt(b); });
-            self.alumniData.push({
+            self.alumniAllData.push({
                 id: row['alumni_id'],
                 coord: {x: -100, y: ((20)*index-90), originalY: ((20)*index-90)},
                 position: row['job_title'],
                 name: row['organization'],
+                background: row['background_category'],
                 courses: courses,
                 hidden: false,
                 highlighted: false,
@@ -134,6 +174,7 @@ angular.module('a3App')
                 searchResult: true
             });
         });
+        self.filterAlumni();
         self.updateAlumniPath();
     }
     self.loadAlumniData = function (callback) {
