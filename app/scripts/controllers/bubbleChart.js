@@ -3,8 +3,8 @@
 angular.module('a3App')
   .controller('BubbleChartCtrl', function ($scope, pathVizService) {
     $scope.svg = {
-        width: 800,
-        height: 600
+        width: 400,
+        height: 1200
     };
     $scope.courseData = pathVizService.courseData;
     $scope.alumniData = pathVizService.alumniData;
