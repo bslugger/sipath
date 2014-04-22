@@ -1,8 +1,8 @@
 <div class="path-bar-wrapper">
     <div class="text-wrapper" ng-click="toggle()">
         <span ng-hide="selectedBgName.value.length > 0">Select your background / dream career</span>
-        <span ng-show="selectedBgName.value.length > 0">I am a <span class="background">{{selectedBgName.value}}</span></span>
-        <span ng-show="selectedPosName.value.length > 0">, I want to be a <span class="position">{{selectedPosName.value}}</span></span>
+        <span ng-show="selectedBgName.value.length > 0">I studied <span class="background">{{selectedBgName.value}}</span></span>
+        <span ng-show="selectedPosName.value.length > 0">, and I want to be a <span class="position">{{selectedPosName.value}}</span></span>
     </div>
     <div class="sankey-wrapper" ng-class="{'expanded': expanded}">
         <div ng-include="'views/sankey.html'" ng-controller="SankeyCtrl"></div>
