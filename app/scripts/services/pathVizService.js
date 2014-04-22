@@ -85,10 +85,11 @@ angular.module('a3App')
                 if (course !== undefined) {
                     var c = course.coord;
                     alumnus.pathCoords.push(c);
+                    alumnus.pathCoords.push(alumnus.coord);
                 }
             });
             alumnus.d = svgCoords2SimpleCubicBezierXPath(alumnus.pathCoords);
-            alumnus.d2 = svgCoords2SimpleCubicBezierXPath(alumnus.pathCoords.slice(1)).slice(2);
+            // alumnus.d2 = svgCoords2SimpleCubicBezierXPath(alumnus.pathCoords.slice(1)).slice(2);
         });
     }
 
