@@ -130,6 +130,7 @@ angular.module('a3App')
                 courses: courses,
                 hidden: false,
                 highlighted: false,
+                isSelected: false,
                 searchResult: true
             });
         });
@@ -164,6 +165,24 @@ angular.module('a3App')
     }
     self.isCourseSelected = function () {
       return self.selectedCourses.length > 0;
+    }
+
+
+    // Alumni selection
+
+    self.selectedAlumni = [];
+
+    self.clearSelectedAlumni = function () {
+      angular.forEach(self.selectedAlumni, function (alumnus, index) {
+        alumnus.isSelected = false;
+      });
+      self.selectedAlumni.length = 0;
+    }
+    
+    self.selectAlumnus = function (alumnus) {
+        self.clearSelectedAlumni();
+        alumnus.isSelected = true;
+        self.selectedAlumni.push(alumnus);
     }
 
     self.highlightPath = function (alumnus) {
