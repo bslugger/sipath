@@ -38,15 +38,15 @@ angular.module('a3App')
     }
 
     $scope.moveAlumniCoords = function () {
-        var top = jQuery('.list-container').scrollTop();
-        angular.forEach($scope.alumniData, function (alumnus, index) {
-            alumnus.coord.y = alumnus.coord.originalY - top;
-            if ((alumnus.coord.y > 560) || (alumnus.coord.y < -100)) {
-                alumnus.hidden = true;
-            }
-            else
-                alumnus.hidden = false;
-        });
-        pathVizService.updateAlumniPath();
+        // var top = jQuery('.list-container').scrollTop();
+        // angular.forEach($scope.alumniData, function (alumnus, index) {
+        //     alumnus.coord.y = alumnus.coord.originalY - top;
+        //     if ((alumnus.coord.y > 560) || (alumnus.coord.y < -100)) {
+        //         alumnus.hidden = true;
+        //     }
+        //     else
+        //         alumnus.hidden = false;
+        // });
+        // pathVizService.updateAlumniPath();
     }
   });
