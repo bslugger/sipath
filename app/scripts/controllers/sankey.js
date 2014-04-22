@@ -4,7 +4,7 @@ angular.module('a3App')
   .controller('SankeyCtrl', function ($scope, pathVizService) {
     $scope.svg = {
         width: 900,
-        height: 450,
+        height: 850,
         yOffset: 0
     };
     $scope.anchors = {
@@ -13,8 +13,9 @@ angular.module('a3App')
         xDis: 550,
         leftColWidth: 150,
         rightColWidth: 150,
-        scale: 400,
-        baseHeight: 0
+        scale: 300,
+        baseHeight: 0,
+        minHeight: 0.03
     };
 
     $scope.anchors.xDis = $scope.svg.width - $scope.anchors.leftColWidth - $scope.anchors.rightColWidth;
@@ -32,6 +33,7 @@ angular.module('a3App')
     $scope.backToCareerLinks.filterWithClass = filterWithClass;
     $scope.isSelected = isSelected;
     $scope.labelSize = labelSize;
+    $scope.totalPercentage = 0;
 
     var backgroundColor = [
         "#542735",
@@ -230,15 +232,11 @@ angular.module('a3App')
         var cumulatePercentage = 0;
         for (var i = 0; i < $scope.backgrounds.length; i++) {
             var background = $scope.backgrounds[i];
-            background.percentage = 0;//roundTo(background.value/totalNumber,2);
+            background.percentage = 0;
             background.cumPercentage = cumulatePercentage;
             background.color = backgroundColor.getNext();
             for (var j = 0; j < background.outcome.length; j++) {
                 var outcome = background.outcome[j];
-                //outcome.percentage = outcome.value/totalNumber;
-                //outcome.cumPercentage = cumulatePercentage;
-                //cumulatePercentage += outcome.percentage;
-                // find outcome index
                 for (var k = 0; k < $scope.positionTitles.length; k++) {
                     var posTitle = $scope.positionTitles[k];
                     if (outcome.name === posTitle.name) {
@@ -258,25 +256,26 @@ angular.module('a3App')
 
             for (var j = 0; j < background.outcome.length; j++) {
                 var outcome = background.outcome[j];
-                outcome.percentage = roundTo(outcome.value/totalNumber,2);
+                var tmp = roundTo(outcome.value/totalNumber, 2)
+                outcome.percentage = (tmp < $scope.anchors.minHeight)?$scope.anchors.minHeight:tmp;
                 background.percentage += outcome.percentage;
                 outcome.cumPercentage = cumulatePercentage;
                 cumulatePercentage += outcome.percentage;
+                cumulatePercentage = roundTo(cumulatePercentage,2)
             }
             
         }
+        $scope.totalPercentage = cumulatePercentage;
+        console.log($scope.totalPercentage);
 
         cumulatePercentage = 0;
         for (var i = 0; i < $scope.positionTitles.length; i++) {
             var posTitle = $scope.positionTitles[i];
-            posTitle.percentage = 0;// = roundTo(posTitle.value/totalNumber,2);
+            posTitle.percentage = 0;
             posTitle.cumPercentage = cumulatePercentage;
             posTitle.color = posColor.getNext();
             for (var j = 0; j < posTitle.background.length; j++) {
                 var background = posTitle.background[j];
-                //background.percentage = background.value/totalNumber;
-                //background.cumPercentage = cumulatePercentage;
-                //cumulatePercentage += background.percentage;
                 for (var k = 0; k < $scope.backgrounds.length; k++) {
                     var sBackground = $scope.backgrounds[k];
                     if (background.name === sBackground.name) {
@@ -289,19 +288,18 @@ angular.module('a3App')
                 var i1 = parseInt(a["bgIndex"].substr(2));
                 var i2 = parseInt(b["bgIndex"].substr(2));
 
-                if (i1 < i2) return -1;
+                if (i1 < i2) return - 1;
                 if (i1 > i2) return 1;
                 return 0;
             });
             for (var j = 0; j < posTitle.background.length; j++) {
                 var background = posTitle.background[j];
-                background.percentage = roundTo(background.value/totalNumber,2);
+                var tmp = roundTo(background.value/totalNumber,2);
+                background.percentage = (tmp < $scope.anchors.minHeight)?$scope.anchors.minHeight:tmp;
                 posTitle.percentage += background.percentage;
                 background.cumPercentage = cumulatePercentage;
                 cumulatePercentage += background.percentage;
             }
-            //cumulatePercentage = roundTo(cumulatePercentage, 2);
-            //posTitle.percentage = roundTo(posTitle.percentage, 2);
         }
 
 
@@ -346,7 +344,7 @@ angular.module('a3App')
                 var xOffset = 0;
                 var yOffset = $scope.svg.yOffset;
 
-                obj.path = svgSankeyPath(startX, startY, endX, endY, startWidth, endWidth, xScale, yScale, turnWeight, curveWeight, xOffset, yOffset);
+                obj.path = svgSankeyPath(startX, startY, endX, endY, startWidth, endWidth, xScale, yScale, turnWeight, curveWeight, xOffset, yOffset, $scope.totalPercentage);
                 obj.highlighted = false;
                 obj.selected = false;
                 $scope.backToCareerLinks.push(obj);
