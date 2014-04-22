@@ -16,4 +16,10 @@ angular.module('a3App')
           callback(e);
         });
     };
+    this.readJson = function (path, callback) {
+      $http.get(path).then(function(result)
+        {
+          callback(result.data);
+        });
+    };
   });
