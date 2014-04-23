@@ -4,7 +4,7 @@ function csvJSON(csv, strDelimiter ){
  
   var result = [];
 
-  console.log(lines.length);
+  //console.log(lines.length);
 
   var objPattern = new RegExp(
     (
