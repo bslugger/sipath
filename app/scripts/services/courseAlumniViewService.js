@@ -8,11 +8,18 @@ angular.module('a3App')
     self.selectedAlumni = [];
     self.selectedAlumniCoursesData = {};
     self.shouldDisplayBubbleView = { value: true };
+    self.shouldShowAlumniBar = { value: false };
     self.getCourseById = pathVizService.getCourseById;
     self.svg = {
-        width: 400,
-        height: 4700
+        width: 650,
+        height: 4700,
+        offset: 0
     };
+
+    self.toggleAlumniBar = function () {
+        self.shouldShowAlumniBar.value = !self.shouldShowAlumniBar.value;
+        self.svg.offset = (self.shouldShowAlumniBar.value)? 220: 0;
+    }
 
     self.displayAlumniView = function (alumnus) {
         self.selectedAlumni.length = 0;
@@ -22,6 +29,7 @@ angular.module('a3App')
         self.showCoursesByIds(alumnus.courses);
         self.svg.width = 650;
         self.svg.height = 440;
+        self.svg.offset = 0;
     }
 
     self.displayBubbleView = function () {
@@ -33,8 +41,9 @@ angular.module('a3App')
 
         self.shouldDisplayBubbleView.value = true;
         self.showAllCourses();
-        self.svg.width = 400;
+        self.svg.width = 650;
         self.svg.height = 4700;
+        self.svg.offset = (self.shouldShowAlumniBar.value)? 220: 0;
     }
 
     /* Toggle courses display */

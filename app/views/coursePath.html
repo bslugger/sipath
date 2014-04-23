@@ -4,10 +4,11 @@
     </div>
 </div>
 <div class="row-fluid main-frame">
-    <div class="alumni-frame" ng-class="{span3: shouldDisplayBubbleView.value, hidden: !shouldDisplayBubbleView.value}">
+    <div class="alumni-frame" ng-class="{span3: shouldDisplayBubbleView.value && shouldShowAlumniBar.value, span1: shouldDisplayBubbleView.value && !shouldShowAlumniBar.value, hidden: !shouldDisplayBubbleView.value}">
+        <button ng-click="toggleAlumniBar()"></button>
         <div ng-include="'views/alumniBar.html'" ng-controller="AlumniBarCtrl"></div>
     </div>
-    <div class="bubble-frame" ng-class="{span6: shouldDisplayBubbleView.value, span9: !shouldDisplayBubbleView.value}">
+    <div class="span9 bubble-frame">
         <div ng-include="'views/bubble.html'" ng-controller="BubbleChartCtrl"></div>
     </div>
     <div class="span3 info-frame">
