@@ -252,7 +252,7 @@ module.exports = function (grunt) {
             '*.{ico,txt}',
             '.htaccess',
             'components/**/*',
-            'images/{,*/}*.{gif,webp}',
+            'images/{,*/}*.{gif,webp,json,csv}',
             'styles/fonts/*'
           ]
         }]
@@ -282,8 +282,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'jshint',
-    'test',
+    // 'jshint',
+    // 'test',
     'coffee',
     'compass:dist',
     'useminPrepare',
@@ -292,7 +292,7 @@ module.exports = function (grunt) {
     'htmlmin',
     'concat',
     'copy',
-    'cdnify',
+    // 'cdnify',
     'ngmin',
     'uglify',
     // 'rev',
