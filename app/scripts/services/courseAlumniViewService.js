@@ -8,6 +8,11 @@ angular.module('a3App')
     self.selectedAlumni = [];
     self.selectedAlumniCoursesData = {};
     self.shouldDisplayBubbleView = { value: true };
+    self.getCourseById = pathVizService.getCourseById;
+    self.svg = {
+        width: 400,
+        height: 4700
+    };
 
     self.displayAlumniView = function (alumnus) {
         self.selectedAlumni.length = 0;
@@ -15,6 +20,8 @@ angular.module('a3App')
         updateViewAsAlumnus();
         self.shouldDisplayBubbleView.value = false;
         self.showCoursesByIds(alumnus.courses);
+        self.svg.width = 650;
+        self.svg.height = 440;
     }
 
     self.displayBubbleView = function () {
@@ -26,6 +33,8 @@ angular.module('a3App')
 
         self.shouldDisplayBubbleView.value = true;
         self.showAllCourses();
+        self.svg.width = 400;
+        self.svg.height = 4700;
     }
 
     /* Toggle courses display */
@@ -45,7 +54,7 @@ angular.module('a3App')
     self.showCoursesByIds = function (courses) {
         self.hideAllCourses();
         angular.forEach(courses, function (courseIndex, index) {
-            self.courseData[courseIndex].isHidden = false;
+            self.getCourseById(courseIndex).isHidden = false;
         });
     }
 
@@ -62,13 +71,16 @@ angular.module('a3App')
         angular.forEach(courses, function (course, index) {
             course.coord.x = original[index].x;
             course.coord.y = original[index].y;
+            course.isHighlighted = false;
+            course.radius = course.originalRadius;
         });
     }
 
     function setCourseLayoutBySemester(courses) {
         angular.forEach(courses, function (course, index) {
-            course.coord.x = index % 3 * 100;
-            course.coord.y = Math.floor(index/3) * 100;
+            course.coord.x = index % 6 * 100;
+            course.coord.y = Math.floor(index/6) * 100;
+            course.radius = 0.5;
         });
     }
 
@@ -77,7 +89,7 @@ angular.module('a3App')
     function updateAlumnusCoursePath(alumnus) {
         var courseCoords = [];
         angular.forEach(alumnus.courses, function (courseIndex, index) {
-            courseCoords.push(self.courseData[courseIndex].coord);
+            courseCoords.push(self.getCourseById(courseIndex).coord);
         });
         self.selectedAlumniCoursesData.d = svgCoords2path(courseCoords);
     }
@@ -86,14 +98,15 @@ angular.module('a3App')
         var alumnus = self.selectedAlumni[0];
         var courses = self.selectedAlumniCoursesData.courses = [];
         angular.forEach(alumnus.courses, function (courseIndex, index) {
-            courses.push(self.courseData[courseIndex]);
+            courses.push(self.getCourseById(courseIndex));
         });
 
         // Save original coords for restoration
         self.selectedAlumniCoursesData.originalCoords = [];
         angular.forEach(alumnus.courses, function (courseIndex, index) {
-            var oldCoord = self.courseData[courseIndex].coord;
+            var oldCoord = self.getCourseById(courseIndex).coord;
             self.selectedAlumniCoursesData.originalCoords.push({x: oldCoord.x, y: oldCoord.y});
+            // self.getCourseById(courseIndex).isHighlighted = true;
         });
 
         // Move course coords by semesters

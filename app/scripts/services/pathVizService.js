@@ -55,18 +55,22 @@ angular.module('a3App')
 
     self.onCourseDataLoaded = function (data) {
         angular.forEach(data, function (row, index) {
+            var shift = ((index%3)==1)?0.5:0;
             self.courseData.push({
                 id: row['course_id'],
                 number: row['course_number'],
                 catelog: row['course_catelog'],
                 name: row['course_title'],
-                coord: {x: index%3 * 130, y: index/3 * 120},
-                popularity: row['alumni_count']/1000,
+                coord: {x: (index%3) * 120, y: (Math.floor(index/3)+shift) * 150},
+                originalRadius: row['alumni_count']/700,
+                radius: row['alumni_count']/700,
                 description: row['course_description'],
                 terms: row['term_info'],
+                popularity: row['alumni_count'],
                 isHidden: false,
                 isSelected: false,
-                isHighlighted: false
+                isHighlighted: false,
+                isHovered: false
             });
         });
     }
@@ -164,7 +168,8 @@ angular.module('a3App')
             courses.sort(function(a, b) { return parseInt(a) > parseInt(b); });
             self.alumniAllData.push({
                 id: row['alumni_id'],
-                coord: {x: -100, y: ((20)*index-90), originalY: ((20)*index-90)},
+                // coord: {x: -100, y: ((20)*index-90), originalY: ((20)*index-90)},
+                coord: {x: 320, y: -80},
                 position: row['job_title'],
                 name: row['organization'],
                 background: row['background_category'],
@@ -227,8 +232,11 @@ angular.module('a3App')
         self.selectedAlumni.push(alumnus);
     }
 
+    self.highlightedAlumni = [];
+    self.isAnyAlumnushighlighted = {};
     self.highlightPath = function (alumnus) {
-        // self.highlightedAlumni.push(alumnus.id);
+        self.highlightedAlumni.push(alumnus);
+        self.isAnyAlumnushighlighted.value = true;
         alumnus.highlighted = true;
         angular.forEach(alumnus.courses, function (courseIndex, index) {
             self.getCourseById(courseIndex).isHighlighted = true;
@@ -236,9 +244,14 @@ angular.module('a3App')
     }
 
     self.unhighlightPath = function (alumnus) {
-        // if (self.highlightedAlumni.indexOf(alumnus) >= 0) {
-        //     self.highlightedAlumni.splice(alumnus.id, 1);
-        // }
+        var index = self.highlightedAlumni.indexOf(alumnus);
+        if (index >= 0) {
+            self.highlightedAlumni.splice(index, 1);
+        }
+        if (self.highlightedAlumni.length === 0)
+            self.isAnyAlumnushighlighted.value = false;
+
+
         alumnus.highlighted = false;
         angular.forEach(alumnus.courses, function (courseIndex, index) {
             self.getCourseById(courseIndex).isHighlighted = false;
