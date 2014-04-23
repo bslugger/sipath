@@ -52,9 +52,30 @@ angular.module('a3App')
         });
     }
     // self.loadCourseDummyData(self.onCourseDummyDataLoaded);
+    function orderize(numberString) {
+        var map = {
+            1: 'st',
+            2: 'nd',
+            3: 'rd'
+        };
+        var n = parseInt(numberString)%10;
+        if (( n > 0 ) && ( n < 4 ))
+            return numberString + map[n];
+        return numberString + 'th';
+    }
 
     self.onCourseDataLoaded = function (data) {
         angular.forEach(data, function (row, index) {
+            var rawTerms = row['term_info'];
+            var terms = {};
+            for (var key in rawTerms) {
+                if (!rawTerms.hasOwnProperty(key))
+                    continue;
+                if (parseInt(key) > 5)
+                    break;
+                terms[orderize(key)] = rawTerms[key];
+            }
+
             var shift = ((index%3)==1)?0.5:0;
             self.courseData.push({
                 id: row['course_id'],
@@ -65,7 +86,7 @@ angular.module('a3App')
                 originalRadius: row['alumni_count']/700,
                 radius: row['alumni_count']/700,
                 description: row['course_description'],
-                terms: row['term_info'],
+                terms: terms,
                 popularity: row['alumni_count'],
                 isHidden: false,
                 isSelected: false,
@@ -165,7 +186,7 @@ angular.module('a3App')
         angular.forEach(data, function (row, index) {
             // var courses = [ Math.floor(Math.random()*20), Math.floor(Math.random()*20), Math.floor(Math.random()*20) ];
             var courses = row['courses'];
-            courses.sort(function(a, b) { return parseInt(a) > parseInt(b); });
+            // courses.sort(function(a, b) { return parseInt(a) > parseInt(b); });
             self.alumniAllData.push({
                 id: row['alumni_id'],
                 // coord: {x: -100, y: ((20)*index-90), originalY: ((20)*index-90)},
