@@ -26,8 +26,8 @@ function csvJSON(csv, strDelimiter ){
       var obj = {};
 
       var currentline=lines[i];
-
-      while (arrMatches = objPattern.exec(currentline)) {
+      var arrMatches;
+      while ((arrMatches = objPattern.exec(currentline)) !== null) {
         if (arrMatches[ 2 ]) {
           // We found a quoted value. When we capture
           // this value, unescape any double quotes.
