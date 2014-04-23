@@ -1,9 +1,11 @@
 TODO
 
 * Bubble chart
-    * Connector (bracket style)
+    // * Connector (bracket style)
     * Bubble fish eye
     * Animation
+* Course info
+    * enrollment number
 * Alumni view
     * Selectable items
 * Frames
