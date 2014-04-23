@@ -60,9 +60,16 @@ line.axis {
     background-color: $alumniBarBackgroundColor;
     overflow: scroll;
     height: $height;
+    ul {
+        margin-left: 0;
+    }
     ul li {
         list-style: none;
         color: white;
+        padding: 10px;
+    }
+    input {
+        width: 180px;
     }
 }
 
@@ -70,8 +77,10 @@ line.axis {
     color: #333;
     font-size: 12px;
     cursor: pointer;
-    &.highlighted {
-        color: $primaryColorAlt;
+
+    &.highlighted, &.selected {
+        color: #f7f7f7;
+        background-color: $primaryColorAlt;
     }
 }
 
@@ -82,6 +91,12 @@ line.axis {
     visibility: hidden;
     stroke: rgba(100, 100, 100, 0.3);
     &.highlighted {
+        visibility: visible;
+        stroke-width: 4;
+        stroke: $primaryColorAlt;
+        // fill: $primaryColorAlt;
+    }
+    &.selected {
         visibility: visible;
         stroke-width: 4;
         stroke: $primaryColorAlt;

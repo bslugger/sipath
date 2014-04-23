@@ -6,6 +6,7 @@ angular.module('a3App')
     $scope.highlightPath = pathVizService.highlightPath;
     $scope.unhighlightPath = pathVizService.unhighlightPath;
 
+    $scope.selectAlumnus = pathVizService.selectAlumnus;
     $scope.onAlumnusClicked = courseAlumniViewService.displayAlumniView;
 
     /* Search Function */

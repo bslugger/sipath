@@ -6,6 +6,7 @@ angular.module('a3App')
     $scope.selectedPosName = pathVizService.selectedPosName;
     $scope.expanded = false;
     $scope.toggle = function () {
+        pathVizService.filterAlumni();
         $scope.expanded = !$scope.expanded;
     }
   });
