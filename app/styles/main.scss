@@ -111,9 +111,15 @@ line.axis {
     opacity: 0.5;
     &.highlighted {
         opacity: 1.0;
+        fill: rgba(10,10,10,1.0);
     }
     &.selected {
         opacity: 1.0;
+        fill: rgba(50,50,80,1.0);
+    }
+    &.highlighted.selected {
+        opacity: 1.0;
+        fill: rgba(100,200,100,1.0);
     }
 }
 .dataLink {
