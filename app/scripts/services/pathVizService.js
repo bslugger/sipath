@@ -28,15 +28,10 @@ angular.module('a3App')
       CsvReaderService.read2Json('/images/anon689_2.csv', callback);  
     }
     function orderize(numberString) {
-        var map = {
-            1: 'st',
-            2: 'nd',
-            3: 'rd'
-        };
-        var n = parseInt(numberString)%10;
-        if (( n > 0 ) && ( n < 4 ))
-            return numberString + map[n];
-        return numberString + 'th';
+        // create an array with 10 'th'
+        var postfix = Array.apply(null, new Array(10)).map(String.prototype.valueOf,'th');
+        postfix.splice(0, 3, 'st', 'nd', 'rd');
+        return numberString + postfix[(parseInt(numberString)-1)%10];
     }
 
     self.onCourseDataLoaded = function (data) {
