@@ -93,8 +93,7 @@ angular.module('a3App')
     self.filterAlumni = function () {
         var options = {background: self.selectedBgName.value, position: self.selectedPosName.value};
         self.alumniData.length = 0;
-        console.log('options');
-        console.log(options);
+
         function isValid(variable) {
             if (variable !== undefined)
                 if (variable.length > 0)
@@ -102,31 +101,27 @@ angular.module('a3App')
             return  false;
         }
         angular.forEach(self.alumniAllData, function (alumnus, index) {
-            if (options === undefined) {
-                self.alumniData.push(alumnus);
-                return;
-            }
-            // options exists
-            if (!isValid(options.background)) {
-                self.alumniData.push(alumnus);
-                return;
-            }
-            // do filter
+            // filter by both
             if (isValid(options.background) && isValid(options.position)) {
-                // filter by both
                 if ((options.background === alumnus.background) && (options.position === alumnus.position))
                     self.alumniData.push(alumnus);
                 else
                     return;
             }
-            else {
-                // filter by backgound only
+            // filter by backgound only
+            else if (isValid(options.background) && !isValid(options.position)) {
                 if (options.background === alumnus.background)
                     self.alumniData.push(alumnus);
                 else
                     return;
             }
-            
+            // filter by position only
+            else if (!isValid(options.background) && isValid(options.position)) {
+                if (options.position === alumnus.position)
+                    self.alumniData.push(alumnus);
+                else
+                    return;
+            }
         });
     }
 
