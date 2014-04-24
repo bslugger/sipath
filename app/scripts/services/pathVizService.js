@@ -27,31 +27,6 @@ angular.module('a3App')
     self.loadData2 = function (callback) {
       CsvReaderService.read2Json('/images/anon689_2.csv', callback);  
     }
-    self.loadCourseDummyData = function (callback) {
-      CsvReaderService.read('/images/course.csv', callback);
-    }
-    self.loadAlumniDummyData = function (callback) {
-      CsvReaderService.read('/images/alumni.csv', callback);
-    }
-    self.onCourseDummyDataLoaded = function (data) {
-        angular.forEach(data, function (row, index) {
-            // Skip header
-            if (index === 0)
-                return;
-            self.courseData.push({
-                id: row[0],
-                number: row[1],
-                name: row[2],
-                coord: {x: index%3 * 130, y: row[0]/3 * 120},
-                popularity: row[3],
-                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mauris ligula, porta sed erat sed, semper molestie lacus. Cras a justo purus. Nulla quis lectus lacinia leo varius tempor eget eu dui. Aenean in eleifend ipsum. Nunc faucibus.',
-                isHidden: false,
-                isSelected: false,
-                isHighlighted: false
-            });
-        });
-    }
-    // self.loadCourseDummyData(self.onCourseDummyDataLoaded);
     function orderize(numberString) {
         var map = {
             1: 'st',
@@ -119,28 +94,6 @@ angular.module('a3App')
             // alumnus.d2 = svgCoords2SimpleCubicBezierXPath(alumnus.pathCoords.slice(1)).slice(2);
         });
     }
-
-    self.onAlumniDummyDataLoaded = function (data) {
-        angular.forEach(data, function (row, index) {
-            // Skip header
-            var courses = [ row[3], row[4], row[5], Math.floor(Math.random()*20), Math.floor(Math.random()*20), Math.floor(Math.random()*20) ];
-            courses.sort(function(a, b) { return parseInt(a) > parseInt(b); });
-            if (index === 0)
-                return;
-            self.alumniData.push({
-                id: row[0],
-                coord: {x: -100, y: ((20)*row[0]-90), originalY: ((20)*row[0]-90)},
-                position: row[1],
-                name: row[2],
-                courses: courses,
-                hidden: false,
-                highlighted: false,
-                searchResult: true
-            });
-        });
-        self.updateAlumniPath();
-    }
-    // self.loadAlumniDummyData(self.onAlumniDummyDataLoaded);
 
     self.filterAlumni = function () {
         var options = {background: self.selectedBgName.value, position: self.selectedPosName.value};
