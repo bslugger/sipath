@@ -97,46 +97,106 @@ angular.module('a3App')
      * end load data for sankey
      */
 
+    self.onBackgroundIdTableLoaded = function (data) {
+        console.log("=== On Background Id Table Loaded ===")
+        //console.log(data);
+        var headers = data["headers"];
+        var contents = data["contents"];
+        var result = {};
+        for (var i = 0; i < contents.length; i++) {
+            var content = contents[i];
+            result[content.background_category_id] = content.background_category;
+        }
+        self.backgroundIdTable = result;
+    }
+    self.loadBackgroundIdTable(self.onBackgroundIdTableLoaded);
 
-    self.loadCourseDummyData = function (callback) {
-      CsvReaderService.read('/images/course.csv', callback);
+    self.loadJobIdTable = function(callback) {
+        CsvReaderService.read2Json('/images/yj/job_category.csv', callback);
     }
-    self.loadAlumniDummyData = function (callback) {
-      CsvReaderService.read('/images/alumni.csv', callback);
+
+    self.onJobIdTableLoaded = function (data) {
+        console.log("=== On Job Id Table Loaded");
+        //console.log(data);
+        var headers = data["headers"];
+        var contents = data["contents"];
+        var result = {};
+        for (var i = 0; i < contents.length; i++) {
+            var content = contents[i];
+            result[content.job_category_id] = content.job_category;
+        }
+        self.jobIdTable = result;
     }
-    self.onCourseDummyDataLoaded = function (data) {
-        angular.forEach(data, function (row, index) {
-            // Skip header
-            if (index === 0)
-                return;
-            self.courseData.push({
-                id: row[0],
-                number: row[1],
-                name: row[2],
-                coord: {x: index%3 * 130, y: row[0]/3 * 120},
-                popularity: row[3],
-                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mauris ligula, porta sed erat sed, semper molestie lacus. Cras a justo purus. Nulla quis lectus lacinia leo varius tempor eget eu dui. Aenean in eleifend ipsum. Nunc faucibus.',
-                isHidden: false,
+    self.loadJobIdTable(self.onJobIdTableLoaded);
+
+    // this should be removed and use self.alumniAllData later;
+    self.loadAlumniDataSankey = function (callback) {
+        CsvReaderService.read2Json('/images/yj/alumni_2.csv', callback);
+    }
+
+    self.onAlumniDataSankeyLoaded = function (data) {
+        console.log("=== on alumni data sankey loaded ===")
+        angular.forEach(data["contents"], function (row, index) {
+            // var courses = [ Math.floor(Math.random()*20), Math.floor(Math.random()*20), Math.floor(Math.random()*20) ];
+            self.alumniDataSankey.push({
+                id: row['alumni_id'],
+                coord: {x: -100, y: ((20)*index-90), originalY: ((20)*index-90)},
+                position_id: row['job_category_id'],
+                name: row['organization'],
+                background_id: row['background_category_id'],
+                hidden: false,
+                highlighted: false,
                 isSelected: false,
-                isHighlighted: false
+                searchResult: true
             });
         });
+        console.log(self.alumniDataSankey);
     }
-    // self.loadCourseDummyData(self.onCourseDummyDataLoaded);
+    self.loadAlumniDataSankey(self.onAlumniDataSankeyLoaded);
+
+    /**
+     * end load data for sankey
+     */
+
+    function orderize(numberString) {
+        // create an array with 10 'th'
+        var postfix = Array.apply(null, new Array(10)).map(String.prototype.valueOf,'th');
+        postfix.splice(0, 3, 'st', 'nd', 'rd');
+        return numberString + postfix[(parseInt(numberString)-1)%10];
+    }
+
+    self.getGridLayoutCoordinate = function(column, index) {
+        var shift = ((index%column)%2==1)?0.5:0;
+        return {x: (index%column) * 120, y: (Math.floor(index/column)+shift) * 150}
+    }
 
     self.onCourseDataLoaded = function (data) {
         angular.forEach(data, function (row, index) {
+            var rawTerms = row['term_info'];
+            var terms = {};
+            for (var key in rawTerms) {
+                if (!rawTerms.hasOwnProperty(key))
+                    continue;
+                if (parseInt(key) > 5)
+                    break;
+                terms[orderize(key)] = rawTerms[key];
+            }
+
             self.courseData.push({
                 id: row['course_id'],
                 number: row['course_number'],
+                catelog: row['course_catelog'],
                 name: row['course_title'],
-                coord: {x: index%3 * 130, y: index/3 * 120},
-                popularity: row['alumni_count']/1000,
+                coord: self.getGridLayoutCoordinate(5, index),
+                originalRadius: row['alumni_count']/700,
+                radius: row['alumni_count']/700,
                 description: row['course_description'],
-                terms: row['term_info'],
+                terms: terms,
+                popularity: row['alumni_count'],
                 isHidden: false,
                 isSelected: false,
-                isHighlighted: false
+                isHighlighted: false,
+                isHovered: false
             });
         });
     }
@@ -165,33 +225,10 @@ angular.module('a3App')
         });
     }
 
-    self.onAlumniDummyDataLoaded = function (data) {
-        angular.forEach(data, function (row, index) {
-            // Skip header
-            var courses = [ row[3], row[4], row[5], Math.floor(Math.random()*20), Math.floor(Math.random()*20), Math.floor(Math.random()*20) ];
-            courses.sort(function(a, b) { return parseInt(a) > parseInt(b); });
-            if (index === 0)
-                return;
-            self.alumniData.push({
-                id: row[0],
-                coord: {x: -100, y: ((20)*row[0]-90), originalY: ((20)*row[0]-90)},
-                position: row[1],
-                name: row[2],
-                courses: courses,
-                hidden: false,
-                highlighted: false,
-                searchResult: true
-            });
-        });
-        self.updateAlumniPath();
-    }
-    // self.loadAlumniDummyData(self.onAlumniDummyDataLoaded);
-
     self.filterAlumni = function () {
         var options = {background: self.selectedBgName.value, position: self.selectedPosName.value};
         self.alumniData.length = 0;
-        console.log('options');
-        console.log(options);
+
         function isValid(variable) {
             if (variable !== undefined)
                 if (variable.length > 0)
@@ -199,31 +236,27 @@ angular.module('a3App')
             return  false;
         }
         angular.forEach(self.alumniAllData, function (alumnus, index) {
-            if (options === undefined) {
-                self.alumniData.push(alumnus);
-                return;
-            }
-            // options exists
-            if (!isValid(options.background)) {
-                self.alumniData.push(alumnus);
-                return;
-            }
-            // do filter
+            // filter by both
             if (isValid(options.background) && isValid(options.position)) {
-                // filter by both
                 if ((options.background === alumnus.background) && (options.position === alumnus.position))
                     self.alumniData.push(alumnus);
                 else
                     return;
             }
-            else {
-                // filter by backgound only
+            // filter by backgound only
+            else if (isValid(options.background) && !isValid(options.position)) {
                 if (options.background === alumnus.background)
                     self.alumniData.push(alumnus);
                 else
                     return;
             }
-            
+            // filter by position only
+            else if (!isValid(options.background) && isValid(options.position)) {
+                if (options.position === alumnus.position)
+                    self.alumniData.push(alumnus);
+                else
+                    return;
+            }
         });
     }
 
@@ -231,11 +264,13 @@ angular.module('a3App')
         angular.forEach(data, function (row, index) {
             // var courses = [ Math.floor(Math.random()*20), Math.floor(Math.random()*20), Math.floor(Math.random()*20) ];
             var courses = row['courses'];
-            courses.sort(function(a, b) { return parseInt(a) > parseInt(b); });
+            // courses.sort(function(a, b) { return parseInt(a) > parseInt(b); });
             self.alumniAllData.push({
                 id: row['alumni_id'],
-                coord: {x: -100, y: ((20)*index-90), originalY: ((20)*index-90)},
-                position: row['job_title'],
+                // coord: {x: -100, y: ((20)*index-90), originalY: ((20)*index-90)},
+                coord: {x: 320, y: -80},
+                position: row['job_category'],
+                title: row['job_title'],
                 name: row['organization'],
                 background: row['background_category'],
                 courses: courses,
@@ -297,8 +332,11 @@ angular.module('a3App')
         self.selectedAlumni.push(alumnus);
     }
 
+    self.highlightedAlumni = [];
+    self.isAnyAlumnushighlighted = {};
     self.highlightPath = function (alumnus) {
-        // self.highlightedAlumni.push(alumnus.id);
+        self.highlightedAlumni.push(alumnus);
+        self.isAnyAlumnushighlighted.value = true;
         alumnus.highlighted = true;
         angular.forEach(alumnus.courses, function (courseIndex, index) {
             self.getCourseById(courseIndex).isHighlighted = true;
@@ -306,9 +344,14 @@ angular.module('a3App')
     }
 
     self.unhighlightPath = function (alumnus) {
-        // if (self.highlightedAlumni.indexOf(alumnus) >= 0) {
-        //     self.highlightedAlumni.splice(alumnus.id, 1);
-        // }
+        var index = self.highlightedAlumni.indexOf(alumnus);
+        if (index >= 0) {
+            self.highlightedAlumni.splice(index, 1);
+        }
+        if (self.highlightedAlumni.length === 0)
+            self.isAnyAlumnushighlighted.value = false;
+
+
         alumnus.highlighted = false;
         angular.forEach(alumnus.courses, function (courseIndex, index) {
             self.getCourseById(courseIndex).isHighlighted = false;

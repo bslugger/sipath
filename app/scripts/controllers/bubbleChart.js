@@ -2,10 +2,7 @@
 
 angular.module('a3App')
   .controller('BubbleChartCtrl', function ($scope, pathVizService, courseAlumniViewService) {
-    $scope.svg = {
-        width: 400,
-        height: 1700
-    };
+    $scope.svg = courseAlumniViewService.svg;
     $scope.courseData = pathVizService.courseData;
     $scope.alumniData = pathVizService.alumniData;
 
@@ -16,10 +13,18 @@ angular.module('a3App')
 
     $scope.highlightPath = pathVizService.highlightPath;
     $scope.unhighlightPath = pathVizService.unhighlightPath;
+    $scope.isAnyAlumnushighlighted = pathVizService.isAnyAlumnushighlighted;
     $scope.shouldDisplayBubbleView = courseAlumniViewService.shouldDisplayBubbleView;
     $scope.selectedAlumni = courseAlumniViewService.selectedAlumni;
+    $scope.toggleAlumniBar = courseAlumniViewService.toggleAlumniBar;
 
-    /* View switching event handler */
+    $scope.hoverCourse = function (course) {
+        course.isHovered = true;
+    }
+
+    $scope.unhoverCourse = function (course) {
+        course.isHovered = false;
+    }
 
     $scope.onOverviewClicked = courseAlumniViewService.displayBubbleView;
   });
