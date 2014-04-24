@@ -30,12 +30,74 @@ angular.module('a3App')
     self.loadData2 = function (callback) {
       CsvReaderService.read2Json('/images/anon689_2.csv', callback);  
     }
-
     /**
      * load data for sankey
      */
     self.loadBackgroundIdTable = function (callback) {
         CsvReaderService.read2Json('/images/yj/background_category.csv', callback);
+    }
+    self.onBackgroundIdTableLoaded = function (data) {
+        console.log("=== On Background Id Table Loaded ===")
+        //console.log(data);
+        var headers = data["headers"];
+        var contents = data["contents"];
+        var result = {};
+        for (var i = 0; i < contents.length; i++) {
+            var content = contents[i];
+            result[content.background_category_id] = content.background_category;
+        }
+        self.backgroundIdTable = result;
+    }
+    self.loadBackgroundIdTable(self.onBackgroundIdTableLoaded);
+
+    self.loadJobIdTable = function(callback) {
+        CsvReaderService.read2Json('/images/yj/job_category.csv', callback);
+    }
+
+    self.onJobIdTableLoaded = function (data) {
+        console.log("=== On Job Id Table Loaded");
+        //console.log(data);
+        var headers = data["headers"];
+        var contents = data["contents"];
+        var result = {};
+        for (var i = 0; i < contents.length; i++) {
+            var content = contents[i];
+            result[content.job_category_id] = content.job_category;
+        }
+        self.jobIdTable = result;
+    }
+    self.loadJobIdTable(self.onJobIdTableLoaded);
+
+    // this should be removed and use self.alumniAllData later;
+    self.loadAlumniDataSankey = function (callback) {
+        CsvReaderService.read2Json('/images/yj/alumni_2.csv', callback);
+    }
+
+    self.onAlumniDataSankeyLoaded = function (data) {
+        console.log("=== on alumni data sankey loaded ===")
+        angular.forEach(data["contents"], function (row, index) {
+            // var courses = [ Math.floor(Math.random()*20), Math.floor(Math.random()*20), Math.floor(Math.random()*20) ];
+            self.alumniDataSankey.push({
+                id: row['alumni_id'],
+                coord: {x: -100, y: ((20)*index-90), originalY: ((20)*index-90)},
+                position_id: row['job_category_id'],
+                name: row['organization'],
+                background_id: row['background_category_id'],
+                hidden: false,
+                highlighted: false,
+                isSelected: false,
+                searchResult: true
+            });
+        });
+        console.log(self.alumniDataSankey);
+    }
+    self.loadAlumniDataSankey(self.onAlumniDataSankeyLoaded);
+
+    /**
+     * end load data for sankey
+     */
+
+
     }
     self.onBackgroundIdTableLoaded = function (data) {
         console.log("=== On Background Id Table Loaded ===")
