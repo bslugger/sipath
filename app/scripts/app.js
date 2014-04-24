@@ -17,7 +17,11 @@ angular.module('a3App', [])
       })
       .when('/sankey', {
         templateUrl: 'views/sankey.html',
-        controller: 'SankeyCtrl'
+        controller: 'SankeyCtrl',
+        resolve: {
+          'PathVizServiceData': function(pathVizService) {
+          }
+        }
       })
       .when('/course', {
         templateUrl: 'views/coursePath.html',
