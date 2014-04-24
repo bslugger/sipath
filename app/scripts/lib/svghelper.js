@@ -109,3 +109,14 @@ function roundTo (input, point) {
     }
     return +(Math.round(input + "e+" + point) + "e-" + point);
 }
+
+/**
+ *  Array Util
+ *  TODO:// Should this be prototype??
+ */
+function getNext() {
+    var mArr = this;
+    var tmp = mArr.shift();
+    mArr.push(tmp);
+    return tmp;
+}

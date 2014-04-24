@@ -331,3 +331,26 @@ text.bar-label {
 .sankey-label {
     fill: #ddd;
 }
+
+.scrollbar-wrapper {
+    width: 500px;
+    height: 500px;
+    background-color: #333;
+    overflow: hidden;
+    .content {
+        width: 490px;
+        height: 490px;
+        padding: 5px 5px 5px 5px;
+        overflow: auto;
+        background-color: #300;
+    }
+}
+
+/* way the hell off screen */
+.scrollbar-measure {
+    width: 100px;
+    height: 100px;
+    overflow: scroll;
+    position: absolute;
+    top: -9999px;
+}
