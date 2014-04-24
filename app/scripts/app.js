@@ -39,6 +39,10 @@ angular.module('a3App', [])
         templateUrl: 'views/alumniBar.html',
         controller: 'AlumniBarCtrl'
       })
+      .when('/scrollbar', {
+        templateUrl: 'views/scrollbartest.html',
+        controller: 'ScrollbarCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
