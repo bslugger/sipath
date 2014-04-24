@@ -25,6 +25,8 @@ angular.module('a3App')
 
     $("div.scrollbar-wrapper .content").scroll(function() {
         // update custom scrollbar display using this.scrollTop as a percentage of this.clientHeight
-        // alert("Place slider at " + ((100 * this.scrollTop) / this.clientHeight) + "%!");
+
+        // detect scroll position
+        console.log(this.scrollTop);
     });
   });
