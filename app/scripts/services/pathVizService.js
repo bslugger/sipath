@@ -97,8 +97,6 @@ angular.module('a3App')
      * end load data for sankey
      */
 
-
-    }
     self.onBackgroundIdTableLoaded = function (data) {
         console.log("=== On Background Id Table Loaded ===")
         //console.log(data);
