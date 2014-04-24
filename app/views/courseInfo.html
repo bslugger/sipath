@@ -1,3 +1,22 @@
+<div ng-hide="isCourseSelected()">
+    <h3>Popuplar Courses</h3>
+    <h5>Alumni like you chose these courses</h5>
+    <p>Click on the bubble to see more course information</p>
+    <br/>
+    
+    <svg height="200" width="200">
+        <g class="course-bubble-group">
+          <circle class="course-bubble-ring-1" cx="100" cy="101" r="{{75}}"></circle>
+          <circle class="course-bubble-ring-3" cx="100" cy="101" r="{{55}}"></circle>
+          <circle class="course-bubble-ring-base" cx="100" cy="101" r="{{30}}"></circle>
+          <circle class="course-bubble highlighted" cx="100" cy="101" r="30"></circle>
+          <text class="course-bubble-label" x="100" y="101">0</text>
+          <text class="course-bubble-popularity-label" x="135" y="101">100</text>
+          <text class="course-bubble-popularity-label" x="165" y="101">200</text>
+      </g>
+    </svg>
+    <h5 style="text-align:center">Popularity legend</h5>
+</div>
 <div ng-show="isCourseSelected()">
     <h3>SI {{selectedCourses[0].number}}</h3>
     <h4>{{selectedCourses[0].name}}</h4>
