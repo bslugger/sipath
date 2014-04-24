@@ -2,6 +2,9 @@
 
 angular.module('a3App')
   .controller('SankeyCtrl', function ($scope, pathVizService) {
+    /**
+     * Sankey's layout parameters
+     */
     $scope.svg = {
         width: 900,
         height: 450,
@@ -17,22 +20,17 @@ angular.module('a3App')
         minHeight: 5
     };
 
+    /**
+     * caculated layout parameters based on svg size
+     */
     $scope.anchors.xDis = $scope.svg.width - $scope.anchors.leftColWidth - $scope.anchors.rightColWidth;
     $scope.anchors.rightX = $scope.svg.width - $scope.anchors.rightColWidth;
+    
 
-    $scope.predicate = "-value";
-    $scope.highlightedBgIndex = -1;
-    $scope.highlightedPosIndex = -1;
-    $scope.selectedBgIndex = -1;
-    $scope.selectedPosIndex = -1;
-    $scope.selectedBgName = pathVizService.selectedBgName;
-    $scope.selectedPosName = pathVizService.selectedPosName;
-    //$scope.backToCareerLinks.filterWithClass = filterWithClass;
-    $scope.isSelected = isSelected;
-    $scope.isHighlighted = isHighlighted;
-    $scope.labelSize = labelSize;
-    $scope.totalPercentage = 0;
-
+    /**
+     *  UI Util
+     *  Color and Text size
+     */
     var backgroundColor = [
         "#1C364C",
         "#2A5172",
@@ -58,25 +56,56 @@ angular.module('a3App')
         "#4EC48F"
     ];
 
+    /**
+     *  Function for AngularJS HTML DOM get 
+     *  interaction state
+     */
     backgroundColor.getNext = getNext;
     posColor.getNext = getNext;
+    $scope.labelSize = labelSize;
+    $scope.isSelected = isSelected;
+    $scope.isHighlighted = isHighlighted;  
 
-    function getNext() {
-        var mArr = this;
-        var tmp = mArr.shift();
-        mArr.push(tmp);
-        return tmp;
-    }
+    /**
+     *  Parameters for User highlight/selection state
+     */
+    $scope.predicate = "-value"; // not sure what it is
+    $scope.highlightedBgIndex = -1;
+    $scope.highlightedPosIndex = -1;
+    $scope.selectedBgIndex = -1;
+    $scope.selectedPosIndex = -1;
+    $scope.selectedBgName = pathVizService.selectedBgName;
+    $scope.selectedPosName = pathVizService.selectedPosName;
 
+    
+
+    /**
+     * UI Util
+     */
     function labelSize(width, height, scaleWidth, scaleHeight) {
         var wSize = width * scaleWidth;
         var hSize = height * scaleHeight;
         return (hSize > wSize)? wSize : hSize;
     }
 
-    
-    // option 0 : bg - pos
-    // option 1 : pos - bg
+    /**
+     * if iterate === true
+     *     The whole Background/Position block will be highlighted
+     *     once one of it's child is highlighted
+     * if iterate !=== true
+     *     Only the highlighted child will be highlighted, other
+     *     element in the same group remain the same.
+     * 
+     * Check if certain HTML Element is Highlighted
+     * @param  {int}    bgKey   
+     * @param  {int}    posKey  
+     * @param  {bool}   iterate iterate through each element 
+     * @param  {Array}  data    input Array Data (bg or pos)
+     * @param  {int}    option  
+     *         0 : bg Array with pos Data as an element
+     *         1 : pos Array with bg Data as an element
+     * @return {Boolean}    highlighted status
+     */
     function isHighlighted(bgKey, posKey, iterate, data, option) {
         var hBgIndex = $scope.highlightedBgIndex;
         var hPosIndex = $scope.highlightedPosIndex;
@@ -124,8 +153,27 @@ angular.module('a3App')
         }
     }
 
-    // option 0: bg - pos
-    // option 1: pos - bg
+    /**
+     * if iterate === true
+     *     The whole Background/Position block will be selected
+     *     once one of it's child is selected
+     * if iterate !=== true
+     *     Only the selected child will be selected, other
+     *     element in the same group remain the same.
+     * 
+     * Check if certain HTML Element is Selected
+     * @param  {int}    bgKey   
+     * @param  {int}    posKey  
+     * @param  {bool}   iterate iterate through each element 
+     * @param  {Array}  data    input Array Data (bg or pos)
+     * @param  {int}    option  
+     *         0 : bg Array with pos Data as an element
+     *         1 : pos Array with bg Data as an element
+     * @return {Boolean}    selected status
+     *
+     * TODO:// This part of code is exactly as same as isHighlighted.
+     *         Combine them together later.
+     */
     function isSelected(bgKey, posKey, iterate, data, option) {
         var sBgIndex = $scope.selectedBgIndex;
         var sPosIndex = $scope.selectedPosIndex;
@@ -175,9 +223,20 @@ angular.module('a3App')
         return false;
     }
 
-    // options: 1 multiple class1
-    //          2 multiple class2
-    //          3 single
+    /**
+     * UI Interaction Function
+     */
+
+    /**
+     * mark element as highlighted when user's mouse over
+     * @param  {string} class1  bg-[index] ex. bg-0, bg-1
+     * @param  {string} class2  pos-[index] ex. pos-0, pos-1
+     * @param  {int}    options 
+     *         1 highlight all elements have same bg-[index]
+     *         2 highlight all elements have same pos-[index]
+     *         3 highlight elements have exactly match of 
+     *           both bg- and pos-[index]
+     */
     $scope.hoverBackground = function(class1, class2, options) {
         
         var class1Index = class1.split("-")[1];
@@ -194,12 +253,27 @@ angular.module('a3App')
         }
     }
 
+    /**
+     * remove all highlighted status when mouse out
+     */
     $scope.leaveHighlightedArea = function() {
         $scope.highlightedBgIndex = -1;
         $scope.highlightedPosIndex = -1;
 
     }
 
+    /**
+     * mark element as selected/deselect when user clicks on it
+     *     if the clicked element is not selected, select it
+     *     if the clicked element is selected, deselect it
+     * @param  {string} class1  bg-[index] ex. bg-0, bg-1
+     * @param  {string} class2  pos-[index] ex. pos-0, pos-1
+     * @param  {int}    options 
+     *         1 select all elements have same bg-[index]
+     *         2 select all elements have same pos-[index]
+     *         3 select elements have exactly match of 
+     *           both bg- and pos-[index]
+     */
     $scope.clickBackground = function(class1, class2, options) {
         // class1 - background;
         // class2 - position;    
@@ -242,29 +316,10 @@ angular.module('a3App')
         //console.log($scope.selectedPosName.value);
     }
 
-    console.log("==== SANKEY ====");
-    
-    // $scope.backgroundIdTable = pathVizService.getBackgroundIdTable();
-    // $scope.jobIdTable = pathVizService.getJobIdTable();
-    // $scope.alumniData = pathVizService.getAlumniDataSankey();
-    $scope.backgroundIdTable = pathVizService.backgroundIdTable;
-    $scope.jobIdTable = pathVizService.jobIdTable;
-    $scope.alumniData = pathVizService.alumniDataSankey;
-    //console.log($scope.backgroundIdTable);
-    //console.log($scope.jobIdTable);
-    //console.log($scope.alumniData);
-    
-    $scope.totalNumber = $scope.alumniData.length;
-    $scope.backgroundData = updateCategoryData($scope.alumniData, $scope.backgroundIdTable, "background_id", "position_id", "positions",backgroundColor);
-    //console.log($scope.backgroundData);
-    $scope.positionData = updateCategoryData($scope.alumniData, $scope.jobIdTable, "position_id", "background_id", "backgrounds",posColor);
-    $scope.sankeyPaths = [];
-    //console.log($scope.positionData);
-    updateCategoryRect($scope.backgroundData, 'positions');
-    updateCategoryRect($scope.positionData, 'backgrounds');
-    updateSankeyPath();
-    console.log($scope.totalPercentage);
-    
+    /**
+     * Data Manipulate Function
+     */
+     
     function updateCategoryData(data, table, firstId, secondId, secondLabel, colorArr) {
         var result = {};
         for (var tbId in table) {
@@ -355,5 +410,28 @@ angular.module('a3App')
             }
         }        
     }
+
+    /**
+     *  Main Function Part
+     */
+    console.log("==== SANKEY ====");
+    $scope.backgroundIdTable = pathVizService.backgroundIdTable;
+    $scope.jobIdTable = pathVizService.jobIdTable;
+    $scope.alumniData = pathVizService.alumniDataSankey;
+    //console.log($scope.backgroundIdTable);
+    //console.log($scope.jobIdTable);
+    //console.log($scope.alumniData);
+    
+    $scope.totalPercentage = 0;
+    $scope.totalNumber = $scope.alumniData.length;
+    $scope.backgroundData = updateCategoryData($scope.alumniData, $scope.backgroundIdTable, "background_id", "position_id", "positions",backgroundColor);
+    //console.log($scope.backgroundData);
+    $scope.positionData = updateCategoryData($scope.alumniData, $scope.jobIdTable, "position_id", "background_id", "backgrounds",posColor);
+    $scope.sankeyPaths = [];
+    //console.log($scope.positionData);
+    updateCategoryRect($scope.backgroundData, 'positions');
+    updateCategoryRect($scope.positionData, 'backgrounds');
+    updateSankeyPath();
+    console.log($scope.totalPercentage);
 
   });
