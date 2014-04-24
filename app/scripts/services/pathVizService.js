@@ -34,6 +34,11 @@ angular.module('a3App')
         return numberString + postfix[(parseInt(numberString)-1)%10];
     }
 
+    self.getGridLayoutCoordinate = function(column, index) {
+        var shift = ((index%column)%2==1)?0.5:0;
+        return {x: (index%column) * 120, y: (Math.floor(index/column)+shift) * 150}
+    }
+
     self.onCourseDataLoaded = function (data) {
         angular.forEach(data, function (row, index) {
             var rawTerms = row['term_info'];
@@ -46,13 +51,12 @@ angular.module('a3App')
                 terms[orderize(key)] = rawTerms[key];
             }
 
-            var shift = ((index%3)==1)?0.5:0;
             self.courseData.push({
                 id: row['course_id'],
                 number: row['course_number'],
                 catelog: row['course_catelog'],
                 name: row['course_title'],
-                coord: {x: (index%3) * 120, y: (Math.floor(index/3)+shift) * 150},
+                coord: self.getGridLayoutCoordinate(5, index),
                 originalRadius: row['alumni_count']/700,
                 radius: row['alumni_count']/700,
                 description: row['course_description'],

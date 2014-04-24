@@ -19,6 +19,8 @@ angular.module('a3App')
     self.toggleAlumniBar = function () {
         self.shouldShowAlumniBar.value = !self.shouldShowAlumniBar.value;
         self.svg.offset = (self.shouldShowAlumniBar.value)? 220: 0;
+        var column = (self.shouldShowAlumniBar.value)? 3: 5;
+        setCourseLayoutByColumn(column, self.courseData);
     }
 
     self.displayAlumniView = function (alumnus) {
@@ -73,6 +75,12 @@ angular.module('a3App')
         angular.forEach(courses, function (course, index) {
             course.coord.x = course.id/3 * 100;
             course.coord.y = index % 3 * 100;
+        });
+    }
+
+    function setCourseLayoutByColumn(column, courses) {
+        angular.forEach(courses, function (course, index) {
+            course.coord = pathVizService.getGridLayoutCoordinate(column, index);
         });
     }
 
