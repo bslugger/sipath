@@ -16,6 +16,11 @@
 </div>
 <div class="container row-fluid">
 <!-- <div class="chart-container span8"> -->
+    <div class="alumni-toggle-button" ng-click="toggleAlumniBar()" ng-show="shouldDisplayBubbleView.value">
+      <div class="alumni-image-wrapper small">
+        <img src="images/mortarboard.png" alt="alumni icon"/>
+      </div>
+    </div>
     <svg height="{{(svg.height)}}" width="{{(svg.width)}}">
       <!-- <path class="alumni-path" ng-repeat="alumnus in alumniData" id="{{alumnus.id}}" d="{{alumnus.d}}" transform="translate({{svg.offset+80}}, 80)" ng-mouseenter="highlightPath(alumnus)" ng-mouseleave="unhighlightPath(alumnus)" ng-show="shouldDisplayBubbleView.value" pv-svg-class='{"highlighted": "alumnus.highlighted", "selected": "alumnus.isSelected", "hidden":"alumnus.hidden"}'></path> -->
       <path class="alumni-path" d="{{selectedAlumniCoursesData.d}}" ng-hide="shouldDisplayBubbleView.value" transform="translate({{svg.offset+80}}, 80)" ></path>

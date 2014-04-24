@@ -87,10 +87,40 @@ line.axis {
     }
 }
 
-.list-container {
-    background-color: $alumniBarBackgroundColor;
-    overflow: scroll;
+.alumni-toggle-button {
+    position: absolute;
+    z-index: 0;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    margin-left: 10px;
+    margin-top: 10px;
+    background-color: white;
+    box-shadow: 0px 2px 4px #999;
+    border-radius:100px;
+}
+
+.alumni-bar {
+    position: absolute;
     height: $height;
+    width: 220px;
+    background-color: $alumniBarBackgroundColor;
+    input {
+        width: 206px;
+        border-radius: 0;
+        margin-bottom: 0;
+    }
+    .alumni-bar-title {
+        margin-left: 65px;
+        color: #f7f7f7;
+        margin-top: 24px;
+        margin-bottom: 24px;
+    }
+}
+
+.list-container {
+    overflow: scroll;
+    height: $height - 98;
     ul {
         margin-left: 0;
     }
@@ -98,9 +128,6 @@ line.axis {
         list-style: none;
         color: white;
         padding: 10px;
-    }
-    input {
-        width: 180px;
     }
 }
 
@@ -248,7 +275,7 @@ text.bar-label {
     .alumni-frame {
         position: absolute;
         display: block;
-        &.hidden {
+        &.hidden, &.minimized {
             display: none;
         }
     }
@@ -261,6 +288,12 @@ text.bar-label {
     background-color: #e6e6e6;
     margin-left: 20px;
     margin-right: 20px;
+    &.small {
+        position: absolute;
+        margin: 0;
+        width: 44px;
+        height: 44px;
+    }
 }
 
 .alumni-info {

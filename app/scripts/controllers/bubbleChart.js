@@ -16,6 +16,7 @@ angular.module('a3App')
     $scope.isAnyAlumnushighlighted = pathVizService.isAnyAlumnushighlighted;
     $scope.shouldDisplayBubbleView = courseAlumniViewService.shouldDisplayBubbleView;
     $scope.selectedAlumni = courseAlumniViewService.selectedAlumni;
+    $scope.toggleAlumniBar = courseAlumniViewService.toggleAlumniBar;
 
     $scope.hoverCourse = function (course) {
         course.isHovered = true;
