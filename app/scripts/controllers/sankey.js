@@ -88,6 +88,11 @@ angular.module('a3App')
     /**
      * UI Util
      */
+    $scope.greyout = greyout;
+    function greyout() {
+        return (($scope.selectedBgIndex !== -1) || ($scope.selectedPosIndex !== -1));
+    }
+
     function labelSize(width, height, scaleWidth, scaleHeight) {
         var wSize = width * scaleWidth;
         var hSize = height * scaleHeight;
