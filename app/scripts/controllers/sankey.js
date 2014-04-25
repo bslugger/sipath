@@ -99,6 +99,34 @@ angular.module('a3App')
         return (hSize > wSize)? wSize : hSize;
     }
 
+    $scope.getSecondIndex = getSecondIndex;
+    function getSecondIndex(label, data) {
+        var target = data[label];
+        var result = "";
+        for(var key in target) {
+            result += key + " ";
+        }
+        return result;
+    }
+
+
+    function isContain(input, target) {
+        var inputArr = input.split(" ");
+        var result = false;
+        // if (target === -1 && input === -1) {
+        //     return result;
+        // } 
+        for (var i = 0; i < inputArr.length; i++) {
+            var comperator = inputArr[i];
+            if (comperator === target) {
+                result = true;
+                break;
+            }
+        }
+
+        return result;
+    }
+
     /**
      * if iterate === true
      *     The whole Background/Position block will be highlighted
