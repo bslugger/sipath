@@ -138,8 +138,37 @@ angular.module('a3App')
     }
     self.loadCourseData(self.onCourseDataLoaded);
 
+
+
+    var observerCallbacks = {};
+    self.registerObserverCallback = function (variable, callback) {
+        if (observerCallbacks[variable] == undefined)
+            observerCallbacks[variable] = [];
+        observerCallbacks[variable].push(callback);
+    }
+
+    self.notifyObservers = function(variable) {
+        for (variable in observerCallbacks) {
+            if (!observerCallbacks.hasOwnProperty(variable))
+                continue;
+            var callbacks = observerCallbacks[variable];
+            for (var i = 0; i < callbacks.length; i++) {
+                callbacks[i](self[variable]);
+            }
+        }
+    }
+
     self.selectedBgName = {};
     self.selectedPosName = {};
+    self.isSankeySelected = {};
+
+    self.updateIsSankeySelected = function () {
+        console.log('update isSankeySelected');
+        self.isSankeySelected.value = isValid(self.selectedBgName.value) || isValid(self.selectedPosName.value);
+    }
+
+    self.registerObserverCallback('selectedBgName', self.updateIsSankeySelected);
+    self.registerObserverCallback('selectedPosName', self.updateIsSankeySelected);
 
     self.updateAlumniPath = function () {
         angular.forEach(self.alumniData, function (alumnus, index) {
@@ -158,16 +187,17 @@ angular.module('a3App')
         });
     }
 
+    function isValid(variable) {
+        if (variable !== undefined)
+            if (variable.length > 0)
+                return true;
+        return  false;
+    }
+
     self.filterAlumni = function () {
         var options = {background: self.selectedBgName.value, position: self.selectedPosName.value};
         self.alumniData.length = 0;
 
-        function isValid(variable) {
-            if (variable !== undefined)
-                if (variable.length > 0)
-                    return true;
-            return  false;
-        }
         angular.forEach(self.alumniAllData, function (alumnus, index) {
             // filter by both
             if (isValid(options.background) && isValid(options.position)) {
@@ -240,7 +270,7 @@ angular.module('a3App')
       course.isSelected = true;
       self.selectedCourses.push(course);
       self.selectedCourseTerms.push(course.terms);
-      notifyObservers('selectedCourseTerms');
+      self.notifyObservers('selectedCourseTerms');
       // console.log(self.selectedCourseTerms.value);
     }
     self.isCourseSelected = function () {
@@ -291,21 +321,5 @@ angular.module('a3App')
         });
     }
 
-    var observerCallbacks = {};
-    self.registerObserverCallback = function (variable, callback) {
-        if (observerCallbacks[variable] == undefined)
-            observerCallbacks[variable] = [];
-        observerCallbacks[variable].push(callback);
-    }
 
-    var notifyObservers = function(variable) {
-    for (variable in observerCallbacks) {
-        if (!observerCallbacks.hasOwnProperty(variable))
-            continue;
-        var callbacks = observerCallbacks[variable];
-        for (var i = 0; i < callbacks.length; i++) {
-            callbacks[i](self[variable]);
-        }
-    };
-  };
   });

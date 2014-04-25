@@ -365,6 +365,8 @@ angular.module('a3App')
         $scope.selectedPosIndex = selectedPos;
         $scope.selectedBgName.value = $scope.backgroundIdTable[$scope.selectedBgIndex];
         $scope.selectedPosName.value = $scope.jobIdTable[$scope.selectedPosIndex];
+        pathVizService.notifyObservers('selectedBgName');
+        pathVizService.notifyObservers('selectedPosName');
 
         //console.log($scope.selectedBgName.value);
         //console.log($scope.selectedPosName.value);

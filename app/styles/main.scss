@@ -300,8 +300,13 @@ text.bar-label {
         }
     }
     .sankey-wrapper.expanded {
-        height: $height;
+        height: 695px;
         width: 100%;
+    }
+    .toggle-button {
+        margin-right: 20px;
+        top: -6px;
+        position: relative;
     }
 }
 
