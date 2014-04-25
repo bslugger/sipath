@@ -99,6 +99,14 @@ angular.module('a3App')
         return (hSize > wSize)? wSize : hSize;
     }
 
+    $scope.moveTile = moveTile;
+    function moveTile(orig, condition, offset) {
+        
+        var result = orig + ((condition)?offset:0);
+        
+        return result;
+    }
+
     $scope.getSecondIndex = getSecondIndex;
     function getSecondIndex(label, data) {
         var target = data[label];
