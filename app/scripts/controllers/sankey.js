@@ -35,7 +35,12 @@ angular.module('a3App')
      */
     $scope.anchors.xDis = $scope.svg.width - $scope.anchors.leftColWidth - $scope.anchors.rightColWidth;
     $scope.anchors.rightX = $scope.svg.width - $scope.anchors.rightColWidth;
-    
+
+    /**
+     * Constant string
+     */
+    $scope.backgroundTag = "backgrounds";
+    $scope.positionTag = "positions";
 
     /**
      *  UI Util
