@@ -168,35 +168,77 @@ line.axis {
     }
 }
 
-.dataTile {
-    opacity: 0.5;
+.dataTile.bg {
+    opacity: 1.0;
+    &.greyout {
+        opacity: 0.5;
+    }
     &.highlighted {
         opacity: 1.0;
-        fill: rgba(10,10,10,1.0);
+        fill: #55cc66;
+        // fill: rgba(10,10,10,1.0);
     }
     &.selected {
         opacity: 1.0;
-        fill: rgba(50,50,80,1.0);
+        fill: #004e33;
+        // fill: rgba(50,50,80,1.0);
     }
     &.highlighted.selected {
         opacity: 1.0;
-        fill: rgba(100,200,100,1.0);
+        fill: #246047;//rgba(100,200,100,1.0);
     }
 }
+
+.dataTile.pos {
+    opacity: 1.0;
+    &.greyout {
+        opacity: 0.3;
+    }
+    &.highlighted {
+        opacity: 1.0;
+        fill: #2F5B80;
+        // fill: rgba(10,10,10,1.0);
+    }
+    &.selected {
+        opacity: 1.0;
+        fill: #264866;
+        // fill: rgba(50,50,80,1.0);
+    }
+    &.highlighted.selected {
+        opacity: 1.0;
+        // fill: rgba(100,200,100,1.0);
+    }
+}
+
+.dataTile-highlightBar {
+    stroke-width: 0;
+    &.highlighted {
+        fill: rgba(255,255,255,1.0);
+    }
+    &.selected {
+        fill: none;
+    }
+    &.highlighted.selected {
+        fill: rgba(255,255,255,1.0);   
+    }
+}
+
 .dataLink {
     opacity: 1.0;
     stroke-width: 0;
+    fill: #CCC;
     &.highlighted {
         opacity: 1.0;
-        fill: rgba(100,200,200,1.0);
+        fill: #55cc66;
     }
     &.selected {
         opacity: 1.0;
-        fill: rgba(50,50,80,1.0);
+        fill: #004e33;
     }
     &.highlighted.selected {
         opacity: 1.0;
-        fill: rgba(100,200,100,1.0);
+        fill: #246047;
+        //fill: rgba(100,200,100,1.0);
     }
 }
 
@@ -330,6 +372,12 @@ text.bar-label {
 
 .sankey-label {
     fill: #ddd;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .scrollbar-wrapper {
