@@ -7,7 +7,7 @@ angular.module('a3App')
      */
     $scope.svg = {
         width: 900,
-        height: 450,
+        height: 800,
         yOffset: 0
     };
     $scope.anchors = {
@@ -17,7 +17,7 @@ angular.module('a3App')
         leftColWidth: 150,
         rightColWidth: 150,
         scale: 385,
-        minHeight: 5
+        minHeight: 10,
     };
 
     /**
