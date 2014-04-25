@@ -7,7 +7,7 @@ angular.module('a3App')
      */
     $scope.svg = {
         width: 900,
-        height: 450,
+        height: 800,
         yOffset: 0
     };
     $scope.anchors = {
@@ -17,7 +17,17 @@ angular.module('a3App')
         leftColWidth: 150,
         rightColWidth: 150,
         scale: 385,
-        minHeight: 5
+        minHeight: 10,
+        borderWidth: 1,
+        borderColor: "#E6E6E6"
+    };
+    $scope.uiParam = {
+        offset: 0,
+    };
+
+    $scope.highlightBar = {
+        offset: 2,
+        width: 4
     };
 
     /**
@@ -25,35 +35,31 @@ angular.module('a3App')
      */
     $scope.anchors.xDis = $scope.svg.width - $scope.anchors.leftColWidth - $scope.anchors.rightColWidth;
     $scope.anchors.rightX = $scope.svg.width - $scope.anchors.rightColWidth;
-    
+
+    /**
+     * Constant string
+     */
+    $scope.backgroundTag = "backgrounds";
+    $scope.positionTag = "positions";
 
     /**
      *  UI Util
      *  Color and Text size
      */
     var backgroundColor = [
-        "#1C364C",
-        "#2A5172",
-        "#386C98",
-        "#6089AD",
-        "#80A1BD",
-        "#bf812d",
-        "#dfc27d",
-        "#f6e8c3",
-        "#f5f5f5",
-        "#c7eae5",
-        "#80cdc1",
-        "#35978f",
-        "#01665e"
+        //"#0D4228",
+        // "#115B3A",
+        // "#136641",
+        // "#16663C",
+        // "#197F4C",
+        "#339966"
     ];
 
     var posColor = [
-        "#082D1D",
-        "#115B3A",
-        "#1A8856",
-        "#22B573",
-        "#35978f",
-        "#4EC48F"
+        // "#264866",
+        // "#2F5B80",
+        // "#3077A6",
+         "#4789BF"
     ];
 
     /**
@@ -82,10 +88,51 @@ angular.module('a3App')
     /**
      * UI Util
      */
+    $scope.greyout = greyout;
+    function greyout() {
+        return (($scope.selectedBgIndex !== -1) || ($scope.selectedPosIndex !== -1));
+    }
+
     function labelSize(width, height, scaleWidth, scaleHeight) {
         var wSize = width * scaleWidth;
         var hSize = height * scaleHeight;
         return (hSize > wSize)? wSize : hSize;
+    }
+
+    $scope.moveTile = moveTile;
+    function moveTile(orig, condition, offset) {
+        
+        var result = orig + ((condition)?offset:0);
+        
+        return result;
+    }
+
+    $scope.getSecondIndex = getSecondIndex;
+    function getSecondIndex(label, data) {
+        var target = data[label];
+        var result = "";
+        for(var key in target) {
+            result += key + " ";
+        }
+        return result;
+    }
+
+
+    function isContain(input, target) {
+        var inputArr = input.split(" ");
+        var result = false;
+        // if (target === -1 && input === -1) {
+        //     return result;
+        // } 
+        for (var i = 0; i < inputArr.length; i++) {
+            var comperator = inputArr[i];
+            if (comperator === target) {
+                result = true;
+                break;
+            }
+        }
+
+        return result;
     }
 
     /**
@@ -105,7 +152,7 @@ angular.module('a3App')
      *         0 : bg Array with pos Data as an element
      *         1 : pos Array with bg Data as an element
      * @return {Boolean}    highlighted status
-     */
+     */ 
     function isHighlighted(bgKey, posKey, iterate, data, option) {
         var hBgIndex = $scope.highlightedBgIndex;
         var hPosIndex = $scope.highlightedPosIndex;
@@ -122,20 +169,20 @@ angular.module('a3App')
             var check = true;
             if (hBgIndex !== -1 && hPosIndex !== -1) {
                 if (option === 0) {
-                    check = (bgKey === hBgIndex);
+                    check = (isContain(bgKey,hBgIndex));
                 } else if (option === 1) {
-                    check = (posKey === hPosIndex);
+                    check = (isContain(posKey, hPosIndex));
                 }
             }
             if (check) {
                 for (var entryKey in data[label]) {
                     var entry = data[label][entryKey];
                     if (option === 0) {
-                        if (hPosIndex === entryKey) {
+                        if (isContain(entryKey, hPosIndex)) {
                             return true;
                         }
                     } else if (option === 1) {
-                        if (hBgIndex === entryKey) {
+                        if (isContain(entryKey, hBgIndex)) {
                             return true;
                         }
                     }
@@ -144,11 +191,11 @@ angular.module('a3App')
         }
         {
             if (hBgIndex !== -1 && hPosIndex !== -1) {
-                return (bgKey === hBgIndex) && (posKey === hPosIndex);
+                return isContain(bgKey,hBgIndex) && isContain(posKey, hPosIndex);
             } else if (hBgIndex !== -1) {
-                return (bgKey === hBgIndex);
+                return isContain(bgKey, hBgIndex);
             } else if (hPosIndex !== -1) {
-                return (posKey === hPosIndex);
+                return isContain(posKey, hPosIndex);
             }
         }
     }
@@ -179,7 +226,7 @@ angular.module('a3App')
         var sPosIndex = $scope.selectedPosIndex;
         var label = '';
         if (typeof option === 'undefined') {
-            option = 0;
+            option = 2;
         }
         if (option === 0) {
             label = 'positions';
@@ -190,20 +237,20 @@ angular.module('a3App')
             var check = true;
             if (sBgIndex !== -1 && sPosIndex !== -1) {
                 if (option === 0) {
-                    check = (bgKey === sBgIndex);
+                    check = isContain(bgKey, sBgIndex);
                 } else if (option === 1) {
-                    check = (posKey === sPosIndex);
+                    check = isContain(posKey, sPosIndex);
                 }
             }
             if (check) {
                 for (var entryKey in data[label]) {
                     var entry = data[label][entryKey];
                     if (option === 0) {
-                        if (sPosIndex === entryKey) {
+                        if (isContain(entryKey, sPosIndex)) {
                             return true;
                         }
                     } else if (option === 1) {
-                        if (sBgIndex === entryKey) {
+                        if (isContain(entryKey, sBgIndex)) {
                             return true;
                         }
                     }
@@ -211,13 +258,20 @@ angular.module('a3App')
             }
         }
         {
-            if (sBgIndex !== -1 && sPosIndex !== -1) {
-                return (bgKey === sBgIndex) && (posKey === sPosIndex);
-            } else if (sBgIndex !== -1) {
-                return (bgKey === sBgIndex);
-            } else if (sPosIndex !== -1) {
-                return (posKey === sPosIndex);
+            if (option === 0) {
+                return isContain(bgKey, sBgIndex);
+            } else if (option === 1) {
+                return isContain(posKey, sPosIndex);
+            } else {
+                if (sBgIndex !== -1 && sPosIndex !== -1) {
+                    return (isContain(bgKey, sBgIndex)) && (isContain(posKey,sPosIndex));
+                } else if (sBgIndex !== -1) {
+                    return isContain(bgKey, sBgIndex);
+                } else if (sPosIndex !== -1) {
+                    return isContain(posKey, sPosIndex);
+                }
             }
+            
         }
 
         return false;
