@@ -266,7 +266,7 @@ text.bar-label {
     position: relative;
     .text-wrapper{
         filter: alpha(opacity=0);
-        background-color: #555555;
+        background-color: #888;
         vertical-align: middle;
         text-align: center;
         color: white;
@@ -274,7 +274,7 @@ text.bar-label {
         padding-right: 30px;
         font-family: "Myriad Pro",sans-serif;
         cursor: pointer;
-        background: #555555 url(http://s22.postimg.org/51zf7cl1d/arrow.png) no-repeat top 10px right;
+        background: #888 url(http://s22.postimg.org/51zf7cl1d/arrow.png) no-repeat top 10px right;
         background-size: 25px;
         font-size: 20px;
          padding: 15px;
@@ -289,7 +289,8 @@ text.bar-label {
         margin-top: 0px;
         padding: 0px;
         height: 0px;
-        background: #494949;
+        background: #e6e6e6;
+        border: solid 1px #ccc;
         overflow: hidden;
         position: absolute;
         left: 0;
