@@ -49,8 +49,9 @@ line.axis {
         // stroke: $primaryColorAlt;
     }
     &.selected {
-        stroke-width: 4;
-        stroke: $primaryColorAlt;
+        // stroke-width: 4;
+        // stroke: $primaryColorAlt;
+        fill: $primaryColorAlt;
     }
 }
 
