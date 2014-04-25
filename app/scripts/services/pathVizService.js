@@ -110,12 +110,9 @@ angular.module('a3App')
         angular.forEach(data, function (row, index) {
             var rawTerms = row['term_info'];
             var terms = {};
-            for (var key in rawTerms) {
-                if (!rawTerms.hasOwnProperty(key))
-                    continue;
-                if (parseInt(key) > 5)
-                    break;
-                terms[orderize(key)] = rawTerms[key];
+            for (var i = 1; i < 6; i++) {
+                var value = (rawTerms[i] === undefined)? 0: rawTerms[i];
+                terms[orderize(i)] = value;
             }
 
             self.courseData.push({
