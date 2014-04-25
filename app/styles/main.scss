@@ -171,11 +171,11 @@ line.axis {
 .dataTile.bg {
     opacity: 1.0;
     &.greyout {
-        opacity: 0.5;
+        opacity: 0.3;
     }
     &.highlighted {
         opacity: 1.0;
-        fill: #55cc66;
+        fill: #44c785;
         // fill: rgba(10,10,10,1.0);
     }
     &.selected {
@@ -185,7 +185,7 @@ line.axis {
     }
     &.highlighted.selected {
         opacity: 1.0;
-        fill: #246047;//rgba(100,200,100,1.0);
+        fill: #00784c;//rgba(100,200,100,1.0);
     }
 }
 
@@ -196,16 +196,17 @@ line.axis {
     }
     &.highlighted {
         opacity: 1.0;
-        fill: #2F5B80;
+        fill: #006394;
         // fill: rgba(10,10,10,1.0);
     }
     &.selected {
         opacity: 1.0;
-        fill: #264866;
+        fill: #004266;
         // fill: rgba(50,50,80,1.0);
     }
     &.highlighted.selected {
         opacity: 1.0;
+        fill: #006294;
         // fill: rgba(100,200,100,1.0);
     }
 }
@@ -229,7 +230,7 @@ line.axis {
     fill: #CCC;
     &.highlighted {
         opacity: 1.0;
-        fill: #55cc66;
+        fill: #44c785;
     }
     &.selected {
         opacity: 1.0;
@@ -237,7 +238,7 @@ line.axis {
     }
     &.highlighted.selected {
         opacity: 1.0;
-        fill: #246047;
+        fill: #00784c;
         //fill: rgba(100,200,100,1.0);
     }
 }
