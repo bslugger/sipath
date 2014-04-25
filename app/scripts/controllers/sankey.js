@@ -18,6 +18,16 @@ angular.module('a3App')
         rightColWidth: 150,
         scale: 385,
         minHeight: 10,
+        borderWidth: 1,
+        borderColor: "#E6E6E6"
+    };
+    $scope.uiParam = {
+        offset: 0,
+    };
+
+    $scope.highlightBar = {
+        offset: 2,
+        width: 4
     };
 
     /**
