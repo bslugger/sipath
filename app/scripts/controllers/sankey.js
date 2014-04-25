@@ -152,7 +152,7 @@ angular.module('a3App')
      *         0 : bg Array with pos Data as an element
      *         1 : pos Array with bg Data as an element
      * @return {Boolean}    highlighted status
-     */
+     */ 
     function isHighlighted(bgKey, posKey, iterate, data, option) {
         var hBgIndex = $scope.highlightedBgIndex;
         var hPosIndex = $scope.highlightedPosIndex;
@@ -169,20 +169,20 @@ angular.module('a3App')
             var check = true;
             if (hBgIndex !== -1 && hPosIndex !== -1) {
                 if (option === 0) {
-                    check = (bgKey === hBgIndex);
+                    check = (isContain(bgKey,hBgIndex));
                 } else if (option === 1) {
-                    check = (posKey === hPosIndex);
+                    check = (isContain(posKey, hPosIndex));
                 }
             }
             if (check) {
                 for (var entryKey in data[label]) {
                     var entry = data[label][entryKey];
                     if (option === 0) {
-                        if (hPosIndex === entryKey) {
+                        if (isContain(entryKey, hPosIndex)) {
                             return true;
                         }
                     } else if (option === 1) {
-                        if (hBgIndex === entryKey) {
+                        if (isContain(entryKey, hBgIndex)) {
                             return true;
                         }
                     }
@@ -191,11 +191,11 @@ angular.module('a3App')
         }
         {
             if (hBgIndex !== -1 && hPosIndex !== -1) {
-                return (bgKey === hBgIndex) && (posKey === hPosIndex);
+                return isContain(bgKey,hBgIndex) && isContain(posKey, hPosIndex);
             } else if (hBgIndex !== -1) {
-                return (bgKey === hBgIndex);
+                return isContain(bgKey, hBgIndex);
             } else if (hPosIndex !== -1) {
-                return (posKey === hPosIndex);
+                return isContain(posKey, hPosIndex);
             }
         }
     }
@@ -226,7 +226,7 @@ angular.module('a3App')
         var sPosIndex = $scope.selectedPosIndex;
         var label = '';
         if (typeof option === 'undefined') {
-            option = 0;
+            option = 2;
         }
         if (option === 0) {
             label = 'positions';
@@ -237,20 +237,20 @@ angular.module('a3App')
             var check = true;
             if (sBgIndex !== -1 && sPosIndex !== -1) {
                 if (option === 0) {
-                    check = (bgKey === sBgIndex);
+                    check = isContain(bgKey, sBgIndex);
                 } else if (option === 1) {
-                    check = (posKey === sPosIndex);
+                    check = isContain(posKey, sPosIndex);
                 }
             }
             if (check) {
                 for (var entryKey in data[label]) {
                     var entry = data[label][entryKey];
                     if (option === 0) {
-                        if (sPosIndex === entryKey) {
+                        if (isContain(entryKey, sPosIndex)) {
                             return true;
                         }
                     } else if (option === 1) {
-                        if (sBgIndex === entryKey) {
+                        if (isContain(entryKey, sBgIndex)) {
                             return true;
                         }
                     }
@@ -258,13 +258,20 @@ angular.module('a3App')
             }
         }
         {
-            if (sBgIndex !== -1 && sPosIndex !== -1) {
-                return (bgKey === sBgIndex) && (posKey === sPosIndex);
-            } else if (sBgIndex !== -1) {
-                return (bgKey === sBgIndex);
-            } else if (sPosIndex !== -1) {
-                return (posKey === sPosIndex);
+            if (option === 0) {
+                return isContain(bgKey, sBgIndex);
+            } else if (option === 1) {
+                return isContain(posKey, sPosIndex);
+            } else {
+                if (sBgIndex !== -1 && sPosIndex !== -1) {
+                    return (isContain(bgKey, sBgIndex)) && (isContain(posKey,sPosIndex));
+                } else if (sBgIndex !== -1) {
+                    return isContain(bgKey, sBgIndex);
+                } else if (sPosIndex !== -1) {
+                    return isContain(posKey, sPosIndex);
+                }
             }
+            
         }
 
         return false;
