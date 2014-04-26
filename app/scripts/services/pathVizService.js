@@ -126,6 +126,7 @@ angular.module('a3App')
                 description: row['course_description'],
                 terms: terms,
                 popularity: row['alumni_count'],
+                totalPopularity: row['alumni_count'],
                 isHidden: false,
                 isSelected: false,
                 isHighlighted: false,
@@ -163,7 +164,6 @@ angular.module('a3App')
     self.isSankeySelected = {};
 
     self.updateIsSankeySelected = function () {
-        console.log('update isSankeySelected');
         self.isSankeySelected.value = isValid(self.selectedBgName.value) || isValid(self.selectedPosName.value);
     }
 

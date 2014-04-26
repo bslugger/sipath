@@ -4,6 +4,7 @@ angular.module('a3App')
   .service('courseAlumniViewService', function (pathVizService) {
     var self = this;
     self.courseData = pathVizService.courseData;
+    self.alumniData = pathVizService.alumniData;
 
     self.selectedAlumni = [];
     self.selectedAlumniCoursesData = {};
@@ -21,6 +22,7 @@ angular.module('a3App')
         self.svg.offset = (self.shouldShowAlumniBar.value)? 220: 0;
         var column = (self.shouldShowAlumniBar.value)? 3: 5;
         setCourseLayoutByColumn(column, self.courseData);
+        self.resizeSvgByCourse();
     }
 
     self.displayAlumniView = function (alumnus) {
@@ -34,18 +36,22 @@ angular.module('a3App')
         self.svg.offset = 0;
     }
 
-    self.displayBubbleView = function () {
+    self.displayBubbleView = function (options) {
         var alumnus = self.selectedAlumni[0];
         // Move course to overview posistion
-        restoreCourseLayoutByOriginal(self.selectedAlumniCoursesData.courses,
+        if (options !== undefined) {
+            if (options.restore === true)
+                restoreCourseLayoutByOriginal(self.selectedAlumniCoursesData.courses,
                                       self.selectedAlumniCoursesData.originalCoords);
+        }
         self.selectedAlumni.length = 0;
 
         self.shouldDisplayBubbleView.value = true;
-        self.showAllCourses();
+        self.showCoursesWithPopularity();
         self.svg.width = 650;
         self.svg.height = 4700;
         self.svg.offset = (self.shouldShowAlumniBar.value)? 220: 0;
+        self.resizeSvgByCourse();
     }
 
     /* Toggle courses display */
@@ -62,6 +68,15 @@ angular.module('a3App')
         });
     }
 
+    self.showCoursesWithPopularity = function () {
+        angular.forEach(self.courseData, function (course, index) {
+            if (course.popularity > 0)
+                course.isHidden = false;
+            else
+                course.isHidden = true;
+        });
+    }    
+
     self.showCoursesByIds = function (courses) {
         self.hideAllCourses();
         angular.forEach(courses, function (courseIndex, index) {
@@ -69,18 +84,56 @@ angular.module('a3App')
         });
     }
 
-    /* Course layout */
-
-    function setCourseLayoutByDefault(courses) {
-        angular.forEach(courses, function (course, index) {
-            course.coord.x = course.id/3 * 100;
-            course.coord.y = index % 3 * 100;
+    self.updateCourseRadius = function () {
+        angular.forEach(self.courseData, function (course, index) {
+            course.popularity = 0;
         });
+        angular.forEach(self.alumniData, function (alumnus, index) {
+            angular.forEach(alumnus.courses, function (courseId, index) {
+                var course = pathVizService.getCourseById(courseId);
+                course.popularity += 1;
+            });
+        });
+        var max = -99999;
+        angular.forEach(self.courseData, function (course, index) {
+            max = (course.popularity > max)? course.popularity: max;
+        });
+        angular.forEach(self.courseData, function (course, index) {
+            course.radius = Math.log(course.popularity)/Math.log(max);
+            course.originalRadius = Math.log(course.popularity)/Math.log(max);
+            if (course.popularity === 0)
+                course.isHidden = true;
+            else
+                course.isHidden = false;
+        });
+
+
+        var column = (self.shouldShowAlumniBar.value)? 3: 5;
+        setCourseLayoutByColumn(column, self.courseData);
+        self.resizeSvgByCourse();
     }
 
+    self.resizeSvgByCourse = function () {
+        var lastShowingCourse = {};
+        var maxY = -999999;
+        angular.forEach(self.courseData, function (course, index) {
+            if (course.popularity > 0) {
+                lastShowingCourse = course;
+                maxY = (course.coord.y > maxY)? course.coord.y: maxY;
+            }
+        });
+        self.svg.height = maxY + 150;
+    }
+
+    /* Course layout */
+
     function setCourseLayoutByColumn(column, courses) {
+        var i = 0;
         angular.forEach(courses, function (course, index) {
-            course.coord = pathVizService.getGridLayoutCoordinate(column, index);
+            if (!course.isHidden) {
+                course.coord = pathVizService.getGridLayoutCoordinate(column, i);
+                i++;
+            }
         });
     }
 

@@ -26,5 +26,7 @@ angular.module('a3App')
         course.isHovered = false;
     }
 
-    $scope.onOverviewClicked = courseAlumniViewService.displayBubbleView;
+    $scope.onOverviewClicked = function () {
+        courseAlumniViewService.displayBubbleView({restore: true});
+    }
   });

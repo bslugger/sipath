@@ -4,6 +4,7 @@ $primaryColor: #22B573;
 $primaryColorA9: rgba(34, 181, 115, 0.9);
 $primaryColorA5: rgba(34, 181, 115, 0.5);
 $primaryColorA3: rgba(34, 181, 115, 0.3);
+$primaryColorA2: rgba(34, 181, 115, 0.2);
 $primaryColorA1: rgba(34, 181, 115, 0.1);
 $primaryColorAlt: #105737;
 $primaryColorAltA5: rgba(16, 87, 55, 0.5);
@@ -49,6 +50,10 @@ line.axis {
         // stroke: $primaryColorAlt;
     }
     &.selected {
+        stroke-width: 4;
+        stroke: $primaryColorAlt;   
+    }
+    &.selected.highlighted, &.selected.default {
         // stroke-width: 4;
         // stroke: $primaryColorAlt;
         fill: $primaryColorAlt;
@@ -58,7 +63,7 @@ line.axis {
 .course-bubble-ring-1 {
     fill: none;
     stroke-width: 1;
-    stroke: $primaryColorA1;
+    stroke: $primaryColorA2;
 }
 
 .course-bubble-ring-3 {
@@ -76,10 +81,11 @@ line.axis {
 .course-bubble-label {
     fill: white;
     text-anchor: middle;
- 
 }
+
 .course-bubble-popularity-label {
-    fill: $primaryColorAlt;
+    fill: $primaryColor;
+    text-anchor: middle;
 }
 .course-bubble-group {
     cursor: pointer;
@@ -379,7 +385,8 @@ text.bar-label {
 }
 
 .sankey-label {
-    fill: #ddd;
+    fill: #e6e6e6;
+    cursor: pointer;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
