@@ -3,10 +3,10 @@
 angular.module('a3App', [])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
-      })
+      // .when('/', {
+      //   templateUrl: 'views/main.html',
+      //   controller: 'MainCtrl'
+      // })
       .when('/data', {
         templateUrl: 'views/data.html',
         controller: 'DataCtrl'
@@ -23,9 +23,13 @@ angular.module('a3App', [])
           }
         }
       })
-      .when('/course', {
+      .when('/', {
         templateUrl: 'views/coursePath.html',
-        controller: 'CoursePathCtrl'
+        controller: 'CoursePathCtrl',
+        resolve: {
+          'PathVizServiceData': function(pathVizService) {
+          }
+        }
       })
       .when('/bar', {
         templateUrl: 'views/barChart.html',
