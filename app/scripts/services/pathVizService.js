@@ -199,6 +199,8 @@ angular.module('a3App')
         self.alumniData.length = 0;
 
         angular.forEach(self.alumniAllData, function (alumnus, index) {
+            if (alumnus.courses.length === 0)
+                return;
             // filter by both
             if (isValid(options.background) && isValid(options.position)) {
                 if ((options.background === alumnus.background) && (options.position === alumnus.position))
