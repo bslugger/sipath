@@ -17,6 +17,23 @@ angular.module('a3App')
         offset: 0
     };
 
+    self.legendScale1 = {};
+    self.legendScale2 = {};
+    self.calcLegendNumber = function () {
+        var maxPopularity = -999999;
+        for (var i = 0; i < self.courseData.length; i++) {
+            var course = self.courseData[i];
+            if (course.popularity > 0)
+                maxPopularity = (maxPopularity > course.popularity)? maxPopularity: course.popularity;
+        }
+        console.log('maxPopularity');
+        console.log(maxPopularity);
+        console.log('Math.log(maxPopularity)*1/3');
+        console.log(Math.log(maxPopularity)*1/3);
+        self.legendScale1.value = Math.pow(Math.E, Math.log(maxPopularity)*1/3);
+        self.legendScale2.value = Math.pow(Math.E, Math.log(maxPopularity)*2/3);
+    }
+
     self.toggleAlumniBar = function () {
         self.shouldShowAlumniBar.value = !self.shouldShowAlumniBar.value;
         self.svg.offset = (self.shouldShowAlumniBar.value)? 220: 0;
@@ -107,6 +124,7 @@ angular.module('a3App')
                 course.isHidden = false;
         });
 
+        self.calcLegendNumber();
 
         var column = (self.shouldShowAlumniBar.value)? 3: 5;
         setCourseLayoutByColumn(column, self.courseData);
