@@ -2,9 +2,12 @@
 
 angular.module('a3App')
   .controller('SankeyCtrl', function ($scope, pathVizService) {
+    /**
+     * Sankey's layout parameters
+     */
     $scope.svg = {
         width: 900,
-        height: 450,
+        height: 800,
         yOffset: 0
     };
     $scope.anchors = {
@@ -13,71 +16,82 @@ angular.module('a3App')
         xDis: 550,
         leftColWidth: 150,
         rightColWidth: 150,
-        scale: 400,
-        baseHeight: 0
+        scale: 385,
+        minHeight: 10,
+        borderWidth: 1,
+        borderColor: "#E6E6E6"
+    };
+    $scope.uiParam = {
+        offset: 0,
     };
 
+    $scope.highlightBar = {
+        offset: 2,
+        width: 4
+    };
+
+    /**
+     * caculated layout parameters based on svg size
+     */
     $scope.anchors.xDis = $scope.svg.width - $scope.anchors.leftColWidth - $scope.anchors.rightColWidth;
     $scope.anchors.rightX = $scope.svg.width - $scope.anchors.rightColWidth;
 
-    $scope.data = [1, 2, 3];
-    $scope.backgrounds = [];
-    $scope.positionTitles = [];
-    $scope.backToCareerLinks = [];
-    $scope.predicate = "-value";
-    $scope.selectedBg = "";
-    $scope.selectedPos = "";
-    $scope.selectedBgName = pathVizService.selectedBgName;
-    $scope.selectedPosName = pathVizService.selectedPosName;
-    $scope.backToCareerLinks.filterWithClass = filterWithClass;
-    $scope.isSelected = isSelected;
-    $scope.labelSize = labelSize;
+    /**
+     * Constant string
+     */
+    $scope.backgroundTag = "backgrounds";
+    $scope.positionTag = "positions";
 
+    /**
+     *  UI Util
+     *  Color and Text size
+     */
     var backgroundColor = [
-        "#542735",
-        "#BD0D31",
-        "#DE3731",
-        "#CC7A53",
-        "#8c510a",
-        "#bf812d",
-        "#dfc27d",
-        "#f6e8c3",
-        "#f5f5f5",
-        "#c7eae5",
-        "#80cdc1",
-        "#35978f",
-        "#01665e"
+        //"#0D4228",
+        // "#115B3A",
+        // "#136641",
+        // "#16663C",
+        // "#197F4C",
+        "#339966"
     ];
 
     var posColor = [
-        "#f5f5f5",
-        "#c7eae5",
-        "#80cdc1",
-        "#35978f",
-        "#01665e",
-        "#542735",
-        "#BD0D31",
-        "#DE3731",
-        "#CC7A53",
-        "#8c510a",
-        "#bf812d",
-        "#dfc27d",
-        "#f6e8c3"
+        // "#264866",
+        // "#2F5B80",
+        // "#3077A6",
+         "#347599"
     ];
 
+    /**
+     *  Function for AngularJS HTML DOM get 
+     *  interaction state
+     */
     backgroundColor.getNext = getNext;
     posColor.getNext = getNext;
+    $scope.labelSize = labelSize;
+    $scope.isSelected = isSelected;
+    $scope.isHighlighted = isHighlighted;  
 
-    function getNext() {
-        var mArr = this;
-        var tmp = mArr.shift();
-        mArr.push(tmp);
-        return tmp;
+    /**
+     *  Parameters for User highlight/selection state
+     */
+    $scope.predicate = "-value"; // not sure what it is
+    $scope.highlightedBgIndex = -1;
+    $scope.highlightedPosIndex = -1;
+    $scope.selectedBgIndex = -1;
+    $scope.selectedPosIndex = -1;
+    $scope.selectedBgName = pathVizService.selectedBgName;
+    $scope.selectedPosName = pathVizService.selectedPosName;
+
+    
+
+    /**
+     * UI Util
+     */
+    $scope.greyout = greyout;
+    function greyout() {
+        return (($scope.selectedBgIndex !== -1) || ($scope.selectedPosIndex !== -1));
     }
-
-
-    var backgroundTag;
-    var posTitleTag;
 
     function labelSize(width, height, scaleWidth, scaleHeight) {
         var wSize = width * scaleWidth;
@@ -85,252 +99,354 @@ angular.module('a3App')
         return (hSize > wSize)? wSize : hSize;
     }
 
-    function indexToName(index, key, arr) {
-        if (index === "") {
-            return "";
-        }
-        for (var i = 0; i < arr.length; i++) {
-            var entry = arr[i];
-            if (entry[key] === index) {
-                return entry.name;
-            }
-        }
-        return "";
+    $scope.moveTile = moveTile;
+    function moveTile(orig, condition, offset) {
+        
+        var result = orig + ((condition)?offset:0);
+        
+        return result;
     }
 
-    // option 0: only bg
-    // option 1: only pos
-    // option 2: both
-    function filterWithClass(bgIndex, posIndex, option) {
-        var resultArr = [];
-        var inputArr = this;
-        if (typeof option === 'undefined') {
-            option = 0;
+    $scope.getSecondIndex = getSecondIndex;
+    function getSecondIndex(label, data) {
+        var target = data[label];
+        var result = "";
+        for(var key in target) {
+            result += key + " ";
         }
+        return result;
+    }
+
+
+    function isContain(input, target) {
+        var inputArr = input.split(" ");
+        var result = false;
+        // if (target === -1 && input === -1) {
+        //     return result;
+        // } 
         for (var i = 0; i < inputArr.length; i++) {
-            var input = inputArr[i];
-            if (option === 0) {
-                // background
-                if (input.bgIndex === bgIndex) {
-                    resultArr.push(input);
-                }
-            } else if (option === 1) {
-                if (input.posIndex === posIndex) {
-                    resultArr.push(input);
-                }
-            } else if (option === 2) {
-                if (input.bgIndex === bgIndex && input.position === posIndex) {
-                    resultArr.push(input);
-                }
+            var comperator = inputArr[i];
+            if (comperator === target) {
+                result = true;
+                break;
             }
         }
-        return resultArr;
+
+        return result;
     }
 
-    // option 0: bg
-    // option 1: pos
-    function isSelected(index, option) {
+    /**
+     * if iterate === true
+     *     The whole Background/Position block will be highlighted
+     *     once one of it's child is highlighted
+     * if iterate !=== true
+     *     Only the highlighted child will be highlighted, other
+     *     element in the same group remain the same.
+     * 
+     * Check if certain HTML Element is Highlighted
+     * @param  {int}    bgKey   
+     * @param  {int}    posKey  
+     * @param  {bool}   iterate iterate through each element 
+     * @param  {Array}  data    input Array Data (bg or pos)
+     * @param  {int}    option  
+     *         0 : bg Array with pos Data as an element
+     *         1 : pos Array with bg Data as an element
+     * @return {Boolean}    highlighted status
+     */ 
+    function isHighlighted(bgKey, posKey, iterate, data, option) {
+        var hBgIndex = $scope.highlightedBgIndex;
+        var hPosIndex = $scope.highlightedPosIndex;
+        var label = '';
         if (typeof option === 'undefined') {
             option = 0;
         }
         if (option === 0) {
-            if ($scope.selectedBg === index) {
-                return true;
+            label = 'positions';
+        } else {
+            label = 'backgrounds';
+        }
+        if (iterate) {
+            var check = true;
+            if (hBgIndex !== -1 && hPosIndex !== -1) {
+                if (option === 0) {
+                    check = (isContain(bgKey,hBgIndex));
+                } else if (option === 1) {
+                    check = (isContain(posKey, hPosIndex));
+                }
             }
-        } else if (option === 1) {
-            if ($scope.selectedPos === index) {
-                return true;
+            if (check) {
+                for (var entryKey in data[label]) {
+                    var entry = data[label][entryKey];
+                    if (option === 0) {
+                        if (isContain(entryKey, hPosIndex)) {
+                            return true;
+                        }
+                    } else if (option === 1) {
+                        if (isContain(entryKey, hBgIndex)) {
+                            return true;
+                        }
+                    }
+                }
             }
+        }
+        {
+            if (hBgIndex !== -1 && hPosIndex !== -1) {
+                return isContain(bgKey,hBgIndex) && isContain(posKey, hPosIndex);
+            } else if (hBgIndex !== -1) {
+                return isContain(bgKey, hBgIndex);
+            } else if (hPosIndex !== -1) {
+                return isContain(posKey, hPosIndex);
+            }
+        }
+    }
+
+    /**
+     * if iterate === true
+     *     The whole Background/Position block will be selected
+     *     once one of it's child is selected
+     * if iterate !=== true
+     *     Only the selected child will be selected, other
+     *     element in the same group remain the same.
+     * 
+     * Check if certain HTML Element is Selected
+     * @param  {int}    bgKey   
+     * @param  {int}    posKey  
+     * @param  {bool}   iterate iterate through each element 
+     * @param  {Array}  data    input Array Data (bg or pos)
+     * @param  {int}    option  
+     *         0 : bg Array with pos Data as an element
+     *         1 : pos Array with bg Data as an element
+     * @return {Boolean}    selected status
+     *
+     * TODO:// This part of code is exactly as same as isHighlighted.
+     *         Combine them together later.
+     */
+    function isSelected(bgKey, posKey, iterate, data, option) {
+        var sBgIndex = $scope.selectedBgIndex;
+        var sPosIndex = $scope.selectedPosIndex;
+        var label = '';
+        if (typeof option === 'undefined') {
+            option = 2;
+        }
+        if (option === 0) {
+            label = 'positions';
+        } else {
+            label = 'backgrounds';
+        }
+        if (iterate) {
+            var check = true;
+            if (sBgIndex !== -1 && sPosIndex !== -1) {
+                if (option === 0) {
+                    check = isContain(bgKey, sBgIndex);
+                } else if (option === 1) {
+                    check = isContain(posKey, sPosIndex);
+                }
+            }
+            if (check) {
+                for (var entryKey in data[label]) {
+                    var entry = data[label][entryKey];
+                    if (option === 0) {
+                        if (isContain(entryKey, sPosIndex)) {
+                            return true;
+                        }
+                    } else if (option === 1) {
+                        if (isContain(entryKey, sBgIndex)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        {
+            if (option === 0) {
+                return isContain(bgKey, sBgIndex);
+            } else if (option === 1) {
+                return isContain(posKey, sPosIndex);
+            } else {
+                if (sBgIndex !== -1 && sPosIndex !== -1) {
+                    return (isContain(bgKey, sBgIndex)) && (isContain(posKey,sPosIndex));
+                } else if (sBgIndex !== -1) {
+                    return isContain(bgKey, sBgIndex);
+                } else if (sPosIndex !== -1) {
+                    return isContain(posKey, sPosIndex);
+                }
+            }
+            
         }
 
         return false;
     }
 
-    function insertUniqueEntry(targetArr, input, inputTag, prefix) {
-        var insertIndex = -1;
-        angular.forEach(targetArr, function(entry, index) {
-            if (insertIndex === -1) {
-                if (entry.name === input) {
-                    insertIndex = index;
-                    return;
-                }
-            }
-        });
+    /**
+     * UI Interaction Function
+     */
 
-        if (insertIndex === -1) {
-            var object = {};
-            object.name = input;
-            object["value"] = 1;
-            if (typeof prefix !== 'undefined') {
-                object[prefix+"Index"] = prefix+insertUniqueEntry.uniqID;
-                insertUniqueEntry.uniqID++;
-            }
-            targetArr.push (object);
-
-        } else {
-            //console.log("++");
-            targetArr[insertIndex].value++;
-        }
-    }
-
-    function getRandomColor() {
-        var letters = '0123456789ABCDEF'.split('');
-        var color = '#';
-        for (var i = 0; i < 6; i++ ) {
-            color += letters[Math.round(Math.random() * 15)];
-        }
-        return color;
-    }
-
-    $scope.onDataLoaded = function (data) {
-        // Definitely need to find a better way to organize those data
-        // Currently using way too many for loop.
-
-        console.log("====onDataLoaded====");
-        // console.log(data.contents);
-        console.log(data.headers);
-        var contents = data.contents;
-        var headers = data.headers;
-
-        // Debug use
-        backgroundTag = headers[22];
-        posTitleTag = headers[5];
-        var totalNumber = contents.length;
-        console.log (backgroundTag);
-        console.log (posTitleTag);
-
-        angular.forEach(contents, function(content) {
-            var mBackground = content[backgroundTag];
-            var mPosTitle = content[posTitleTag];
-
-            // add unique background
-            insertUniqueEntry($scope.backgrounds, mBackground, backgroundTag, "bg");
-
-            angular.forEach($scope.backgrounds, function(background) {
-                if (typeof background.outcome === 'undefined') {
-                    background.outcome = [];
-                }
-                if (background.name === mBackground) {
-                    insertUniqueEntry(background.outcome, mPosTitle, posTitleTag);
-                }
-            });
-
-            // add unique position title
-            insertUniqueEntry($scope.positionTitles, mPosTitle, posTitleTag, "pos");
-            angular.forEach($scope.positionTitles, function(position) {
-                if (typeof position.background === 'undefined') {
-                    position.background = [];
-                }
-                if (position.name === mPosTitle) {
-                    insertUniqueEntry(position.background, mBackground, backgroundTag);
-                }
-            });
-        });
+    /**
+     * mark element as highlighted when user's mouse over
+     * @param  {string} class1  bg-[index] ex. bg-0, bg-1
+     * @param  {string} class2  pos-[index] ex. pos-0, pos-1
+     * @param  {int}    options 
+     *         1 highlight all elements have same bg-[index]
+     *         2 highlight all elements have same pos-[index]
+     *         3 highlight elements have exactly match of 
+     *           both bg- and pos-[index]
+     */
+    $scope.hoverBackground = function(class1, class2, options) {
         
-        var cumulatePercentage = 0;
-        for (var i = 0; i < $scope.backgrounds.length; i++) {
-            var background = $scope.backgrounds[i];
-            background.percentage = 0;//roundTo(background.value/totalNumber,2);
-            background.cumPercentage = cumulatePercentage;
-            background.color = backgroundColor.getNext();
-            for (var j = 0; j < background.outcome.length; j++) {
-                var outcome = background.outcome[j];
-                //outcome.percentage = outcome.value/totalNumber;
-                //outcome.cumPercentage = cumulatePercentage;
-                //cumulatePercentage += outcome.percentage;
-                // find outcome index
-                for (var k = 0; k < $scope.positionTitles.length; k++) {
-                    var posTitle = $scope.positionTitles[k];
-                    if (outcome.name === posTitle.name) {
-                        outcome["posIndex"] = posTitle["posIndex"];
-                    }
-                }
+        var class1Index = class1.split("-")[1];
+        var class2Index = class2.split("-")[1];
+        if (options === 1) {
+            // heighlight all same background
+            $scope.highlightedBgIndex = class1Index
+
+        } else if (options === 2) {
+            $scope.highlightedPosIndex = class2Index
+        } else if (options === 0) {
+            $scope.highlightedBgIndex = class1Index;
+            $scope.highlightedPosIndex = class2Index;
+        }
+    }
+
+    /**
+     * remove all highlighted status when mouse out
+     */
+    $scope.leaveHighlightedArea = function() {
+        $scope.highlightedBgIndex = -1;
+        $scope.highlightedPosIndex = -1;
+
+    }
+
+    /**
+     * mark element as selected/deselect when user clicks on it
+     *     if the clicked element is not selected, select it
+     *     if the clicked element is selected, deselect it
+     * @param  {string} class1  bg-[index] ex. bg-0, bg-1
+     * @param  {string} class2  pos-[index] ex. pos-0, pos-1
+     * @param  {int}    options 
+     *         1 select all elements have same bg-[index]
+     *         2 select all elements have same pos-[index]
+     *         3 select elements have exactly match of 
+     *           both bg- and pos-[index]
+     */
+    $scope.clickBackground = function(class1, class2, options) {
+        // class1 - background;
+        // class2 - position;    
+        var class1Index = class1.split("-")[1];
+        var class2Index = class2.split("-")[1];
+
+        var selectedBg = $scope.selectedBgIndex;
+        var selectedPos = $scope.selectedPosIndex;
+
+        if (options === 0) {
+            if (selectedBg === class1Index && selectedPos === class2Index) {
+                selectedBg = -1;
+                selectedPos = -1;
+            } else {
+                selectedBg = class1Index;
+                selectedPos = class2Index;
             }
 
-            background.outcome = background.outcome.sort(function(a,b){
-                var i1 = parseInt(a["posIndex"].substr(3));
-                var i2 = parseInt(b["posIndex"].substr(3));
-
-                if (i1 < i2) return -1;
-                if (i1 > i2) return 1;
-                return 0;
-            });
-
-            for (var j = 0; j < background.outcome.length; j++) {
-                var outcome = background.outcome[j];
-                outcome.percentage = roundTo(outcome.value/totalNumber,2);
-                background.percentage += outcome.percentage;
-                outcome.cumPercentage = cumulatePercentage;
-                cumulatePercentage += outcome.percentage;
+        } else if (options === 1) {
+            if (selectedBg === class1Index) {
+                selectedBg = -1;
+            } else {
+                selectedBg = class1Index;
             }
-            
+
+        } else if (options === 2) {
+            if (selectedPos === class2Index) {
+                selectedPos = -1;
+            } else {
+                selectedPos = class2Index;
+            }
         }
 
-        cumulatePercentage = 0;
-        for (var i = 0; i < $scope.positionTitles.length; i++) {
-            var posTitle = $scope.positionTitles[i];
-            posTitle.percentage = 0;// = roundTo(posTitle.value/totalNumber,2);
-            posTitle.cumPercentage = cumulatePercentage;
-            posTitle.color = posColor.getNext();
-            for (var j = 0; j < posTitle.background.length; j++) {
-                var background = posTitle.background[j];
-                //background.percentage = background.value/totalNumber;
-                //background.cumPercentage = cumulatePercentage;
-                //cumulatePercentage += background.percentage;
-                for (var k = 0; k < $scope.backgrounds.length; k++) {
-                    var sBackground = $scope.backgrounds[k];
-                    if (background.name === sBackground.name) {
-                        background["bgIndex"] = sBackground["bgIndex"];
-                    }
-                }
-            }
+        $scope.selectedBgIndex = selectedBg;
+        $scope.selectedPosIndex = selectedPos;
+        $scope.selectedBgName.value = $scope.backgroundIdTable[$scope.selectedBgIndex];
+        $scope.selectedPosName.value = $scope.jobIdTable[$scope.selectedPosIndex];
+        pathVizService.notifyObservers('selectedBgName');
+        pathVizService.notifyObservers('selectedPosName');
 
-            posTitle.background = posTitle.background.sort(function(a,b){
-                var i1 = parseInt(a["bgIndex"].substr(2));
-                var i2 = parseInt(b["bgIndex"].substr(2));
+        //console.log($scope.selectedBgName.value);
+        //console.log($scope.selectedPosName.value);
+    }
 
-                if (i1 < i2) return -1;
-                if (i1 > i2) return 1;
-                return 0;
-            });
-            for (var j = 0; j < posTitle.background.length; j++) {
-                var background = posTitle.background[j];
-                background.percentage = roundTo(background.value/totalNumber,2);
-                posTitle.percentage += background.percentage;
-                background.cumPercentage = cumulatePercentage;
-                cumulatePercentage += background.percentage;
-            }
-            //cumulatePercentage = roundTo(cumulatePercentage, 2);
-            //posTitle.percentage = roundTo(posTitle.percentage, 2);
+    /**
+     * Data Manipulate Function
+     */
+     
+    function updateCategoryData(data, table, firstId, secondId, secondLabel, colorArr) {
+        var result = {};
+        for (var tbId in table) {
+            var tableEntry = table[tbId];
+            var tableKey = tbId;
+            var object = {};
+            //object.background_id = tableKey;
+            object.peopleCount = 0;
+            object.color = colorArr.getNext();
+            object[secondLabel] = {};
+            result[tbId] = object;
         }
 
+        for (var i = 0; i < data.length; i++) {
+            var entry = data[i];
+            var mFirstId = entry[firstId];
+            var mSecondId = entry[secondId];
+            result[mFirstId].peopleCount++;
+            if (typeof result[mFirstId][secondLabel][mSecondId] === 'undefined') {
+                result[mFirstId][secondLabel][mSecondId] = {};
+                result[mFirstId][secondLabel][mSecondId].peopleCount = 1;
+            } else {
+                result[mFirstId][secondLabel][mSecondId].peopleCount++;
+            }
 
-        for (var i = 0; i < $scope.backgrounds.length; i++) {
-            var background = $scope.backgrounds[i];
-            for (var j = 0; j < background.outcome.length; j++) {
-                var outcome = background.outcome[j];
+        }
+        return result;
+    }
 
+    function updateCategoryRect(dataArr, secondLabel) {
+        var totalNumber = $scope.totalNumber;
+        var scale = $scope.anchors.scale;
+        var cumPercentage = 0;
+        for (var firstDataKey in dataArr) {
+            //console.log(dataKey);
+            var firstData = dataArr[firstDataKey];
+            var firstPercentage = 0;
+            firstData.cumPercentage = cumPercentage;
+            for (var secondDataKey in firstData[secondLabel]) {
+                var secondData = firstData[secondLabel][secondDataKey];
+                var tmp = roundTo(secondData.peopleCount/totalNumber * $scope.anchors.scale, 0);
+                secondData.percentage = (tmp > $scope.anchors.minHeight)?tmp:$scope.anchors.minHeight;
+                firstPercentage += secondData.percentage;
+                secondData.cumPercentage = cumPercentage;
+                cumPercentage += secondData.percentage;
+                firstPercentage = roundTo(firstPercentage, 2);
+                cumPercentage = roundTo(cumPercentage, 2);
+            }
+            firstData.percentage = firstPercentage;
+        }
+        $scope.totalPercentage = cumPercentage;
+    }
+
+    function updateSankeyPath() {
+        var paths = $scope.sankeyPaths;
+        var bgData = $scope.backgroundData;
+        var posData = $scope.positionData;
+        console.log(bgData);
+        for (var bgKey in bgData) {
+            var background = bgData[bgKey];
+            for (var posKey in background['positions']) {
+                var position = background['positions'][posKey];
                 var obj = {};
-                obj.background = background.name;
-                obj.startColor = background.color;
-                obj.position = outcome.name;
-                obj.bgIndex = background['bgIndex'];
-                obj.posIndex = outcome['posIndex'];
-                obj.startCumPercentage = outcome.cumPercentage;
-                obj.startPercentage = outcome.percentage;
-                for (var q = 0; q < $scope.positionTitles.length; q++) {
-                    var position = $scope.positionTitles[q];
-                    if (position.name === obj.position) {
-                        for (var r = 0; r < position.background.length; r++) {
-                            var posBackground = position.background[r];
-                            if (posBackground.name === obj.background) {
-                                obj.endColor = position.color;
-                                obj.endCumPercentage = posBackground.cumPercentage;
-                                obj.endPercentage = posBackground.percentage;
-                            }
-                        }
-                    }
-                }
+                obj.bgId = bgKey;
+                obj.bgColor = background.color;
+                obj.posId = posKey;
+                obj.posColor = posData[posKey].color;
+                obj.startCumPercentage = position.cumPercentage;
+                obj.startPercentage = position.percentage;
+                obj.endCumPercentage = posData[posKey]['backgrounds'][bgKey].cumPercentage;
+                obj.endPercentage = posData[posKey]['backgrounds'][bgKey].percentage;
 
                 // path
                 var startX = $scope.anchors.leftX + $scope.anchors.leftColWidth;
@@ -340,106 +456,38 @@ angular.module('a3App')
                 var startWidth = obj.startPercentage;
                 var endWidth = obj.endPercentage;
                 var xScale = $scope.anchors.xDis;
-                var yScale = $scope.anchors.scale;
+                var yScale = 1;//$scope.anchors.scale;
                 var turnWeight = 0.3;
                 var curveWeight = 100;
                 var xOffset = 0;
                 var yOffset = $scope.svg.yOffset;
-
-                obj.path = svgSankeyPath(startX, startY, endX, endY, startWidth, endWidth, xScale, yScale, turnWeight, curveWeight, xOffset, yOffset);
-                obj.highlighted = false;
-                obj.selected = false;
-                $scope.backToCareerLinks.push(obj);
+                obj.path = svgSankeyPath(startX, startY, endX, endY, startWidth, endWidth, xScale, yScale, turnWeight, curveWeight, xOffset, yOffset, $scope.totalPercentage);
+                paths.push(obj);
             }
-        }
-
-        console.log($scope.backgrounds);
-        console.log($scope.positionTitles);
-        console.log($scope.backToCareerLinks);
-        //$scope.backToCareerLinks.filterWithClass();
+        }        
     }
 
-    // This is for static id, could be done in the data base
-    // Ex. make columns for machine-friendly background, career
-    insertUniqueEntry.uniqID = 0;
+    /**
+     *  Main Function Part
+     */
+    console.log("==== SANKEY ====");
+    $scope.backgroundIdTable = pathVizService.backgroundIdTable;
+    $scope.jobIdTable = pathVizService.jobIdTable;
+    $scope.alumniData = pathVizService.alumniDataSankey;
+    //console.log($scope.backgroundIdTable);
+    //console.log($scope.jobIdTable);
+    //console.log($scope.alumniData);
+    
+    $scope.totalPercentage = 0;
+    $scope.totalNumber = $scope.alumniData.length;
+    $scope.backgroundData = updateCategoryData($scope.alumniData, $scope.backgroundIdTable, "background_id", "position_id", "positions",backgroundColor);
+    //console.log($scope.backgroundData);
+    $scope.positionData = updateCategoryData($scope.alumniData, $scope.jobIdTable, "position_id", "background_id", "backgrounds",posColor);
+    $scope.sankeyPaths = [];
+    //console.log($scope.positionData);
+    updateCategoryRect($scope.backgroundData, 'positions');
+    updateCategoryRect($scope.positionData, 'backgrounds');
+    updateSankeyPath();
+    console.log($scope.totalPercentage);
 
-    // Load data, this part should be alined with Kevin's
-    pathVizService.loadData2($scope.onDataLoaded);
-
-    // options: 1 multiple class1
-    //          2 multiple class2
-    //          3 single
-    $scope.hoverBackground = function(class1, class2, options) {
-        for (var i = 0; i < $scope.backToCareerLinks.length; i++) {
-            var obj = $scope.backToCareerLinks[i];
-            obj.highlighted = false;
-            if (options === 1) {
-                if (obj.bgIndex === class1) {
-                    obj.highlighted = true;
-                }
-            } else if (options === 2) {
-                if (obj.posIndex === class2) {
-                    obj.highlighted = true;
-                }
-            } else if (options === 0) {
-                if (obj.bgIndex === class1 && obj.posIndex === class2) {
-                        obj.highlighted = true;
-                }
-            }
-
-        }
-    }
-
-    $scope.leaveHighlightedArea = function() {
-        for (var i = 0; i < $scope.backToCareerLinks.length; i++) {
-            var obj = $scope.backToCareerLinks[i];
-            obj.highlighted = false;
-        }
-    }
-
-    $scope.clickBackground = function(class1, class2, options) {
-        var selectedBg = $scope.selectedBg;
-        var selectedPos = $scope.selectedPos;
-        if (options === 0) {
-            if (selectedBg === class1 && selectedPos === class2) {
-                selectedBg = "";
-                selectedPos = "";
-            } else {
-                selectedBg = class1;
-                selectedPos = class2;
-            }
-
-        } else if (options === 1) {
-            if (selectedBg === class1) {
-                selectedBg = "";
-            } else {
-                selectedBg = class1;
-            }
-
-        } else if (options === 2) {
-            if (selectedPos === class2) {
-                selectedPos = "";
-            } else {
-                selectedPos = class2;
-            }
-        }
-
-        
-        for (var i = 0; i < $scope.backToCareerLinks.length; i++) {
-            var obj = $scope.backToCareerLinks[i];
-            obj.selected = false;
-            if (selectedBg === "" && selectedPos === "") {
-                continue;
-            }
-            if ((selectedBg === "" || obj.bgIndex === selectedBg) && (selectedPos === "" || obj.posIndex === selectedPos)) {
-                obj.selected = true;
-            }
-
-        }
-
-        $scope.selectedBg = selectedBg;
-        $scope.selectedPos = selectedPos;
-        $scope.selectedBgName.value = indexToName($scope.selectedBg, "bgIndex", $scope.backgrounds);
-        $scope.selectedPosName.value = indexToName($scope.selectedPos, "posIndex", $scope.positionTitles);
-    }
   });

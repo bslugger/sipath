@@ -54,10 +54,10 @@ function moveNodeToGroup(objArr, groupID) {
 }
 
 // definition of position
-function svgSankeyPath(startX, startY, endX, endY, startWidth, endWidth, xScale, yScale, turnWeight, curveWeight, xOffset, yOffset, baseHeight) {
+function svgSankeyPath(startX, startY, endX, endY, startWidth, endWidth, xScale, yScale, turnWeight, curveWeight, xOffset, yOffset, totalPercentage) {
     var ydiff = endY - startY;
     var absYdiff = Math.abs(ydiff);
-    var turnPer = turnWeight * ( 1 - absYdiff);
+    var turnPer = turnWeight * ( totalPercentage - absYdiff) / totalPercentage;
 
     var cmds = [];
     // Move to start point 
@@ -107,6 +107,16 @@ function roundTo (input, point) {
     if (typeof point === 'undefined') {
         point = 0;
     }
-    var roundMul = Math.pow(10, point);
-    return Math.round(input * roundMul) / roundMul;
+    return +(Math.round(input + "e+" + point) + "e-" + point);
+}
+
+/**
+ *  Array Util
+ *  TODO:// Should this be prototype??
+ */
+function getNext() {
+    var mArr = this;
+    var tmp = mArr.shift();
+    mArr.push(tmp);
+    return tmp;
 }

@@ -1,25 +1,29 @@
 TODO
 
+* PathBar
+    * Show button after selection
 * Bubble chart
+    // * Connector (bracket style)
     * Bubble fish eye
-    * Connector algorithm
-    * Bubble force field algorithm
-    * Animation
+* Frames
+    * Custom scrollbars
 * Sankey Diagram
-    * add label
-    * add selection
     * mouse move out interaction (?)
 * DATA
     * background/position title - id/index (computer friendly)
 * Polish UI
 * Upgrade Angular to 1.2+
-
+    * Animation
+    * ng-if
+    * watchCollection
 
 
 DONE
 * Bubble chart
     * Scrollable alumni list with visibility toggle
     * Bubble stroke highlight
+    * Connector algorithm
+    * Bubble layout
 * Sankey Diagram
     * Background Column
     * Career Column
@@ -27,3 +31,10 @@ DONE
 * Bar chart
 * Course sidebar
 * Alumni view
+* Course info
+    * enrollment number
+* Alumni view
+    * Selectable items
+* Sankey Diagram
+    * add label
+    * add selection

@@ -3,10 +3,10 @@
 angular.module('a3App', [])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
-      })
+      // .when('/', {
+      //   templateUrl: 'views/main.html',
+      //   controller: 'MainCtrl'
+      // })
       .when('/data', {
         templateUrl: 'views/data.html',
         controller: 'DataCtrl'
@@ -17,10 +17,19 @@ angular.module('a3App', [])
       })
       .when('/sankey', {
         templateUrl: 'views/sankey.html',
-        controller: 'SankeyCtrl'
+        controller: 'SankeyCtrl',
+        resolve: {
+          'PathVizServiceData': function(pathVizService) {
+          }
+        }
       })
-      .when('/course', {
-        templateUrl: 'views/coursePath.html'
+      .when('/', {
+        templateUrl: 'views/coursePath.html',
+        controller: 'CoursePathCtrl',
+        resolve: {
+          'PathVizServiceData': function(pathVizService) {
+          }
+        }
       })
       .when('/bar', {
         templateUrl: 'views/barChart.html',
@@ -29,6 +38,14 @@ angular.module('a3App', [])
       .when('/pathbar', {
         templateUrl: 'views/pathBar.html',
         controller: 'PathBarCtrl'
+      })
+      .when('/alumnibar', {
+        templateUrl: 'views/alumniBar.html',
+        controller: 'AlumniBarCtrl'
+      })
+      .when('/scrollbar', {
+        templateUrl: 'views/scrollbartest.html',
+        controller: 'ScrollbarCtrl'
       })
       .otherwise({
         redirectTo: '/'

@@ -1,7 +1,13 @@
 @import "compass_twitter_bootstrap";
 $backgroundColor: #e6e6e6;
 $primaryColor: #22B573;
+$primaryColorA9: rgba(34, 181, 115, 0.9);
+$primaryColorA5: rgba(34, 181, 115, 0.5);
+$primaryColorA3: rgba(34, 181, 115, 0.3);
+$primaryColorA2: rgba(34, 181, 115, 0.2);
+$primaryColorA1: rgba(34, 181, 115, 0.1);
 $primaryColorAlt: #105737;
+$primaryColorAltA5: rgba(16, 87, 55, 0.5);
 $secondaryColor: #386C98;
 $secondaryColorAlt: #699CBF;
 
@@ -36,33 +42,99 @@ line.axis {
 }
 
 .course-bubble {
-    fill: $primaryColor;
+    fill: $primaryColorA3;
     stroke-width: 0;
-    &.highlighted {
-        stroke-width: 4;
-        stroke: $primaryColorAlt;
+    &.highlighted, &.default {
+        // stroke-width: 4;
+        fill: $primaryColorA9;
+        // stroke: $primaryColorAlt;
     }
     &.selected {
         stroke-width: 4;
-        stroke: $primaryColorAlt;
+        stroke: $primaryColorAlt;   
     }
+    &.selected.highlighted, &.selected.default {
+        // stroke-width: 4;
+        // stroke: $primaryColorAlt;
+        fill: $primaryColorAlt;
+    }
+}
+
+.course-bubble-ring-1 {
+    fill: none;
+    stroke-width: 1;
+    stroke: $primaryColorA2;
+}
+
+.course-bubble-ring-3 {
+    fill: none;
+    stroke-width: 1;
+    stroke: $primaryColorA3;
+}
+
+.course-bubble-ring-base {
+    fill: none;
+    stroke-width: 1;
+    stroke: $primaryColorAltA5;
 }
 
 .course-bubble-label {
     fill: white;
+    text-anchor: middle;
 }
 
+.course-bubble-popularity-label {
+    fill: $primaryColor;
+    text-anchor: middle;
+}
 .course-bubble-group {
     cursor: pointer;
+    text {
+        dominant-baseline: middle;   
+    }
+}
+
+.alumni-toggle-button {
+    position: absolute;
+    z-index: 0;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    margin-left: 10px;
+    margin-top: 10px;
+    background-color: white;
+    box-shadow: 0px 2px 4px #999;
+    border-radius:100px;
+}
+
+.alumni-bar {
+    position: absolute;
+    height: $height;
+    width: 220px;
+    background-color: $alumniBarBackgroundColor;
+    input {
+        width: 206px;
+        border-radius: 0;
+        margin-bottom: 0;
+    }
+    .alumni-bar-title {
+        margin-left: 65px;
+        color: #f7f7f7;
+        margin-top: 24px;
+        margin-bottom: 24px;
+    }
 }
 
 .list-container {
-    background-color: $alumniBarBackgroundColor;
     overflow: scroll;
-    height: $height;
+    height: $height - 98;
+    ul {
+        margin-left: 0;
+    }
     ul li {
         list-style: none;
         color: white;
+        padding: 10px;
     }
 }
 
@@ -70,8 +142,10 @@ line.axis {
     color: #333;
     font-size: 12px;
     cursor: pointer;
-    &.highlighted {
-        color: $primaryColorAlt;
+
+    &.highlighted, &.selected {
+        color: #f7f7f7;
+        background-color: $primaryColorAlt;
     }
 }
 
@@ -79,41 +153,100 @@ line.axis {
     fill: transparent;
     stroke-width: 1;
     display: block;
-    visibility: hidden;
+    // visibility: hidden;
     stroke: rgba(100, 100, 100, 0.3);
     &.highlighted {
         visibility: visible;
+        // stroke-width: 4;
+        stroke-width: 1;
+        stroke: #333;
+        // fill: $primaryColorAlt;
+    }
+    &.selected {
+        visibility: visible;
+        // stroke-width: 4;
+        // stroke: $primaryColorAlt;
         stroke-width: 4;
-        stroke: $primaryColorAlt;
+        stroke: rgba(34, 181, 115, 0.2);
+        // fill: $primaryColorAlt;
     }
     &.hidden {
         display: none;
     }
 }
 
-.dataTile {
-    opacity: 0.5;
-    &.highlighted {
-        opacity: 1.0;
-    }
-    &.selected {
-        opacity: 1.0;
-    }
-}
-.dataLink {
+.dataTile.bg {
     opacity: 1.0;
-    stroke-width: 0;
+    &.greyout {
+        opacity: 0.3;
+    }
     &.highlighted {
         opacity: 1.0;
-        fill: rgba(100,200,200,1.0);
+        fill: #44c785;
+        // fill: rgba(10,10,10,1.0);
     }
     &.selected {
         opacity: 1.0;
-        fill: rgba(50,50,80,1.0);
+        fill: #004e33;
+        // fill: rgba(50,50,80,1.0);
     }
     &.highlighted.selected {
         opacity: 1.0;
-        fill: rgba(100,200,100,1.0);
+        fill: #00784c;//rgba(100,200,100,1.0);
+    }
+}
+
+.dataTile.pos {
+    opacity: 1.0;
+    &.greyout {
+        opacity: 0.3;
+    }
+    &.highlighted {
+        opacity: 1.0;
+        fill: #006394;
+        // fill: rgba(10,10,10,1.0);
+    }
+    &.selected {
+        opacity: 1.0;
+        fill: #004266;
+        // fill: rgba(50,50,80,1.0);
+    }
+    &.highlighted.selected {
+        opacity: 1.0;
+        fill: #006294;
+        // fill: rgba(100,200,100,1.0);
+    }
+}
+
+.dataTile-highlightBar {
+    stroke-width: 0;
+    &.highlighted {
+        fill: rgba(255,255,255,1.0);
+    }
+    &.selected {
+        fill: none;
+    }
+    &.highlighted.selected {
+        fill: rgba(255,255,255,1.0);   
+    }
+}
+
+.dataLink {
+    opacity: 1.0;
+    stroke-width: 0;
+    fill: #CCC;
+    &.highlighted {
+        opacity: 1.0;
+        fill: #44c785;
+    }
+    &.selected {
+        opacity: 1.0;
+        fill: #004e33;
+    }
+    &.highlighted.selected {
+        opacity: 1.0;
+        fill: #00784c;
+        //fill: rgba(100,200,100,1.0);
     }
 }
 
@@ -140,7 +273,7 @@ text.bar-label {
     position: relative;
     .text-wrapper{
         filter: alpha(opacity=0);
-        background-color: #555555;
+        background-color: #888;
         vertical-align: middle;
         text-align: center;
         color: white;
@@ -148,7 +281,7 @@ text.bar-label {
         padding-right: 30px;
         font-family: "Myriad Pro",sans-serif;
         cursor: pointer;
-        background: #555555 url(http://s22.postimg.org/51zf7cl1d/arrow.png) no-repeat top 10px right;
+        background: #888 url(http://s22.postimg.org/51zf7cl1d/arrow.png) no-repeat top 10px right;
         background-size: 25px;
         font-size: 20px;
          padding: 15px;
@@ -163,32 +296,50 @@ text.bar-label {
         margin-top: 0px;
         padding: 0px;
         height: 0px;
-        background: #494949;
+        background: #e6e6e6;
+        border: solid 1px #ccc;
         overflow: hidden;
         position: absolute;
         left: 0;
         text-align: center;
+        position: absolute;
+        z-index: 100;
         svg {
             margin-top: 20px;
         }
     }
     .sankey-wrapper.expanded {
-        height: 520px;
+        height: 695px;
         width: 100%;
+    }
+    .toggle-button {
+        margin-right: 20px;
+        top: -6px;
+        position: relative;
     }
 }
 
 .main-frame {
+    position: relative;
     background-color: #fff;
     .info-frame {
         margin-left: 0;
         border-left: 4px solid $backgroundColor;
         height: $height;
         padding: 20px;
+        overflow: hidden;
     }
     .bubble-frame {
-        overflow: hidden;
+        overflow: scroll;
         height: $height;
+        margin-left: 0;
+    }
+    .alumni-frame {
+        position: absolute;
+        display: block;
+        &.hidden, &.minimized {
+            display: none;
+        }
     }
 }
 
@@ -199,11 +350,17 @@ text.bar-label {
     background-color: #e6e6e6;
     margin-left: 20px;
     margin-right: 20px;
+    &.small {
+        position: absolute;
+        margin: 0;
+        width: 44px;
+        height: 44px;
+    }
 }
 
 .alumni-info {
     position: relative;
-    padding: 20px;
+    padding: 20px 0px 20px 0px;
     border-bottom: 1px solid #e6e6e6;
     .back-button {
         position: absolute;
@@ -225,4 +382,38 @@ text.bar-label {
             border-right: 7px solid #666;
         }
     }
+}
+
+.sankey-label {
+    fill: #e6e6e6;
+    cursor: pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.scrollbar-wrapper {
+    width: 500px;
+    height: 500px;
+    background-color: #333;
+    overflow: hidden;
+    .content {
+        width: 490px;
+        height: 490px;
+        padding: 5px 5px 5px 5px;
+        overflow: auto;
+        background-color: #300;
+    }
+}
+
+/* way the hell off screen */
+.scrollbar-measure {
+    width: 100px;
+    height: 100px;
+    overflow: scroll;
+    position: absolute;
+    top: -9999px;
 }
